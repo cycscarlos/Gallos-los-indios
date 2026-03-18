@@ -1,0 +1,217 @@
+/* ========================================
+   SERVICIOS.HTML - Services Page
+   Fully responsive with dynamic spacing
+   ======================================== */
+
+/* Services Grid */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(clamp(280px, 35vw, 380px), 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-2xl);
+}
+
+.service-card {
+    background: rgba(212, 175, 55, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    padding: var(--space-lg) var(--space-md);
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+}
+
+.service-card:hover::before {
+    transform: translateX(100%);
+}
+
+.service-card:hover {
+    background: rgba(212, 175, 55, 0.08);
+    border-color: var(--gold-primary);
+    transform: translateY(-10px);
+}
+
+.service-icon {
+    font-size: clamp(36px, 6vw, 56px);
+    margin-bottom: var(--space-md);
+    display: block;
+}
+
+.service-title {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-lg);
+    color: var(--gold-light);
+    margin-bottom: var(--space-sm);
+    letter-spacing: 1px;
+}
+
+.service-description {
+    font-size: var(--text-sm);
+    opacity: 0.7;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+/* Process Section */
+.process-section {
+    margin-top: var(--space-3xl);
+    padding: var(--space-2xl) var(--space-lg);
+    background: rgba(212, 175, 55, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.process-title {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-2xl);
+    color: var(--gold-light);
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+    letter-spacing: 3px;
+}
+
+.process-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+}
+
+.process-steps::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), var(--gold-dark));
+    opacity: 0.3;
+}
+
+@media (max-width: 768px) {
+    .process-steps::before {
+        display: none;
+    }
+}
+
+.process-step {
+    text-align: center;
+    position: relative;
+    flex: 1;
+    min-width: clamp(150px, 25vw, 200px);
+    padding: 0 var(--space-sm);
+}
+
+.step-number {
+    width: clamp(60px, 10vw, 80px);
+    height: clamp(60px, 10vw, 80px);
+    border: 2px solid var(--gold-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-md);
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-2xl);
+    color: var(--gold-primary);
+    background: var(--black-deep);
+    position: relative;
+    z-index: 1;
+}
+
+.step-title {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-base);
+    color: var(--gold-light);
+    margin-bottom: var(--space-xs);
+}
+
+.step-description {
+    font-size: var(--text-xs);
+    opacity: 0.6;
+    line-height: 1.5;
+}
+
+/* Why Choose Us */
+.why-section {
+    margin-top: var(--space-3xl);
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(280px, 45vw, 550px), 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+}
+
+.why-item {
+    display: flex;
+    gap: var(--space-md);
+    align-items: flex-start;
+}
+
+.why-icon {
+    font-size: clamp(24px, 4vw, 32px);
+    flex-shrink: 0;
+}
+
+.why-content h4 {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-base);
+    color: var(--gold-light);
+    margin-bottom: var(--space-xs);
+}
+
+.why-content p {
+    font-size: var(--text-sm);
+    opacity: 0.7;
+    line-height: 1.5;
+    font-weight: 300;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .process-step {
+        flex: 0 0 100%;
+    }
+    
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .process-section {
+        padding: var(--space-lg) var(--space-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .service-card {
+        padding: var(--space-md);
+    }
+    
+    .process-step {
+        padding: 0;
+    }
+    
+    .step-number {
+        width: 60px;
+        height: 60px;
+        font-size: var(--text-xl);
+    }
+}

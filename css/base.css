@@ -1,0 +1,417 @@
+/* ========================================
+   GALLOS LOS INDIOS - BASE STYLES
+   Fully responsive with dynamic spacing
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colors */
+    --black-deep: #0a0a0a;
+    --black-mid: #1a1a1a;
+    --black-light: #2a2a2a;
+    --gold-primary: #d4af37;
+    --gold-light: #f4d03f;
+    --gold-dark: #b8860b;
+    --gold-glow: #ffd700;
+    --red-accent: #8b0000;
+    --white: #ffffff;
+    --gray: #888888;
+    
+    /* Dynamic spacing - fluid clamp */
+    --space-xs: clamp(0.5rem, 1vw, 0.75rem);
+    --space-sm: clamp(0.75rem, 2vw, 1rem);
+    --space-md: clamp(1rem, 3vw, 1.5rem);
+    --space-lg: clamp(1.5rem, 4vw, 2rem);
+    --space-xl: clamp(2rem, 5vw, 3rem);
+    --space-2xl: clamp(3rem, 6vw, 4rem);
+    --space-3xl: clamp(4rem, 8vw, 6rem);
+    
+    /* Dynamic typography */
+    --text-xs: clamp(0.625rem, 0.8vw, 0.75rem);
+    --text-sm: clamp(0.75rem, 1vw, 0.875rem);
+    --text-base: clamp(0.875rem, 1.2vw, 1rem);
+    --text-lg: clamp(1rem, 1.5vw, 1.125rem);
+    --text-xl: clamp(1.25rem, 2vw, 1.5rem);
+    --text-2xl: clamp(1.5rem, 3vw, 2rem);
+    --text-3xl: clamp(2rem, 4vw, 3rem);
+    --text-4xl: clamp(3rem, 6vw, 4.5rem);
+    --text-5xl: clamp(4rem, 8vw, 6rem);
+    
+    /* Container */
+    --container-max: clamp(320px, 90vw, 1200px);
+    --container-padding: clamp(1rem, 4vw, 2.5rem);
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Oswald', sans-serif;
+    background: var(--black-deep);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-size: var(--text-base);
+    line-height: 1.6;
+}
+
+/* Canvas Container */
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Light Effects */
+.light-rays {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(212, 175, 55, 0.08) 0%, transparent 50%, rgba(212, 175, 55, 0.05) 100%);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.embers {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.ember {
+    position: absolute;
+    bottom: -10px;
+    width: clamp(2px, 0.5vw, 4px);
+    height: clamp(2px, 0.5vw, 4px);
+    background: radial-gradient(circle, var(--gold-light), var(--gold-dark));
+    border-radius: 50%;
+    animation: ember-rise linear infinite;
+}
+
+@keyframes ember-rise {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+}
+
+/* ========================================
+   NAVBAR
+   ======================================== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(10,10,10,0.9) 0%, transparent 100%);
+    transition: all 0.3s ease;
+}
+
+.navbar:hover {
+    background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.5) 100%);
+}
+
+.navbar-logo {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--gold-primary);
+    letter-spacing: clamp(2px, 0.5vw, 4px);
+    text-decoration: none;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    transition: text-shadow 0.3s;
+}
+
+.navbar-logo:hover {
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+}
+
+.navbar-links {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2rem);
+    list-style: none;
+}
+
+.navbar-links a {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--text-sm);
+    letter-spacing: clamp(1px, 0.3vw, 2px);
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    position: relative;
+    padding: var(--space-xs) 0;
+}
+
+.navbar-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold-primary);
+    transition: width 0.3s;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+    opacity: 1;
+    color: var(--gold-primary);
+}
+
+.navbar-links a:hover::after,
+.navbar-links a.active::after {
+    width: 100%;
+}
+
+/* Mobile Navbar */
+.navbar-toggle {
+    display: none;
+    flex-direction: column;
+    gap: clamp(3px, 1vw, 5px);
+    cursor: pointer;
+    padding: var(--space-xs);
+}
+
+.navbar-toggle span {
+    width: clamp(18px, 4vw, 25px);
+    height: 2px;
+    background: var(--gold-primary);
+    transition: all 0.3s;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(0deg, rgba(10,10,10,0.9) 0%, transparent 100%);
+    transition: all 0.3s ease;
+}
+
+.footer:hover {
+    background: linear-gradient(0deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.5) 100%);
+}
+
+.footer-info {
+    color: var(--gray);
+    opacity: 0.5;
+    font-size: var(--text-xs);
+    letter-spacing: 1px;
+}
+
+.footer-contact {
+    color: var(--gold-primary);
+    opacity: 0.5;
+    text-decoration: none;
+    font-size: var(--text-xs);
+    letter-spacing: 1px;
+    transition: opacity 0.3s;
+}
+
+.footer-contact:hover {
+    opacity: 1;
+}
+
+/* ========================================
+   PAGE CONTENT STRUCTURE
+   ======================================== */
+.page-wrapper {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    padding-top: clamp(60px, 10vw, 80px);
+    padding-bottom: clamp(40px, 8vw, 60px);
+}
+
+.page-header {
+    text-align: center;
+    padding: var(--space-2xl) var(--space-lg) var(--space-lg);
+}
+
+.page-title {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-4xl);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: var(--space-md);
+    text-shadow: 0 0 60px var(--gold-glow);
+    color: var(--gold-primary);
+}
+
+.page-subtitle {
+    font-size: var(--text-lg);
+    font-weight: 300;
+    opacity: 0.8;
+    max-width: clamp(300px, 60vw, 600px);
+    margin: 0 auto;
+    letter-spacing: 1px;
+}
+
+.page-content {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+}
+
+/* ========================================
+   BUTTONS & CTAs
+   ======================================== */
+.btn-primary {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    background: transparent;
+    border: 2px solid var(--gold-primary);
+    color: var(--gold-primary);
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    letter-spacing: clamp(1px, 0.3vw, 3px);
+    text-transform: uppercase;
+}
+
+.btn-primary:hover {
+    background: var(--gold-primary);
+    color: var(--black-deep);
+    box-shadow: 0 0 40px var(--gold-glow);
+}
+
+/* ========================================
+   SOUND TOGGLE
+   ======================================== */
+.sound-toggle {
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    z-index: 100;
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--text-xs);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+    letter-spacing: 2px;
+    color: var(--gold-primary);
+    background: none;
+    border: none;
+}
+
+.sound-toggle:hover {
+    opacity: 1;
+}
+
+/* ========================================
+   RESPONSIVE - Tablet
+   ======================================== */
+@media (max-width: 1024px) {
+    .navbar-links {
+        gap: var(--space-md);
+    }
+}
+
+/* ========================================
+   RESPONSIVE - Mobile
+   ======================================== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: var(--space-sm) var(--space-md);
+    }
+    
+    .navbar-logo {
+        font-size: var(--text-base);
+        letter-spacing: 2px;
+    }
+    
+    .navbar-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(10,10,10,0.98);
+        padding: var(--space-md);
+        gap: var(--space-sm);
+    }
+    
+    .navbar-links.active {
+        display: flex;
+    }
+    
+    .navbar-toggle {
+        display: flex;
+    }
+    
+    .page-title {
+        font-size: var(--text-3xl);
+    }
+    
+    .page-content {
+        padding: 0 var(--space-md);
+    }
+    
+    .footer {
+        flex-direction: column;
+        gap: var(--space-xs);
+        text-align: center;
+        padding: var(--space-md);
+    }
+    
+    .btn-primary {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--text-xs);
+    }
+}
+
+/* ========================================
+   RESPONSIVE - Small Mobile
+   ======================================== */
+@media (max-width: 480px) {
+    .page-header {
+        padding: var(--space-lg) var(--space-sm) var(--space-md);
+    }
+    
+    .page-title {
+        font-size: var(--text-2xl);
+    }
+    
+    .page-subtitle {
+        font-size: var(--text-base);
+    }
+    
+    .navbar-logo {
+        font-size: var(--text-sm);
+    }
+}

@@ -1,0 +1,279 @@
+/* ========================================
+   INSTALACIONES.HTML - Facilities & Recognitions
+   Fully responsive with dynamic spacing
+   ======================================== */
+
+/* Section Tabs */
+.installations-tabs {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: var(--space-sm) var(--space-lg);
+    background: transparent;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--text-sm);
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--black-deep);
+}
+
+/* Gallery Grid */
+.installations-grid {
+    display: none;
+}
+
+.installations-grid.active {
+    display: grid;
+}
+
+.installations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(clamp(250px, 35vw, 380px), 1fr));
+    gap: var(--space-md);
+}
+
+.installation-item {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.installation-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(10,10,10,0.8) 100%);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.installation-item:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold-primary);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4), 0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+.installation-item:hover::before {
+    opacity: 1;
+}
+
+.installation-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.installation-item:hover .installation-image {
+    transform: scale(1.08);
+}
+
+.installation-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-md);
+    z-index: 2;
+    transform: translateY(10px);
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.installation-item:hover .installation-info {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.installation-title {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--gold-light);
+    margin-bottom: var(--space-xs);
+    letter-spacing: 1px;
+}
+
+.installation-desc {
+    font-size: var(--text-xs);
+    color: var(--white);
+    opacity: 0.7;
+    font-weight: 300;
+}
+
+/* Recognition Cards */
+.recognition-item {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    transition: all 0.4s ease;
+}
+
+.recognition-item:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold-primary);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4), 0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+.recognition-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(30%);
+    transition: filter 0.4s ease;
+}
+
+.recognition-item:hover .recognition-image {
+    filter: grayscale(0%);
+}
+
+.recognition-badge {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    width: clamp(35px, 6vw, 50px);
+    height: clamp(35px, 6vw, 50px);
+    background: var(--gold-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(16px, 3vw, 24px);
+    z-index: 2;
+}
+
+.recognition-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-md);
+    background: linear-gradient(transparent, rgba(10,10,10,0.9));
+}
+
+.recognition-title {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+}
+
+.recognition-year {
+    font-size: var(--text-xs);
+    color: var(--gold-primary);
+    margin-top: var(--space-xs);
+    letter-spacing: 1px;
+}
+
+/* Section Description */
+.section-description {
+    max-width: clamp(250px, 70vw, 700px);
+    margin: 0 auto var(--space-2xl);
+    text-align: center;
+}
+
+.section-description p {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    opacity: 0.7;
+    font-weight: 300;
+}
+
+/* Info Banner */
+.info-banner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 30vw, 300px), 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-2xl);
+    padding: var(--space-lg);
+    background: rgba(212, 175, 55, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.info-banner-item {
+    text-align: center;
+}
+
+.info-banner-icon {
+    font-size: clamp(28px, 5vw, 40px);
+    margin-bottom: var(--space-sm);
+}
+
+.info-banner-title {
+    font-family: 'Cinzel', serif;
+    font-size: var(--text-base);
+    color: var(--gold-light);
+    margin-bottom: var(--space-xs);
+}
+
+.info-banner-text {
+    font-size: var(--text-xs);
+    opacity: 0.6;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .installations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .installation-item {
+        aspect-ratio: 16/9;
+    }
+    
+    .recognition-item {
+        aspect-ratio: 3/2;
+    }
+    
+    .installations-tabs {
+        gap: var(--space-xs);
+    }
+    
+    .tab-btn {
+        padding: var(--space-xs) var(--space-md);
+        font-size: var(--text-xs);
+    }
+    
+    .info-banner {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-btn {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: var(--text-xs);
+        letter-spacing: 1px;
+    }
+    
+    .installation-info,
+    .recognition-info {
+        padding: var(--space-sm);
+    }
+}

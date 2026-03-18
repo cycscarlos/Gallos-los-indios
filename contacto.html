@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacto - Gallos Los Indios</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/contacto.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Oswald:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="canvas-container"></div>
+
+    <div class="light-rays"></div>
+    <div class="embers" id="embers"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <a href="index.html" class="navbar-logo">GALLOS LOS INDIOS</a>
+      <ul class="navbar-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="instalaciones.html">Instalaciones</a></li>
+        <li><a href="servicios.html">Servicios</a></li>
+        <li><a href="galeria.html">Galería</a></li>
+        <li><a href="contacto.html" class="active">Contacto</a></li>
+      </ul>
+      <div class="navbar-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        <h1 class="page-title">CONTACTO</h1>
+        <p class="page-subtitle">¿Listo para adquirir tu campeón?</p>
+      </header>
+
+      <div class="page-content">
+        <div class="contact-container">
+          <!-- Contact Form -->
+          <div class="contact-form-wrapper">
+            <h3>ENVÍANOS UN MENSAJE</h3>
+            <p>Responderemos a tu consulta en menos de 24 horas</p>
+
+            <form class="contact-form" id="contactForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <input type="text" placeholder="Tu nombre" required />
+                </div>
+                <div class="form-group">
+                  <input type="tel" placeholder="Tu teléfono" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="email" placeholder="Tu email" required />
+              </div>
+              <div class="form-group">
+                <select>
+                  <option value="">Selecciona un tema</option>
+                  <option value="venta">Venta de gallos</option>
+                  <option value="criadero">Criadero / Reproducción</option>
+                  <option value="asesoria">Asesoría</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <textarea
+                  placeholder="Tu mensaje - Consulta sobre disponibilidad, líneas de sangre, precios..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn-primary">ENVIAR MENSAJE</button>
+            </form>
+
+            <div class="form-success" id="formSuccess">
+              <h4>¡MENSAJE ENVIADO!</h4>
+              <p>
+                Gracias por contactarnos. Nos pondremos en contacto contigo
+                pronto.
+              </p>
+            </div>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="contact-info-wrapper">
+            <div class="contact-info-item">
+              <h4>DIRECCIÓN</h4>
+              <p>
+                Ubicados en El Junquito, Caracas, Venezuela<br />Disponibles
+                para todo el país
+              </p>
+            </div>
+
+            <div class="contact-info-item">
+              <h4>CONTACTO DIRECTO</h4>
+              <div class="contact-direct">
+                <a href="mailto:info@galloslosindios.com">
+                  <span>📧</span>
+                  <span>info@galloslosindios.com</span>
+                </a>
+                <a href="tel:+584143246396">
+                  <span>📞</span>
+                  <span>+58 0414 324 6396</span>
+                </a>
+                <a href="https://wa.me/+584143246396">
+                  <span>💬</span>
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <h4>HORARIOS</h4>
+              <p>
+                Lunes a Viernes: 9:00 am - 04:00 pm<br />
+                Sábados: 10:00 am - 2:00 pm<br />
+                Domingos: Con cita previa
+              </p>
+            </div>
+
+            <div class="contact-info-item">
+              <h4>VISITAS</h4>
+              <p>
+                Las visitas al criadero son bajo cita previa. Contáctanos para
+                programar tu visita.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-placeholder">MAPA - UBICACIÓN DEL CRIADERO</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-info">
+        © 2024 Gallos Los Indios. Todos los derechos reservados.
+      </div>
+      <a href="mailto:info@galloslosindios.com" class="footer-contact"
+        >info@galloslosindios.com</a
+      >
+    </footer>
+
+    <button class="sound-toggle" id="soundToggle">AUDIO</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/shared.js"></script>
+  </body>
+</html>
