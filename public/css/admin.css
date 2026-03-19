@@ -14,16 +14,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--space-xl);
-    padding-bottom: var(--space-md);
-    border-bottom: 2px solid var(--gold-primary);
+    margin-bottom: var(--space-2xl);
+    padding: var(--space-lg) var(--space-xl);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
 }
 
 .admin-title {
-    font-family: 'Cinzel', serif;
-    font-size: var(--text-3xl);
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
     color: var(--gold-primary);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
+    margin: 0;
+    text-shadow: 0 0 20px var(--gold-glow);
 }
 
 .admin-user {
@@ -48,18 +53,23 @@
 }
 
 .btn-logout {
-    background: transparent;
+    background: rgba(107, 0, 0, 0.2);
     border: 1px solid var(--red-accent);
     color: #ff6b6b;
-    padding: var(--space-xs) var(--space-sm);
-    font-family: 'Oswald', sans-serif;
+    padding: 0.5rem 1.2rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--text-xs);
     cursor: pointer;
-    transition: all 0.3s;
+    transition: var(--transition-med);
+    border-radius: 4px;
+    letter-spacing: 0.05em;
 }
 
 .btn-logout:hover {
     background: var(--red-accent);
     color: var(--white);
+    transform: translateY(-2px);
 }
 
 .admin-nav {
@@ -70,21 +80,26 @@
 }
 
 .admin-nav-link {
-    background: var(--black-mid);
-    border: 1px solid var(--black-light);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
     color: var(--white);
-    padding: var(--space-sm) var(--space-md);
+    padding: 0.8rem 1.5rem;
     text-decoration: none;
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--text-sm);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.3s;
+    letter-spacing: 0.1em;
+    transition: var(--transition-med);
+    border-radius: 6px;
 }
 
 .admin-nav-link:hover,
 .admin-nav-link.active {
+    background: rgba(212, 175, 55, 0.1);
     border-color: var(--gold-primary);
     color: var(--gold-primary);
+    box-shadow: 0 0 15px var(--gold-glow);
 }
 
 .stats-grid {
@@ -95,10 +110,19 @@
 }
 
 .stat-card {
-    background: var(--black-mid);
-    border: 1px solid var(--black-light);
-    padding: var(--space-lg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    padding: var(--space-xl);
     text-align: center;
+    border-radius: 12px;
+    transition: var(--transition-med);
+}
+
+.stat-card:hover {
+    border-color: var(--gold-primary);
+    transform: translateY(-5px);
+    background: rgba(20, 20, 20, 0.8);
 }
 
 .stat-value {
@@ -124,10 +148,12 @@
 }
 
 .admin-section {
-    background: var(--black-mid);
-    border: 1px solid var(--black-light);
-    padding: var(--space-lg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    padding: var(--space-xl);
     margin-bottom: var(--space-xl);
+    border-radius: 12px;
 }
 
 .section-header {
@@ -138,9 +164,10 @@
 }
 
 .section-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     font-size: var(--text-xl);
-    color: var(--gold-light);
+    color: var(--gold-primary);
+    letter-spacing: 0.1em;
 }
 
 .btn-primary {
@@ -196,16 +223,23 @@
 
 .data-table th,
 .data-table td {
-    padding: var(--space-sm);
+    padding: 1.2rem;
     text-align: left;
-    border-bottom: 1px solid var(--black-light);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .data-table th {
+    font-family: var(--font-heading);
     color: var(--gold-primary);
     text-transform: uppercase;
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+}
+
+.data-table td {
+    font-family: var(--font-body);
     font-size: var(--text-sm);
-    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .data-table tr:hover {
@@ -352,12 +386,14 @@
 .form-field input,
 .form-field select,
 .form-field textarea {
-    background: var(--black-deep);
-    border: 1px solid var(--black-light);
-    padding: var(--space-sm);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    padding: 0.8rem 1rem;
     color: var(--white);
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-body);
     font-size: var(--text-base);
+    border-radius: 6px;
+    transition: var(--transition-med);
 }
 
 .form-field input:focus,

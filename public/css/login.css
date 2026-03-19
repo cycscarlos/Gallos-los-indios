@@ -9,12 +9,14 @@
 }
 
 .login-box {
-    background: rgba(10, 10, 10, 0.95);
-    border: 2px solid var(--gold-primary);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     padding: var(--space-2xl);
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
 }
 
 .login-header {
@@ -23,11 +25,12 @@
 }
 
 .login-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     font-size: var(--text-2xl);
     color: var(--gold-primary);
     letter-spacing: 0.15em;
     margin-bottom: var(--space-xs);
+    text-shadow: 0 0 20px var(--gold-glow);
 }
 
 .login-subtitle {
@@ -57,13 +60,14 @@
 }
 
 .form-group input {
-    background: var(--black-mid);
-    border: 1px solid var(--black-light);
-    padding: var(--space-sm) var(--space-md);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    padding: 1rem;
     color: var(--white);
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-body);
     font-size: var(--text-base);
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition: var(--transition-med);
+    border-radius: 6px;
 }
 
 .form-group input:focus {
@@ -92,17 +96,19 @@
 }
 
 .btn-login {
-    background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
     border: none;
-    padding: var(--space-md) var(--space-xl);
+    padding: 1.2rem;
     color: var(--black-deep);
-    font-family: 'Cinzel', serif;
-    font-size: var(--text-lg);
+    font-family: var(--font-body);
     font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: var(--text-sm);
+    letter-spacing: 0.15em;
     cursor: pointer;
-    transition: all 0.3s;
-    margin-top: var(--space-sm);
+    transition: var(--transition-med);
+    margin-top: var(--space-md);
+    border-radius: 6px;
+    text-transform: uppercase;
 }
 
 .btn-login:hover {

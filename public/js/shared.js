@@ -247,6 +247,16 @@ document.addEventListener('DOMContentLoaded', function() {
     init();
     createEmbers();
     
+    // Navbar scroll effect
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+    
     // Init audio on first click
     document.addEventListener('click', initAudio, { once: true });
 });

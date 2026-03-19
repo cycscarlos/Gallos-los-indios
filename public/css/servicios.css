@@ -12,56 +12,45 @@
 }
 
 .service-card {
-    background: rgba(212, 175, 55, 0.03);
-    border: 1px solid rgba(212, 175, 55, 0.15);
-    padding: var(--space-lg) var(--space-md);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    padding: var(--space-xl);
     text-align: center;
-    transition: all 0.4s ease;
+    transition: var(--transition-med);
     position: relative;
     overflow: hidden;
-}
-
-.service-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.6s;
-}
-
-.service-card:hover::before {
-    transform: translateX(100%);
+    border-radius: 12px;
 }
 
 .service-card:hover {
-    background: rgba(212, 175, 55, 0.08);
+    background: rgba(20, 20, 20, 0.8);
     border-color: var(--gold-primary);
-    transform: translateY(-10px);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
 .service-icon {
-    font-size: clamp(36px, 6vw, 56px);
+    font-size: 3.5rem;
     margin-bottom: var(--space-md);
-    display: block;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px var(--gold-glow));
 }
 
 .service-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     font-size: var(--text-lg);
-    color: var(--gold-light);
+    color: var(--gold-primary);
     margin-bottom: var(--space-sm);
-    letter-spacing: 1px;
+    letter-spacing: 0.1em;
 }
 
 .service-description {
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     opacity: 0.7;
-    line-height: 1.6;
-    font-weight: 300;
+    line-height: 1.7;
+    color: var(--white);
 }
 
 /* Process Section */
@@ -73,12 +62,12 @@
 }
 
 .process-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     font-size: var(--text-2xl);
-    color: var(--gold-light);
+    color: var(--gold-primary);
     text-align: center;
-    margin-bottom: var(--space-2xl);
-    letter-spacing: 3px;
+    margin-bottom: var(--space-3xl);
+    letter-spacing: 0.2em;
 }
 
 .process-steps {
@@ -110,38 +99,49 @@
     text-align: center;
     position: relative;
     flex: 1;
-    min-width: clamp(150px, 25vw, 200px);
-    padding: 0 var(--space-sm);
+    min-width: 200px;
+    padding: var(--space-lg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    transition: var(--transition-med);
+}
+
+.process-step:hover {
+    border-color: var(--gold-primary);
+    transform: translateY(-5px);
 }
 
 .step-number {
-    width: clamp(60px, 10vw, 80px);
-    height: clamp(60px, 10vw, 80px);
-    border: 2px solid var(--gold-primary);
+    width: 60px;
+    height: 60px;
+    border: 1px solid var(--gold-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto var(--space-md);
-    font-family: 'Cinzel', serif;
-    font-size: var(--text-2xl);
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
     color: var(--gold-primary);
-    background: var(--black-deep);
-    position: relative;
-    z-index: 1;
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 15px var(--gold-glow);
 }
 
 .step-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     font-size: var(--text-base);
-    color: var(--gold-light);
+    color: var(--white);
     margin-bottom: var(--space-xs);
+    letter-spacing: 0.05em;
 }
 
 .step-description {
+    font-family: var(--font-body);
     font-size: var(--text-xs);
     opacity: 0.6;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 /* Why Choose Us */
