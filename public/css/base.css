@@ -187,6 +187,18 @@ body {
     width: 100%;
 }
 
+.navbar-links a.nav-admin {
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 5px 15px;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.navbar-links a.nav-admin:hover {
+    border-color: var(--gold-primary);
+    background: rgba(212, 175, 55, 0.1);
+}
+
 /* Mobile Navbar */
 .navbar-toggle {
     display: none;

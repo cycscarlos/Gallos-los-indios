@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Gallos Los Indios</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div class="light-rays"></div>
+    <div class="embers" id="embers"></div>
+
+    <div class="admin-wrapper" id="adminContent" style="display: none;">
+        <div class="admin-container">
+            <header class="admin-header">
+                <h1 class="admin-title">GESTIÓN DE USUARIOS</h1>
+                <div class="admin-user">
+                    <div class="admin-user-info">
+                        <div class="admin-user-name" id="userName">Cargando...</div>
+                        <div class="admin-user-role" id="userRole"></div>
+                    </div>
+                    <button class="btn-logout" id="btnLogout">CERRAR SESIÓN</button>
+                </div>
+            </header>
+
+            <nav class="admin-nav">
+                <a href="/pages/admin/dashboard.html" class="admin-nav-link">Dashboard</a>
+                <a href="/pages/admin/ejemplares.html" class="admin-nav-link">Ejemplares</a>
+                <a href="/pages/admin/consultas.html" class="admin-nav-link">Consultas</a>
+                <a href="/pages/admin/usuarios.html" class="admin-nav-link active">Usuarios</a>
+            </nav>
+
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2 class="section-title">Usuarios del Sistema</h2>
+                </div>
+                <div id="usuariosList">
+                    <div class="loading">Cargando usuarios...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="not-authorized" id="notAuthorized" style="display: none;">
+        <h2>ACCESO NO AUTORIZADO</h2>
+        <p>Solo los administradores pueden acceder a esta sección.</p>
+        <a href="/pages/admin/dashboard.html" class="btn-primary">IR A DASHBOARD</a>
+    </div>
+
+    <div class="modal" id="modalUsuario">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Usuario</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <form id="formUsuario">
+                <input type="hidden" id="usuarioId">
+                <div class="form-grid">
+                    <div class="form-field full-width">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" disabled>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre">
+                    </div>
+                    <div class="form-field">
+                        <label for="rol">Rol</label>
+                        <select id="rol">
+                            <option value="soporte">Soporte</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="activo">Estado</label>
+                        <select id="activo">
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="btnCancelar">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="btnGuardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <button class="sound-toggle" id="soundToggle">AUDIO</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module" src="/src/admin/usuarios.js"></script>
+</body>
+</html>

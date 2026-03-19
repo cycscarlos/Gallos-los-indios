@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas - Gallos Los Indios</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div class="light-rays"></div>
+    <div class="embers" id="embers"></div>
+
+    <div class="admin-wrapper" id="adminContent" style="display: none;">
+        <div class="admin-container">
+            <header class="admin-header">
+                <h1 class="admin-title">CONSULTAS</h1>
+                <div class="admin-user">
+                    <div class="admin-user-info">
+                        <div class="admin-user-name" id="userName">Cargando...</div>
+                        <div class="admin-user-role" id="userRole"></div>
+                    </div>
+                    <button class="btn-logout" id="btnLogout">CERRAR SESIÓN</button>
+                </div>
+            </header>
+
+            <nav class="admin-nav">
+                <a href="/pages/admin/dashboard.html" class="admin-nav-link">Dashboard</a>
+                <a href="/pages/admin/ejemplares.html" class="admin-nav-link">Ejemplares</a>
+                <a href="/pages/admin/consultas.html" class="admin-nav-link active">Consultas</a>
+                <a href="/pages/admin/usuarios.html" class="admin-nav-link" id="navUsuarios">Usuarios</a>
+            </nav>
+
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2 class="section-title">Todas las Consultas</h2>
+                    <div class="filter-buttons">
+                        <button class="btn-secondary active" data-filter="all">Todas</button>
+                        <button class="btn-secondary" data-filter="no-leido">Sin Leer</button>
+                        <button class="btn-secondary" data-filter="pendiente">Pendientes</button>
+                    </div>
+                </div>
+                <div id="consultasList">
+                    <div class="loading">Cargando consultas...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="not-authorized" id="notAuthorized" style="display: none;">
+        <h2>ACCESO NO AUTORIZADO</h2>
+        <p>Debes iniciar sesión para acceder a este panel.</p>
+        <a href="/pages/login.html" class="btn-primary">IR A LOGIN</a>
+    </div>
+
+    <div class="modal" id="modalConsulta">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalle de Consulta</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div id="consultaDetalle">
+                <div class="loading">Cargando...</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="sound-toggle" id="soundToggle">AUDIO</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module" src="/src/admin/consultas.js"></script>
+</body>
+</html>

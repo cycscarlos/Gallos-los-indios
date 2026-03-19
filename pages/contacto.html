@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contacto - Gallos Los Indios</title>
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/contacto.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/contacto.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,13 +21,14 @@
 
     <!-- Navbar -->
     <nav class="navbar">
-      <a href="index.html" class="navbar-logo">GALLOS LOS INDIOS</a>
+      <a href="/" class="navbar-logo">GALLOS LOS INDIOS</a>
       <ul class="navbar-links">
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="instalaciones.html">Instalaciones</a></li>
-        <li><a href="servicios.html">Servicios</a></li>
-        <li><a href="galeria.html">Galería</a></li>
-        <li><a href="contacto.html" class="active">Contacto</a></li>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/pages/instalaciones.html">Instalaciones</a></li>
+        <li><a href="/pages/servicios.html">Servicios</a></li>
+        <li><a href="/pages/galeria.html">Galería</a></li>
+        <li><a href="/pages/contacto.html" class="active">Contacto</a></li>
+        <li><a href="/pages/login.html" class="nav-admin">Admin</a></li>
       </ul>
       <div class="navbar-toggle" onclick="toggleMenu()">
         <span></span>
@@ -50,19 +51,17 @@
             <p>Responderemos a tu consulta en menos de 24 horas</p>
 
             <form class="contact-form" id="contactForm">
-              <div class="form-row">
-                <div class="form-group">
-                  <input type="text" placeholder="Tu nombre" required />
+              <div class="form-group">
+                  <input type="text" name="nombre" placeholder="Tu nombre" required />
                 </div>
                 <div class="form-group">
-                  <input type="tel" placeholder="Tu teléfono" required />
+                  <input type="tel" name="telefono" placeholder="Tu teléfono" />
                 </div>
+              <div class="form-group">
+                <input type="email" name="email" placeholder="Tu email" required />
               </div>
               <div class="form-group">
-                <input type="email" placeholder="Tu email" required />
-              </div>
-              <div class="form-group">
-                <select>
+                <select name="tema">
                   <option value="">Selecciona un tema</option>
                   <option value="venta">Venta de gallos</option>
                   <option value="criadero">Criadero / Reproducción</option>
@@ -72,6 +71,7 @@
               </div>
               <div class="form-group">
                 <textarea
+                  name="mensaje"
                   placeholder="Tu mensaje - Consulta sobre disponibilidad, líneas de sangre, precios..."
                 ></textarea>
               </div>
@@ -141,9 +141,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="footer-info">
-        © 2024 Gallos Los Indios. Todos los derechos reservados.
-      </div>
+      <div class="footer-info">© 2026 Gallos Los Indios. Todos los derechos reservados.</div>
       <a href="mailto:info@galloslosindios.com" class="footer-contact"
         >info@galloslosindios.com</a
       >
@@ -152,6 +150,7 @@
     <button class="sound-toggle" id="soundToggle">AUDIO</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/shared.js"></script>
+    <script src="/js/shared.js"></script>
+    <script type="module" src="/src/pages/contacto.js"></script>
   </body>
 </html>
