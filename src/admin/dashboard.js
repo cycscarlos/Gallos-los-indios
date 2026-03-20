@@ -145,10 +145,11 @@ async function init() {
     }
 
     // Mostrar el contenedor principal
-    document.getElementById('adminContent').style.display = 'block'
+    document.getElementById('adminContent').style.display = 'flex'
 
     // 5. Listener para Cierre de Sesión
     document.getElementById('btnLogout').addEventListener('click', async () => {
+        console.log('Cerrando sesión...');
         const { success } = await logout()
         if (success) {
             window.location.href = '/pages/login.html'

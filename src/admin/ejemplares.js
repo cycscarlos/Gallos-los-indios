@@ -173,10 +173,11 @@ async function init() {
         document.getElementById('btnNuevo').style.display = 'none';
     }
 
-    document.getElementById('adminContent').style.display = 'block';
+    document.getElementById('adminContent').style.display = 'flex';
 
     document.getElementById('btnLogout').addEventListener('click', async () => {
-        const success = await logout();
+        console.log('Cerrando sesión...');
+        const { success } = await logout();
         if (success) {
             window.location.href = '/pages/login.html';
         }

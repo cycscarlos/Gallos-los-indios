@@ -159,10 +159,11 @@ async function init() {
     document.getElementById('userName').textContent = userData?.nombre || 'Usuario';
     document.getElementById('userRole').textContent = userData?.rol?.toUpperCase() || '';
 
-    document.getElementById('adminContent').style.display = 'block';
+    document.getElementById('adminContent').style.display = 'flex';
 
     document.getElementById('btnLogout').addEventListener('click', async () => {
-        const success = await logout();
+        console.log('Cerrando sesión...');
+        const { success } = await logout();
         if (success) {
             window.location.href = '/pages/login.html';
         }
