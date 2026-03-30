@@ -15,21 +15,29 @@
 .tab-btn {
     padding: var(--space-sm) var(--space-lg);
     background: transparent;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid rgba(212, 175, 55, 0.2);
     color: var(--white);
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-body);
+    font-weight: 500;
     font-size: var(--text-sm);
     letter-spacing: 2px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
     text-transform: uppercase;
+    border-radius: var(--radius-sm);
 }
 
-.tab-btn:hover,
+.tab-btn:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+}
+
 .tab-btn.active {
     background: var(--gold-primary);
     border-color: var(--gold-primary);
     color: var(--black-deep);
+    box-shadow: 0 0 20px var(--gold-glow);
 }
 
 /* Gallery Grid */
@@ -208,13 +216,22 @@
     grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 30vw, 300px), 1fr));
     gap: var(--space-md);
     margin-top: var(--space-2xl);
-    padding: var(--space-lg);
-    background: rgba(212, 175, 55, 0.03);
-    border: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 .info-banner-item {
     text-align: center;
+    padding: var(--space-lg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+}
+
+.info-banner-item:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
 }
 
 .info-banner-icon {
@@ -223,7 +240,7 @@
 }
 
 .info-banner-title {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     font-size: var(--text-base);
     color: var(--gold-light);
     margin-bottom: var(--space-xs);

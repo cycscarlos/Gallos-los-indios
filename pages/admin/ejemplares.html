@@ -30,7 +30,6 @@
                     <i class="fas fa-th-large"></i>
                     <span>Dashboard</span>
                 </a>
-
                 <div class="nav-group">
                     <div class="nav-group-title">CATÁLOGO</div>
                     <a href="/pages/admin/ejemplares.html" class="admin-nav-link active">
@@ -38,7 +37,6 @@
                         <span>Ejemplares</span>
                     </a>
                 </div>
-
                 <div class="nav-group">
                     <div class="nav-group-title">GESTIÓN</div>
                     <a href="/pages/admin/consultas.html" class="admin-nav-link">
@@ -50,18 +48,27 @@
                         <span>Usuarios</span>
                     </a>
                 </div>
-
-                <div style="margin-top: auto; padding-top: 2rem;">
-                    <button class="btn-logout" id="btnLogout" style="width: 100%;">CERRAR SESIÓN</button>
-                </div>
             </nav>
+            <div class="sidebar-logout">
+                <button class="btn-logout" id="btnLogout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
         </aside>
 
         <!-- Contenedor Principal Derecha -->
         <div class="admin-container">
-            <!-- Topbar Nueva -->
+            <!-- Topbar -->
             <header class="admin-topbar">
-                <div class="admin-page-title">GESTIÓN DE EJEMPLARES</div>
+                <div class="admin-topbar-left">
+                    <div class="admin-breadcrumbs">
+                        <a href="/pages/admin/dashboard.html">Admin</a>
+                        <span class="separator">/</span>
+                        <span class="current">Ejemplares</span>
+                    </div>
+                    <div class="admin-page-title">GESTIÓN DE EJEMPLARES</div>
+                </div>
                 <div class="admin-user">
                     <div class="admin-user-info">
                         <div class="admin-user-details">
@@ -79,7 +86,10 @@
             <div class="admin-section">
                 <div class="section-header">
                     <h2 class="section-title">Catálogo de Ejemplares</h2>
-                    <button class="btn-primary" id="btnNuevo">+ NUEVO EJEMPLAR</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-secondary" id="btnSeed">⚡ Auto-Cargar 14</button>
+                        <button class="btn-primary" id="btnNuevo">+ NUEVO EJEMPLAR</button>
+                    </div>
                 </div>
                 <div id="ejemplaresList">
                     <div class="loading">Cargando ejemplares...</div>

@@ -25,7 +25,7 @@
           <p class="login-subtitle">Panel de Administración</p>
         </div>
 
-        <form class="login-form" id="loginForm">
+        <form class="login-form" id="loginForm" autocomplete="off">
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -34,6 +34,7 @@
               name="email"
               required
               placeholder="tu@email.com"
+              autocomplete="off"
             />
           </div>
 
@@ -45,6 +46,7 @@
               name="password"
               required
               placeholder="Tu contraseña"
+              autocomplete="new-password"
             />
           </div>
 

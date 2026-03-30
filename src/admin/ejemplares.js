@@ -184,6 +184,38 @@ async function init() {
     });
 
     document.getElementById('btnNuevo').addEventListener('click', openNewModal);
+    
+    // Función de AUTO-SEED Temporal
+    document.getElementById('btnSeed').addEventListener('click', async () => {
+        const btn = document.getElementById('btnSeed');
+        const confirmacion = confirm("¿Iniciar la carga de 14 ejemplares de prueba automáticamente?");
+        if (!confirmacion) return;
+        
+        btn.disabled = true;
+        btn.textContent = '⏳ Cargando...';
+        
+        for(let i=1; i<=14; i++) {
+            const data = {
+                nombre: `Gallo de Prueba #${i}`,
+                categoria: 'Pelea',
+                tipo: 'Gallo Indio ' + (i%2===0 ? 'Clásico' : 'Dorado'),
+                peso: +(2.0 + (i * 0.05)).toFixed(2),
+                edad: 1 + (i % 3),
+                estado: 'disponible',
+                precio: 'Consultar',
+                destacado: i <= 3, 
+                orden: i,
+                imagen_url: `/images/galeria${i}.jpg`,
+                pedigree_resumido: 'Línea Genética Pura Registrada',
+                descripcion: 'Ejemplar importado de alta gama preparado para exigencia. Registro histórico impecable.'
+            };
+            await API.ejemplares.create(data);
+        }
+        
+        btn.textContent = '✔️ Carga Completada';
+        setTimeout(() => btn.style.display = 'none', 3000); // Se oculta tras su uso
+        await loadEjemplares();
+    });
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('btnCancelar').addEventListener('click', closeModal);
     document.getElementById('formEjemplar').addEventListener('submit', saveEjemplar);

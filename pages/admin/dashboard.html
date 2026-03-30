@@ -27,11 +27,7 @@
       <aside class="admin-sidebar">
         <div class="sidebar-logo">
           <a href="/">
-            <img
-              src="/images/logo1.png"
-              alt="Gallos Indios"
-              class="sidebar-logo-img"
-            />
+            <img src="/images/logo2.png" alt="Gallos Indios" class="sidebar-logo-img">
             <span>GALLOS INDIOS</span>
           </a>
         </div>
@@ -40,7 +36,6 @@
             <i class="fas fa-th-large"></i>
             <span>Dashboard</span>
           </a>
-
           <div class="nav-group">
             <div class="nav-group-title">CATÁLOGO</div>
             <a href="/pages/admin/ejemplares.html" class="admin-nav-link">
@@ -48,36 +43,38 @@
               <span>Ejemplares</span>
             </a>
           </div>
-
           <div class="nav-group">
             <div class="nav-group-title">GESTIÓN</div>
             <a href="/pages/admin/consultas.html" class="admin-nav-link">
               <i class="fas fa-comment-dots"></i>
               <span>Consultas</span>
             </a>
-            <a
-              href="/pages/admin/usuarios.html"
-              class="admin-nav-link"
-              id="navUsuarios"
-            >
+            <a href="/pages/admin/usuarios.html" class="admin-nav-link" id="navUsuarios">
               <i class="fas fa-user-shield"></i>
               <span>Usuarios</span>
             </a>
           </div>
-
-          <div style="margin-top: auto; padding-top: 2rem">
-            <button class="btn-logout" id="btnLogout" style="width: 100%">
-              CERRAR SESIÓN
-            </button>
-          </div>
         </nav>
+        <div class="sidebar-logout">
+          <button class="btn-logout" id="btnLogout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
       </aside>
 
       <!-- Contenedor Principal Derecha -->
       <div class="admin-container">
-        <!-- Topbar Nueva -->
+        <!-- Topbar -->
         <header class="admin-topbar">
-          <div class="admin-page-title">DASHBOARD CENTRAL</div>
+          <div class="admin-topbar-left">
+            <div class="admin-breadcrumbs">
+              <a href="/pages/admin/dashboard.html">Admin</a>
+              <span class="separator">/</span>
+              <span class="current">Dashboard</span>
+            </div>
+            <div class="admin-page-title">DASHBOARD CENTRAL</div>
+          </div>
           <div class="admin-user">
             <div class="admin-user-info">
               <div class="admin-user-details">
@@ -85,11 +82,7 @@
                 <div class="admin-user-role" id="userRole"></div>
               </div>
               <div class="user-avatar">
-                <img
-                  src="https://ui-avatars.com/api/?name=Admin&background=d4af37&color=000"
-                  alt="Avatar"
-                  id="userAvatar"
-                />
+                <img src="https://ui-avatars.com/api/?name=Admin&background=d4af37&color=000" alt="Avatar" id="userAvatar">
               </div>
             </div>
           </div>
@@ -97,37 +90,41 @@
 
         <!-- Grid de Estadísticas -->
         <div class="stats-grid">
-          <a
-            href="/pages/admin/ejemplares.html"
-            class="stat-card"
-            style="text-decoration: none"
-          >
-            <div class="stat-value" id="statEjemplares">-</div>
-            <div class="stat-label">Ejemplares Totales</div>
+          <a href="/pages/admin/ejemplares.html" class="stat-card">
+            <div class="stat-card-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="stat-card-info">
+              <div class="stat-value" id="statEjemplares">-</div>
+              <div class="stat-label">Ejemplares Totales</div>
+            </div>
           </a>
-          <a
-            href="/pages/admin/ejemplares.html"
-            class="stat-card"
-            style="text-decoration: none"
-          >
-            <div class="stat-value" id="statDisponibles">-</div>
-            <div class="stat-label">Disponibles</div>
+          <a href="/pages/admin/ejemplares.html" class="stat-card">
+            <div class="stat-card-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="stat-card-info">
+              <div class="stat-value" id="statDisponibles">-</div>
+              <div class="stat-label">Disponibles</div>
+            </div>
           </a>
-          <a
-            href="/pages/admin/consultas.html"
-            class="stat-card warning"
-            style="text-decoration: none"
-          >
-            <div class="stat-value" id="statConsultasPendientes">-</div>
-            <div class="stat-label">Consultas Pendientes</div>
+          <a href="/pages/admin/consultas.html" class="stat-card warning">
+            <div class="stat-card-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="stat-card-info">
+              <div class="stat-value" id="statConsultasPendientes">-</div>
+              <div class="stat-label">Consultas Pendientes</div>
+            </div>
           </a>
-          <a
-            href="/pages/admin/consultas.html"
-            class="stat-card danger"
-            style="text-decoration: none"
-          >
-            <div class="stat-value" id="statNoLeidas">-</div>
-            <div class="stat-label">Mensajes Sin Leer</div>
+          <a href="/pages/admin/consultas.html" class="stat-card danger">
+            <div class="stat-card-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="stat-card-info">
+              <div class="stat-value" id="statNoLeidas">-</div>
+              <div class="stat-label">Mensajes Sin Leer</div>
+            </div>
           </a>
         </div>
 

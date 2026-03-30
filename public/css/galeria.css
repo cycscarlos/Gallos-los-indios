@@ -19,34 +19,36 @@
 .filter-btn {
     padding: 0.6rem 1.5rem;
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(212, 175, 55, 0.15);
     color: var(--white);
     font-family: var(--font-body);
     font-weight: 500;
     font-size: var(--text-xs);
     letter-spacing: 0.1em;
     cursor: pointer;
-    transition: var(--transition-med);
+    transition: var(--transition-fast);
     text-transform: uppercase;
     border-radius: 30px;
     backdrop-filter: var(--glass-blur);
 }
 
 .filter-btn:hover {
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(212, 175, 55, 0.08);
     border-color: var(--gold-primary);
+    color: var(--gold-primary);
 }
 
 .filter-btn.active {
-    background: var(--gold-primary);
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
     border-color: var(--gold-primary);
     color: var(--black-deep);
     box-shadow: 0 0 20px var(--gold-glow);
+    font-weight: 600;
 }
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(clamp(200px, 30vw, 350px), 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-md);
 }
 

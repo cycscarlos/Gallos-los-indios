@@ -18,13 +18,15 @@
 
 /* Contact Form */
 .contact-form-wrapper {
-    background: rgba(212, 175, 55, 0.03);
-    border: 1px solid rgba(212, 175, 55, 0.15);
-    padding: var(--space-lg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
 }
 
 .contact-form-wrapper h3 {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     font-size: var(--text-xl);
     color: var(--gold-light);
     margin-bottom: var(--space-xs);
@@ -46,12 +48,18 @@
 .contact-form select {
     width: 100%;
     padding: var(--space-sm);
-    background: rgba(212, 175, 55, 0.05);
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.2);
     color: var(--white);
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-body);
     font-size: var(--text-base);
-    transition: border-color 0.3s;
+    transition: var(--transition-fast);
+    border-radius: var(--radius-sm);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.25);
 }
 
 .contact-form input:focus,
@@ -59,11 +67,14 @@
 .contact-form select:focus {
     outline: none;
     border-color: var(--gold-primary);
+    background: rgba(212, 175, 55, 0.03);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
 .contact-form textarea {
     height: clamp(100px, 20vw, 150px);
-    resize: none;
+    resize: vertical;
+    line-height: 1.6;
 }
 
 .contact-form select {
@@ -89,10 +100,20 @@
 
 .contact-info-item {
     margin-bottom: var(--space-xl);
+    padding: var(--space-lg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+}
+
+.contact-info-item:hover {
+    border-color: rgba(212, 175, 55, 0.25);
 }
 
 .contact-info-item h4 {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     font-size: var(--text-sm);
     color: var(--gold-primary);
     letter-spacing: 3px;
@@ -109,7 +130,7 @@
 .contact-info-item a {
     color: var(--gold-light);
     text-decoration: none;
-    transition: color 0.3s;
+    transition: var(--transition-fast);
 }
 
 .contact-info-item a:hover {
@@ -127,34 +148,41 @@
     align-items: center;
     gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
-    background: rgba(212, 175, 55, 0.05);
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    background: rgba(212, 175, 55, 0.04);
+    border: 1px solid rgba(212, 175, 55, 0.15);
     color: var(--white);
     text-decoration: none;
-    transition: all 0.3s;
+    transition: var(--transition-fast);
+    border-radius: var(--radius-sm);
 }
 
 .contact-direct a:hover {
     background: rgba(212, 175, 55, 0.1);
     border-color: var(--gold-primary);
+    transform: translateX(4px);
 }
 
 .contact-direct span:first-child {
     font-size: var(--text-xl);
 }
 
-/* Map Placeholder */
-.map-placeholder {
-    margin-top: var(--space-2xl);
-    height: clamp(200px, 30vw, 300px);
-    background: rgba(212, 175, 55, 0.05);
-    border: 1px solid rgba(212, 175, 55, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--gray);
-    font-size: var(--text-sm);
-    letter-spacing: 2px;
+/* Map Container */
+.map-container {
+    margin: var(--space-3xl) auto 0;
+    width: clamp(300px, 40%, 600px);
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.1);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    filter: invert(90%) hue-rotate(180deg) brightness(85%) contrast(120%);
 }
 
 /* Form Success */

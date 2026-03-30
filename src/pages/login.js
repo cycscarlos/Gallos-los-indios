@@ -28,6 +28,13 @@ async function init() {
     const btnText = btnLogin.querySelector('.btn-text')
     const btnLoader = btnLogin.querySelector('.btn-loader')
 
+    // Clean form unconditionally to prevent credential leaking
+    if (loginForm) {
+        loginForm.reset();
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+    }
+
     await initAuth()
 
     if (isAuthenticated()) {

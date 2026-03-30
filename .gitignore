@@ -7,6 +7,6 @@ Old_versions/
 screenshots/
 docs/
 scripts/
-
-
 .vercel
+.claude/
+
