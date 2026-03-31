@@ -50,6 +50,10 @@
                 </div>
             </nav>
             <div class="sidebar-logout">
+                <a href="/" class="btn-logout" style="margin-bottom: 10px; text-decoration: none; color: var(--white); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver al Sitio</span>
+                </a>
                 <button class="btn-logout" id="btnLogout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Cerrar Sesión</span>
@@ -84,8 +88,11 @@
 
             <!-- Sección de Contenido -->
             <div class="admin-section">
-                <div class="section-header">
+                <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <h2 class="section-title">Usuarios del Sistema</h2>
+                    <button class="btn-primary" id="btnNuevoUsuario" onclick="window.openNuevoUsuarioModal && window.openNuevoUsuarioModal()">
+                        <i class="fas fa-plus"></i> NUEVO USUARIO
+                    </button>
                 </div>
                 <div id="usuariosList">
                     <div class="loading">Cargando usuarios...</div>
@@ -103,7 +110,7 @@
     <div class="modal" id="modalUsuario">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Editar Usuario</h3>
+                <h3 class="modal-title" id="modalUsuarioTitle">Editar Usuario</h3>
                 <button class="modal-close" id="modalClose">&times;</button>
             </div>
             <form id="formUsuario">
@@ -111,11 +118,15 @@
                 <div class="form-grid">
                     <div class="form-field full-width">
                         <label for="email">Email</label>
-                        <input type="email" id="email" disabled>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-field full-width" id="passwordContainer" style="display: none;">
+                        <label for="password">Contraseña temporal</label>
+                        <input type="password" id="password">
                     </div>
                     <div class="form-field full-width">
                         <label for="nombre">Nombre</label>
-                        <input type="text" id="nombre">
+                        <input type="text" id="nombre" required>
                     </div>
                     <div class="form-field">
                         <label for="rol">Rol</label>

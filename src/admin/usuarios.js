@@ -1,4 +1,4 @@
-import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUser, getCurrentUserData } from '../lib/auth.js'
+import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUser, getCurrentUserData, register } from '../lib/auth.js'
 import { API } from '../lib/api.js'
 
 let usuarios = []
@@ -69,12 +69,35 @@ function renderUsuarios(data) {
     `;
 }
 
+window.openNuevoUsuarioModal = function() {
+    document.getElementById('modalUsuarioTitle').textContent = 'Nuevo Usuario';
+    document.getElementById('formUsuario').reset();
+    document.getElementById('usuarioId').value = '';
+    
+    document.getElementById('email').disabled = false;
+    document.getElementById('passwordContainer').style.display = 'block';
+    document.getElementById('password').required = true;
+    
+    document.getElementById('activo').value = 'true';
+    document.getElementById('rol').value = 'soporte';
+
+    document.getElementById('modalUsuario').classList.add('show');
+};
+
 window.editUsuario = function(id) {
     const usuario = usuarios.find(u => u.id === id);
     if (!usuario) return;
 
+    document.getElementById('modalUsuarioTitle').textContent = 'Editar Usuario';
     document.getElementById('usuarioId').value = usuario.id;
+    
     document.getElementById('email').value = usuario.email;
+    document.getElementById('email').disabled = true; // No editamos el email
+    
+    document.getElementById('passwordContainer').style.display = 'none';
+    document.getElementById('password').required = false;
+    document.getElementById('password').value = '';
+
     document.getElementById('nombre').value = usuario.nombre || '';
     document.getElementById('rol').value = usuario.rol;
     document.getElementById('activo').value = usuario.activo ? 'true' : 'false';
@@ -113,28 +136,68 @@ async function saveUsuario(e) {
     e.preventDefault();
 
     const id = document.getElementById('usuarioId').value;
-    const data = {
-        nombre: document.getElementById('nombre').value,
-        rol: document.getElementById('rol').value,
-        activo: document.getElementById('activo').value === 'true'
-    };
-
     const btnGuardar = document.getElementById('btnGuardar');
+    
     btnGuardar.disabled = true;
     btnGuardar.textContent = 'Guardando...';
 
-    const result = await API.usuarios.update(id, data);
+    if (!id) {
+        // MODO CREACIÓN
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const nombre = document.getElementById('nombre').value;
+        const rol = document.getElementById('rol').value;
 
-    btnGuardar.disabled = false;
-    btnGuardar.textContent = 'Guardar';
+        // Nota: Crear un usuario desde la sesión de un cliente web suele reemplazar la sesión del Admin con el nuevo
+        // a menos que esté habilitada la confirmación por correo, por ende, lo avisamos y hacemos una reconexión forzada.
+        const confirmacion = confirm("Al crear un usuario manualmente, el navegador podría cambiar tu sesión temporalmente. Te pediremos que vuelvas a hacer Login. ¿Continuar?");
+        
+        if (!confirmacion) {
+            btnGuardar.disabled = false;
+            btnGuardar.textContent = 'Guardar';
+            return;
+        }
 
-    if (result.error) {
-        alert('Error al guardar: ' + result.error.message);
-        return;
+        const result = await register(email, password, nombre);
+        if (!result.success) {
+            alert('Error al crear usuario: ' + result.error);
+            btnGuardar.disabled = false;
+            btnGuardar.textContent = 'Guardar';
+            return;
+        }
+
+        // Ya fue creado en Auth. Supabase trigger suele insertarlo automáticamente en "usuarios".
+        // Le actualizamos el ROL si hace falta, aunque el trigger quizás se demore un poquito.
+        setTimeout(async () => {
+            if (result.user?.id) {
+                await API.usuarios.update(result.user.id, { rol: rol });
+            }
+            alert("Usuario creado exitosamente. Por seguridad, por favor vuelve a identificarte.");
+            await logout();
+            window.location.href = '/pages/login.html';
+        }, 1500);
+
+    } else {
+        // MODO EDICIÓN
+        const data = {
+            nombre: document.getElementById('nombre').value,
+            rol: document.getElementById('rol').value,
+            activo: document.getElementById('activo').value === 'true'
+        };
+
+        const result = await API.usuarios.update(id, data);
+
+        btnGuardar.disabled = false;
+        btnGuardar.textContent = 'Guardar';
+
+        if (result.error) {
+            alert('Error al guardar: ' + result.error.message);
+            return;
+        }
+
+        closeModal();
+        await loadUsuarios();
     }
-
-    closeModal();
-    await loadUsuarios();
 }
 
 async function init() {
@@ -172,6 +235,9 @@ async function init() {
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('btnCancelar').addEventListener('click', closeModal);
     document.getElementById('formUsuario').addEventListener('submit', saveUsuario);
+
+    // Exportación explícita para compatibilidad de clics en la cabecera
+    window.openNuevoUsuarioModal = window.openNuevoUsuarioModal;
 
     document.getElementById('modalUsuario').addEventListener('click', (e) => {
         if (e.target.id === 'modalUsuario') {

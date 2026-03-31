@@ -7,20 +7,17 @@ export const API = {
         async getAll(filters = {}) {
             let query = supabase
                 .from('ejemplares')
-                .select('*, usuarios(nombre)')
-                .order('orden', { ascending: true });
+                .select('*')
+                .order('created_at', { ascending: false });
 
             if (filters.estado) {
                 query = query.eq('estado', filters.estado);
             }
-            if (filters.tipo) {
-                query = query.eq('tipo', filters.tipo);
+            if (filters.genero) {
+                query = query.eq('genero', filters.genero);
             }
-            if (filters.categoria) {
-                query = query.eq('categoria', filters.categoria);
-            }
-            if (filters.destacado) {
-                query = query.eq('destacado', true);
+            if (filters.linea) {
+                query = query.eq('linea', filters.linea);
             }
 
             const { data, error } = await query;
@@ -30,24 +27,26 @@ export const API = {
         async getById(id) {
             const { data, error } = await supabase
                 .from('ejemplares')
-                .select('*, usuarios(nombre)')
+                .select('*')
                 .eq('id', id)
                 .single();
             return { data, error };
         },
 
         async create(ejemplar) {
-            const { data: { user } } = await supabase.auth.getUser();
-            
-            const { data, error } = await supabase
-                .from('ejemplares')
-                .insert({
-                    ...ejemplar,
-                    creado_por: user?.id
-                })
-                .select()
-                .single();
-            return { data, error };
+            console.log("Intentando crear ejemplar:", ejemplar);
+            try {
+                const req = supabase.from('ejemplares').insert([ejemplar]).select();
+                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Supabase tardó más de 5 segundos (Posible bloqueo de red/Adblock)")), 5000));
+                
+                const { data, error } = await Promise.race([req, timeout]);
+                if (error) console.error("API Insert Error:", error);
+                
+                return { data, error };
+            } catch (err) {
+                console.error("Excepción en inserción:", err);
+                return { data: null, error: err };
+            }
         },
 
         async update(id, updates) {

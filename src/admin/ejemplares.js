@@ -24,11 +24,11 @@ function renderEjemplares(data) {
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Categoría</th>
-                    <th>Tipo</th>
-                    <th>Peso</th>
+                    <th>Placa</th>
+                    <th>Marca</th>
+                    <th>Género</th>
                     <th>Precio</th>
+                    <th>Línea</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
@@ -36,11 +36,11 @@ function renderEjemplares(data) {
             <tbody>
                 ${data.map(e => `
                     <tr>
-                        <td>${e.nombre}</td>
-                        <td>${e.categoria}</td>
-                        <td>${e.tipo || '-'}</td>
-                        <td>${e.peso ? e.peso + ' kg' : '-'}</td>
+                        <td>${e.placa_id}</td>
+                        <td>${e.marca}</td>
+                        <td>${e.genero || '-'}</td>
                         <td>${e.precio || '-'}</td>
+                        <td>${e.linea || '-'}</td>
                         <td>
                             <span class="status-badge ${e.estado}">${e.estado}</span>
                         </td>
@@ -61,18 +61,21 @@ window.editEjemplar = function(id) {
 
     document.getElementById('modalTitle').textContent = 'Editar Ejemplar';
     document.getElementById('ejemplarId').value = ejemplar.id;
-    document.getElementById('nombre').value = ejemplar.nombre;
-    document.getElementById('categoria').value = ejemplar.categoria;
-    document.getElementById('tipo').value = ejemplar.tipo || '';
-    document.getElementById('peso').value = ejemplar.peso || '';
-    document.getElementById('edad').value = ejemplar.edad || '';
-    document.getElementById('estado').value = ejemplar.estado;
+    document.getElementById('placa_id').value = ejemplar.placa_id;
+    document.getElementById('marca').value = ejemplar.marca;
+    document.getElementById('genero').value = ejemplar.genero;
+    document.getElementById('linea').value = ejemplar.linea || '';
     document.getElementById('precio').value = ejemplar.precio || '';
-    document.getElementById('destacado').value = ejemplar.destacado ? 'true' : 'false';
-    document.getElementById('orden').value = ejemplar.orden || 0;
+    document.getElementById('fecha_nacimiento').value = ejemplar.fecha_nacimiento || '';
+    document.getElementById('padre_id').value = ejemplar.padre_id || '';
+    document.getElementById('madre_id').value = ejemplar.madre_id || '';
+    document.getElementById('abuelo_paterno_id').value = ejemplar.abuelo_paterno_id || '';
+    document.getElementById('abuela_paterna_id').value = ejemplar.abuela_paterna_id || '';
+    document.getElementById('abuelo_materno_id').value = ejemplar.abuelo_materno_id || '';
+    document.getElementById('abuela_materna_id').value = ejemplar.abuela_materna_id || '';
+    document.getElementById('estado').value = ejemplar.estado || 'disponible';
+    document.getElementById('observaciones').value = ejemplar.observaciones || '';
     document.getElementById('imagen_url').value = ejemplar.imagen_url || '';
-    document.getElementById('pedigree_resumido').value = ejemplar.pedigree_resumido || '';
-    document.getElementById('descripcion').value = ejemplar.descripcion || '';
 
     document.getElementById('modalEjemplar').classList.add('show');
 };
@@ -92,7 +95,6 @@ function openNewModal() {
     document.getElementById('modalTitle').textContent = 'Nuevo Ejemplar';
     document.getElementById('formEjemplar').reset();
     document.getElementById('ejemplarId').value = '';
-    document.getElementById('orden').value = '0';
     document.getElementById('estado').value = 'disponible';
     document.getElementById('modalEjemplar').classList.add('show');
 }
@@ -117,18 +119,21 @@ async function saveEjemplar(e) {
 
     const id = document.getElementById('ejemplarId').value;
     const data = {
-        nombre: document.getElementById('nombre').value,
-        categoria: document.getElementById('categoria').value,
-        tipo: document.getElementById('tipo').value || null,
-        peso: document.getElementById('peso').value ? parseFloat(document.getElementById('peso').value) : null,
-        edad: document.getElementById('edad').value ? parseInt(document.getElementById('edad').value) : null,
-        estado: document.getElementById('estado').value,
+        placa_id: document.getElementById('placa_id').value,
+        marca: document.getElementById('marca').value,
+        genero: document.getElementById('genero').value,
+        linea: document.getElementById('linea').value || null,
         precio: document.getElementById('precio').value || null,
-        destacado: document.getElementById('destacado').value === 'true',
-        orden: parseInt(document.getElementById('orden').value) || 0,
-        imagen_url: document.getElementById('imagen_url').value || null,
-        pedigree_resumido: document.getElementById('pedigree_resumido').value || null,
-        descripcion: document.getElementById('descripcion').value || null
+        fecha_nacimiento: document.getElementById('fecha_nacimiento').value || null,
+        padre_id: document.getElementById('padre_id').value || null,
+        madre_id: document.getElementById('madre_id').value || null,
+        abuelo_paterno_id: document.getElementById('abuelo_paterno_id').value || null,
+        abuela_paterna_id: document.getElementById('abuela_paterna_id').value || null,
+        abuelo_materno_id: document.getElementById('abuelo_materno_id').value || null,
+        abuela_materna_id: document.getElementById('abuela_materna_id').value || null,
+        estado: document.getElementById('estado').value,
+        observaciones: document.getElementById('observaciones').value || null,
+        imagen_url: document.getElementById('imagen_url').value || null
     };
 
     const btnGuardar = document.getElementById('btnGuardar');
@@ -194,26 +199,37 @@ async function init() {
         btn.disabled = true;
         btn.textContent = '⏳ Cargando...';
         
-        for(let i=1; i<=14; i++) {
-            const data = {
-                nombre: `Gallo de Prueba #${i}`,
-                categoria: 'Pelea',
-                tipo: 'Gallo Indio ' + (i%2===0 ? 'Clásico' : 'Dorado'),
-                peso: +(2.0 + (i * 0.05)).toFixed(2),
-                edad: 1 + (i % 3),
-                estado: 'disponible',
-                precio: 'Consultar',
-                destacado: i <= 3, 
-                orden: i,
-                imagen_url: `/images/galeria${i}.jpg`,
-                pedigree_resumido: 'Línea Genética Pura Registrada',
-                descripcion: 'Ejemplar importado de alta gama preparado para exigencia. Registro histórico impecable.'
-            };
-            await API.ejemplares.create(data);
+        let errores = 0;
+        try {
+            for(let i=1; i<=14; i++) {
+                const data = {
+                    placa_id: `MOCK-${Math.floor(Math.random()*1000)}-${i}`,
+                    marca: `Gallo Test #${i}`,
+                    genero: i % 2 === 0 ? 'Macho' : 'Hembra',
+                    linea: 'Hatch Experimental',
+                    precio: '100',
+                    estado: 'disponible',
+                    observaciones: 'Auto generado para pruebas visuales.',
+                    imagen_url: `/images/galeria${i}.jpg`
+                };
+                const { error } = await API.ejemplares.create(data);
+                if (error) {
+                    console.error("Error DB al crear gallo:", error);
+                    errores++;
+                }
+            }
+            if (errores > 0) {
+                alert(`Carga finalizada pero hubo ${errores} errores. Presiona F12 y mira la consola.`);
+            } else {
+                alert("¡Los 14 ejemplares fueron cargados con éxito!");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Excepción de código (mira F12 Console): " + err.message);
         }
-        
-        btn.textContent = '✔️ Carga Completada';
-        setTimeout(() => btn.style.display = 'none', 3000); // Se oculta tras su uso
+
+        btn.textContent = '✔️ Operación Terminada';
+        setTimeout(() => btn.style.display = 'none', 3000);
         await loadEjemplares();
     });
     document.getElementById('modalClose').addEventListener('click', closeModal);

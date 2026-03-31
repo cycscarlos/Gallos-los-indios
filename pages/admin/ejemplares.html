@@ -50,6 +50,10 @@
                 </div>
             </nav>
             <div class="sidebar-logout">
+                <a href="/" class="btn-logout" style="margin-bottom: 10px; text-decoration: none; color: var(--white); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver al Sitio</span>
+                </a>
                 <button class="btn-logout" id="btnLogout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Cerrar Sesión</span>
@@ -114,29 +118,56 @@
                 <input type="hidden" id="ejemplarId">
                 <div class="form-grid">
                     <div class="form-field">
-                        <label for="nombre">Nombre *</label>
-                        <input type="text" id="nombre" required>
+                        <label for="placa_id">Placa ID *</label>
+                        <input type="text" id="placa_id" required placeholder="Ej: G-001">
                     </div>
                     <div class="form-field">
-                        <label for="categoria">Categoría *</label>
-                        <select id="categoria" required>
+                        <label for="marca">Marca *</label>
+                        <input type="text" id="marca" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="genero">Género *</label>
+                        <select id="genero" required>
                             <option value="">Seleccionar...</option>
-                            <option value="Pelea">Pelea</option>
-                            <option value="Reproducción">Reproducción</option>
-                            <option value="Exhibición">Exhibición</option>
+                            <option value="Macho">Macho</option>
+                            <option value="Hembra">Hembra</option>
                         </select>
                     </div>
                     <div class="form-field">
-                        <label for="tipo">Tipo</label>
-                        <input type="text" id="tipo" placeholder="Ej: Gallo Americano">
+                        <label for="linea">Línea (Genética)</label>
+                        <input type="text" id="linea" placeholder="Ej: Hatch / Kelso">
                     </div>
                     <div class="form-field">
-                        <label for="peso">Peso (kg)</label>
-                        <input type="number" id="peso" step="0.01" min="0">
+                        <label for="precio">Precio</label>
+                        <input type="text" id="precio" placeholder="Ej: $150 o CONSULTAR">
                     </div>
                     <div class="form-field">
-                        <label for="edad">Edad (años)</label>
-                        <input type="number" id="edad" min="0">
+                        <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                        <input type="date" id="fecha_nacimiento">
+                    </div>
+                    <div class="form-field">
+                        <label for="padre_id">ID del Padre (UUID)</label>
+                        <input type="text" id="padre_id" placeholder="Opcional">
+                    </div>
+                    <div class="form-field">
+                        <label for="madre_id">ID de la Madre (Placa)</label>
+                        <input type="text" id="madre_id" placeholder="Opcional — Placa ID">
+                    </div>
+                    <div class="form-field">
+                        <label for="abuelo_paterno_id">ID Abuelo Paterno (Placa)</label>
+                        <input type="text" id="abuelo_paterno_id" placeholder="Opcional — Placa ID">
+                    </div>
+                    <div class="form-field">
+                        <label for="abuela_paterna_id">ID Abuela Paterna (Placa)</label>
+                        <input type="text" id="abuela_paterna_id" placeholder="Opcional — Placa ID">
+                    </div>
+                    <div class="form-field">
+                        <label for="abuelo_materno_id">ID Abuelo Materno (Placa)</label>
+                        <input type="text" id="abuelo_materno_id" placeholder="Opcional — Placa ID">
+                    </div>
+                    <div class="form-field">
+                        <label for="abuela_materna_id">ID Abuela Materna (Placa)</label>
+                        <input type="text" id="abuela_materna_id" placeholder="Opcional — Placa ID">
                     </div>
                     <div class="form-field">
                         <label for="estado">Estado</label>
@@ -146,32 +177,13 @@
                             <option value="vendido">Vendido</option>
                         </select>
                     </div>
-                    <div class="form-field">
-                        <label for="precio">Precio</label>
-                        <input type="text" id="precio" placeholder="Ej: $150 o CONSULTAR">
-                    </div>
-                    <div class="form-field">
-                        <label for="destacado">Destacado</label>
-                        <select id="destacado">
-                            <option value="false">No</option>
-                            <option value="true">Sí</option>
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label for="orden">Orden</label>
-                        <input type="number" id="orden" min="0" value="0">
-                    </div>
                     <div class="form-field full-width">
                         <label for="imagen_url">URL de Imagen</label>
                         <input type="url" id="imagen_url" placeholder="https://...">
                     </div>
                     <div class="form-field full-width">
-                        <label for="pedigree_resumido">Pedigree Resumido</label>
-                        <input type="text" id="pedigree_resumido" placeholder="Línea de sangre breve">
-                    </div>
-                    <div class="form-field full-width">
-                        <label for="descripcion">Descripción</label>
-                        <textarea id="descripcion"></textarea>
+                        <label for="observaciones">Observaciones</label>
+                        <textarea id="observaciones" placeholder="Detalles de este ejemplar..."></textarea>
                     </div>
                 </div>
                 <div class="form-actions">

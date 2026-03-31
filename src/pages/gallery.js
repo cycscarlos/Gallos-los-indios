@@ -21,29 +21,39 @@ async function fetchEjemplares() {
         return [];
     }
     
-    // Mapeo selectivo para compatibilidad con la UI original
     return data.map(item => ({
         id: item.id,
-        name: item.nombre,
-        race: item.tipo, // 'indio', 'americano', 'espanol'
-        raceLabel: `Gallo ${item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1)}`,
+        placa_id: item.placa_id,
+        marca: item.marca,
+        genero: item.genero,
+        linea: item.linea || '-',
+        precio: item.precio || 'CONSULTAR',
+        estado: item.estado || 'disponible',
+        fecha_nacimiento: item.fecha_nacimiento || null,
+        padre_id: item.padre_id || null,
+        madre_id: item.madre_id || null,
+        abuelo_paterno_id: item.abuelo_paterno_id || null,
+        abuela_paterna_id: item.abuela_paterna_id || null,
+        abuelo_materno_id: item.abuelo_materno_id || null,
+        abuela_materna_id: item.abuela_materna_id || null,
         image: item.imagen_url || '/images/favicon.png',
-        pedigreeShort: item.pedigree_resumido || 'Pedigree en trámite',
-        price: item.precio || 'CONSULTAR',
-        pedigreeFull: item.pedigree_completo || {
-            father: item.padre || '-',
-            mother: item.madre || '-',
-            paternalGrandfather: item.abuelo_paterno || '-',
-            paternalGrandmother: item.abuela_paterna || '-',
-            maternalGrandfather: item.abuelo_materno || '-',
-            maternalGrandmother: item.abuela_materna || '-'
-        },
-        characteristics: `${item.edad || '?'} años - ${item.peso || '?'} kg`
+        observaciones: item.observaciones || '',
+        // Compatibilidad filtros
+        race: item.genero,
     }));
 }
 
 /**
- * Renderiza la galería
+ * Formatea la fecha de nacimiento de forma legible
+ */
+function formatFecha(dateStr) {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+/**
+ * Renderiza la galería con Flip Cards
  */
 function renderGallery(filter = 'all', page = 1) {
     const grid = document.getElementById('galleryGrid');
@@ -65,12 +75,53 @@ function renderGallery(filter = 'all', page = 1) {
         grid.innerHTML = '<div class="empty-state">No hay ejemplares en esta categoría.</div>';
     } else {
         grid.innerHTML = pageData.map(item => `
-            <div class="gallery-item" onclick="window.openGalleryModal(${item.id})">
-                <img src="${item.image}" alt="${item.name}" class="gallery-image">
-                <div class="gallery-info">
-                    <div class="gallery-name">${item.name}</div>
-                    <div class="gallery-pedigree">${item.pedigreeShort}</div>
-                    <div class="gallery-price">${item.price}</div>
+            <div class="gallery-item">
+                <div class="flip-card-inner">
+
+                    <!-- CARA FRONTAL -->
+                    <div class="flip-card-front">
+                        <img src="${item.image}" alt="${item.placa_id} - ${item.marca}" class="gallery-image">
+                        <div class="gallery-info">
+                            <div class="gallery-name">${item.placa_id} · ${item.marca}</div>
+                            <div class="gallery-pedigree">${item.linea}</div>
+                            <div class="gallery-price">${item.precio}</div>
+                        </div>
+                    </div>
+
+                    <!-- CARA TRASERA -->
+                    <div class="flip-card-back">
+                        <div class="flip-back-badge">🐓 Ficha del Ejemplar</div>
+                        <div class="flip-back-fields">
+                            <div class="flip-field">
+                                <span class="flip-field-label">Placa</span>
+                                <span class="flip-field-value gold">${item.placa_id}</span>
+                            </div>
+                            <div class="flip-field">
+                                <span class="flip-field-label">Marca</span>
+                                <span class="flip-field-value">${item.marca}</span>
+                            </div>
+                            <div class="flip-field">
+                                <span class="flip-field-label">Nacimiento</span>
+                                <span class="flip-field-value">${formatFecha(item.fecha_nacimiento)}</span>
+                            </div>
+                            <div class="flip-field">
+                                <span class="flip-field-label">Línea</span>
+                                <span class="flip-field-value">${item.linea}</span>
+                            </div>
+                            <div class="flip-field">
+                                <span class="flip-field-label">Precio</span>
+                                <span class="flip-field-value gold">${item.precio}</span>
+                            </div>
+                            <div class="flip-field">
+                                <span class="flip-field-label">Estado</span>
+                                <span class="flip-estado ${item.estado}">${item.estado}</span>
+                            </div>
+                        </div>
+                        <a href="/pages/linaje.html?id=${item.id}" class="btn-linaje">
+                            🌿 Ver Linaje
+                        </a>
+                    </div>
+
                 </div>
             </div>
         `).join('');
@@ -85,7 +136,6 @@ function updatePagination(totalItems, totalPages) {
 
     let html = '';
 
-    // Next/Prev buttons logic
     html += `<button class="pagination-btn" onclick="window.changeGalleryPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M15 18l-6-6 6-6"/>
@@ -135,9 +185,11 @@ function setupFilters() {
     });
 }
 
-// Global exports for simple HTML integration
+// Global exports
 window.changeGalleryPage = (page) => {
-    let filteredData = currentFilter === 'all' ? allEjemplares : allEjemplares.filter(item => item.race && item.race.toLowerCase() === currentFilter.toLowerCase());
+    let filteredData = currentFilter === 'all' 
+        ? allEjemplares 
+        : allEjemplares.filter(item => item.race && item.race.toLowerCase() === currentFilter.toLowerCase());
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
     if (page >= 1 && page <= totalPages) {
         renderGallery(currentFilter, page);
@@ -145,77 +197,4 @@ window.changeGalleryPage = (page) => {
     }
 };
 
-window.openGalleryModal = (id) => {
-    const item = allEjemplares.find(g => g.id === id);
-    if (!item) return;
-    
-    const modal = document.getElementById('modalOverlay');
-    const content = document.getElementById('modalContent');
-    
-    content.innerHTML = `
-        <div class="modal-image-container">
-            <img src="${item.image}" alt="${item.name}" class="modal-image">
-        </div>
-        <div class="modal-details">
-            <h2 class="modal-title">${item.name}</h2>
-            <div class="modal-subtitle">${item.raceLabel} - ${item.characteristics}</div>
-            
-            <div class="modal-section-title">ÁRBOL GENEALÓGICO</div>
-            <div class="pedigree-tree">
-                <div class="pedigree-row">
-                    <span class="pedigree-label">PADRE</span>
-                    <span class="pedigree-name">${item.pedigreeFull.father}</span>
-                </div>
-                <div class="pedigree-generation">
-                    <div class="pedigree-grandparent">
-                        <span class="pedigree-label" style="width:40px">AB</span>
-                        <span class="pedigree-name">${item.pedigreeFull.paternalGrandfather}</span>
-                    </div>
-                    <div class="pedigree-grandparent">
-                        <span class="pedigree-label" style="width:40px">AM</span>
-                        <span class="pedigree-name">${item.pedigreeFull.paternalGrandmother}</span>
-                    </div>
-                </div>
-                <div class="pedigree-row">
-                    <span class="pedigree-label">MADRE</span>
-                    <span class="pedigree-name">${item.pedigreeFull.mother}</span>
-                </div>
-                <div class="pedigree-generation">
-                    <div class="pedigree-grandparent">
-                        <span class="pedigree-label" style="width:40px">AB</span>
-                        <span class="pedigree-name">${item.pedigreeFull.maternalGrandfather}</span>
-                    </div>
-                    <div class="pedigree-grandparent">
-                        <span class="pedigree-label" style="width:40px">AM</span>
-                        <span class="pedigree-name">${item.pedigreeFull.maternalGrandmother}</span>
-                    </div>
-                </div>
-            </div>
-            
-            <a href="mailto:info@galloslosindios.com?subject=Consulta: ${item.name}" class="modal-cta">SOLICITAR INFORMACIÓN</a>
-        </div>
-    `;
-    
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    if (window.playClickSound) window.playClickSound();
-};
-
-window.closeGalleryModal = () => {
-    const modal = document.getElementById('modalOverlay');
-    if (modal) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-};
-
 document.addEventListener('DOMContentLoaded', init);
-
-// Listeners adicionales
-document.getElementById('modalOverlay')?.addEventListener('click', function(e) {
-    if (e.target === this) window.closeGalleryModal();
-});
-
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') window.closeGalleryModal();
-});

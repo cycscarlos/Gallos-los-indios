@@ -30,6 +30,7 @@ export default defineConfig({
         contacto: resolve(__dirname, 'pages/contacto.html'),
         fin: resolve(__dirname, 'pages/fin.html'),
         login: resolve(__dirname, 'pages/login.html'),
+        linaje: resolve(__dirname, 'pages/linaje.html'),
         // Panel de administración
         dashboard: resolve(__dirname, 'pages/admin/dashboard.html'),
         ejemplares: resolve(__dirname, 'pages/admin/ejemplares.html'),
