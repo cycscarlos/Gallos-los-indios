@@ -101,6 +101,7 @@
             rx: 16; ry: 16;
             filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .tree-node-group:hover .tree-node-rect {
@@ -229,36 +230,38 @@
         #hover-tooltip {
             position: absolute;
             z-index: 400;
-            background: rgba(15,15,15,0.95);
-            border: 1px solid rgba(212,175,55,0.4);
-            border-radius: 10px;
-            padding: 1rem;
-            width: 260px;
+            background: rgba(12,12,12,0.97);
+            border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+            width: 190px;
             pointer-events: none;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.2s, transform 0.2s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            transform: translateY(10px);
+            transition: opacity 0.15s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
         }
         #hover-tooltip.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
         }
         .tooltip-header {
             font-family: 'Cinzel', serif;
             color: var(--gold-primary);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(212,175,55,0.2);
-            padding-bottom: 0.25rem;
+            font-size: 0.72rem;
+            margin-bottom: 0.35rem;
+            border-bottom: 1px solid rgba(212,175,55,0.15);
+            padding-bottom: 0.2rem;
+            letter-spacing: 0.04em;
         }
         .tooltip-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 4px;
+            gap: 2px;
         }
+        .tooltip-grid .detail-field-label { font-size: 0.46rem; }
+        .tooltip-grid .detail-field-value { font-size: 0.68rem; }
+        .tooltip-grid .d-estado { font-size: 0.5rem; padding: 1px 6px; }
     </style>
 </head>
 <body>

@@ -248,14 +248,13 @@ function renderD3Tree(ejemplar) {
 
     // ─── EVENTOS DE HOVER (Tooltip) ───
     const tooltip = document.getElementById('hover-tooltip');
-    
-    nodes.filter(d => d.depth === 0)
-        .select('.tree-node-rect')
-        .style('cursor', 'pointer')
-        .on('mouseover', (event) => {
+    const ejemplarNode = nodes.filter(d => d.depth === 0);
+
+    ejemplarNode
+        .on('mouseover', function (event, d) {
             const e = ejemplar;
             tooltip.innerHTML = `
-                <div class="tooltip-header">${e.placa_id}</div>
+                <div class="tooltip-header">🐓 ${e.placa_id}</div>
                 <div class="tooltip-grid">
                     <div class="detail-field">
                         <span class="detail-field-label">Marca</span>
@@ -271,7 +270,7 @@ function renderD3Tree(ejemplar) {
                     </div>
                     <div class="detail-field">
                         <span class="detail-field-label">Precio</span>
-                        <span class="detail-field-value gold">${e.precio || 'CONSULAR'}</span>
+                        <span class="detail-field-value gold">${e.precio || 'CONSULTAR'}</span>
                     </div>
                     <div class="detail-field">
                         <span class="detail-field-label">Estado</span>
@@ -279,13 +278,35 @@ function renderD3Tree(ejemplar) {
                     </div>
                 </div>
             `;
+
+            // Medir dimensiones reales del tooltip
+            const tipW = tooltip.offsetWidth || 190;
+            const tipH = tooltip.offsetHeight || 120;
+
+            // Esquina superior-izquierda del nodo
+            const nodeRect = this.getBoundingClientRect();
+
+            // Offset a 30° desde la esquina sup-izq del nodo (ángulo desde horizontal)
+            const gap = 20;
+            const dx = -gap * Math.cos(Math.PI / 6);  // ~-17px (izquierda)
+            const dy = -gap * Math.sin(Math.PI / 6);  // ~-10px (arriba)
+
+            // Punto de ancla: esquina sup-izq del nodo + offset
+            const anchorX = nodeRect.left + dx;
+            const anchorY = nodeRect.top + dy;
+
+            // Esquina inferior-derecha del tooltip en el punto de ancla
+            let tipLeft = anchorX - tipW;
+            let tipTop = anchorY - tipH;
+
+            // Clamp dentro del viewport
+            tipLeft = Math.max(8, Math.min(tipLeft, window.innerWidth - tipW - 8));
+            tipTop = Math.max(8, Math.min(tipTop, window.innerHeight - tipH - 8));
+
+            tooltip.style.left = tipLeft + 'px';
+            tooltip.style.top = tipTop + 'px';
+
             tooltip.classList.add('show');
-        })
-        .on('mousemove', (event) => {
-            const x = event.pageX;
-            const y = event.pageY;
-            tooltip.style.left = (x + 15) + 'px';
-            tooltip.style.top = (y + 15) + 'px';
         })
         .on('mouseout', () => {
             tooltip.classList.remove('show');
