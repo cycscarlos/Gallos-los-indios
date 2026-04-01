@@ -79,7 +79,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: var(--bp-md)) {
     .thankyou-section {
         padding: var(--space-lg);
     }
@@ -100,7 +100,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--bp-sm)) {
     .thankyou-title {
         font-size: var(--text-2xl);
     }

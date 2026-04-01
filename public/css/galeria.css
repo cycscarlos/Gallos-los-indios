@@ -52,100 +52,7 @@
     gap: var(--space-md);
 }
 
-.gallery-item {
-    position: relative;
-    aspect-ratio: 1/1;
-    overflow: hidden;
-    border: 1px solid rgba(212, 175, 55, 0.15);
-    cursor: pointer;
-    transition: all 0.4s ease;
-}
-
-.gallery-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, transparent 40%, rgba(10,10,10,0.85) 100%);
-    z-index: 1;
-    opacity: 0.7;
-    transition: opacity 0.4s ease;
-}
-
-.gallery-item:hover {
-    transform: translateY(-5px);
-    border-color: var(--gold-primary);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 20px rgba(212, 175, 55, 0.15);
-}
-
-.gallery-item:hover::before {
-    opacity: 0.9;
-}
-
-.gallery-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.gallery-item:hover .gallery-image {
-    transform: scale(1.08);
-}
-
-.gallery-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: var(--space-sm);
-    z-index: 2;
-    transform: translateY(5px);
-    transition: transform 0.4s ease;
-}
-
-.gallery-item:hover .gallery-info {
-    transform: translateY(0);
-}
-
-.gallery-name {
-    font-family: var(--font-heading);
-    font-size: var(--text-base);
-    font-weight: 700;
-    color: var(--gold-primary);
-    margin-bottom: 4px;
-    letter-spacing: 0.05em;
-}
-
-.gallery-pedigree {
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    color: var(--white);
-    opacity: 0.7;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.gallery-price {
-    font-family: 'Cinzel', serif;
-    font-size: var(--text-xs);
-    color: var(--gold-primary);
-    margin-top: var(--space-xs);
-    opacity: 0;
-    transform: translateY(5px);
-    transition: all 0.4s ease;
-}
-
-.gallery-item:hover .gallery-price {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Pagination */
+/* ─── FLIP CARD SYSTEM ─────────────────────── */
 .gallery-pagination {
     display: flex;
     justify-content: center;
@@ -411,7 +318,7 @@
     gap: var(--space-md);
 }
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: var(--bp-md)) {
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-sm);
@@ -421,7 +328,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--bp-sm)) {
     .gallery-grid {
         grid-template-columns: 1fr 1fr;
         gap: var(--space-xs);

@@ -110,7 +110,7 @@
     opacity: 0.3;
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--bp-md)) {
     .process-steps::before {
         display: none;
     }
@@ -222,7 +222,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: var(--bp-md)) {
     .services-grid {
         grid-template-columns: 1fr;
     }
@@ -236,7 +236,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--bp-sm)) {
     .service-card {
         padding: var(--space-md);
     }

@@ -208,7 +208,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: var(--bp-md)) {
     .contact-container {
         grid-template-columns: 1fr;
     }
@@ -222,7 +222,7 @@
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--bp-sm)) {
     .contact-info-wrapper {
         padding: var(--space-sm) 0;
     }
