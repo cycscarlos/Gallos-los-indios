@@ -15,7 +15,13 @@ serve(async (req) => {
       throw new Error('No record found in payload')
     }
 
-    const { nombre, email, mensaje, telefono, fecha } = record
+    const { nombre, email, mensaje, telefono } = record
+
+    const fechaFormateada = new Date().toLocaleString('es-ES', {
+      dateStyle: 'long',
+      timeStyle: 'short',
+      timeZone: 'America/Caracas'
+    })
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -32,7 +38,7 @@ serve(async (req) => {
           <p><strong>Nombre:</strong> ${nombre}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Teléfono:</strong> ${telefono || 'No proporcionado'}</p>
-          <p><strong>Fecha:</strong> ${new Date(fecha).toLocaleString()}</p>
+          <p><strong>Fecha:</strong> ${fechaFormateada}</p>
           <hr />
           <p><strong>Mensaje:</strong></p>
           <p>${mensaje}</p>

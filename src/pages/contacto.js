@@ -22,8 +22,6 @@ async function init() {
         const nombre = formData.get('nombre')?.trim() || contactForm.querySelector('input[placeholder="Tu nombre"]')?.value?.trim()
         const telefono = formData.get('telefono')?.trim() || contactForm.querySelector('input[placeholder="Tu teléfono"]')?.value?.trim()
         const email = formData.get('email')?.trim() || contactForm.querySelector('input[type="email"]')?.value?.trim()
-        const temaSelect = contactForm.querySelector('select')
-        const tema = temaSelect?.value || ''
         const mensaje = formData.get('mensaje')?.trim() || contactForm.querySelector('textarea')?.value?.trim()
 
         if (!nombre || !email || !mensaje) {
@@ -40,8 +38,7 @@ async function init() {
             nombre,
             email,
             telefono: telefono || '',
-            mensaje,
-            tema: tema || 'otro'
+            mensaje
         }
 
         const result = await API.consultas.create(consulta)

@@ -4,6 +4,7 @@ import { setupSoundToggle, playClickSound, initAudio } from '../lib/audio.js';
 function setupTabs() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const grids = document.querySelectorAll('.installations-grid');
+    const infoBanner = document.getElementById('infoBanner');
 
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -20,6 +21,10 @@ function setupTabs() {
             const targetGrid = document.getElementById(tabId);
             if (targetGrid) {
                 targetGrid.classList.add('active');
+            }
+
+            if (infoBanner) {
+                infoBanner.style.display = tabId === 'facilities' ? 'grid' : 'none';
             }
 
             initAudio();

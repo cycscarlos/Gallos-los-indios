@@ -1,19 +1,20 @@
 /* ========================================
    CONTACTO.HTML - Contact Page
-   Fully responsive with dynamic spacing
    ======================================== */
 
 .contact-container {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-xl);
     margin-top: var(--space-2xl);
 }
 
-@media (min-width: 900px) {
-    .contact-container {
-        grid-template-columns: 1fr 1fr;
-    }
+/* Columns */
+.contact-column-left,
+.contact-column-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
 }
 
 /* Contact Form */
@@ -23,6 +24,7 @@
     border: 1px solid var(--glass-border);
     padding: var(--space-xl);
     border-radius: var(--radius-lg);
+    margin-bottom: var(--space-xl);
 }
 
 .contact-form-wrapper h3 {
@@ -72,7 +74,7 @@
 }
 
 .contact-form textarea {
-    height: clamp(100px, 20vw, 150px);
+    height: clamp(80px, 15vw, 120px);
     resize: vertical;
     line-height: 1.6;
 }
@@ -81,31 +83,20 @@
     cursor: pointer;
 }
 
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-md);
-}
-
-@media (min-width: 480px) {
-    .form-row {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-/* Contact Info */
-.contact-info-wrapper {
-    padding: var(--space-md) 0;
-}
-
+/* Contact Info Items */
 .contact-info-item {
-    margin-bottom: var(--space-xl);
     padding: var(--space-lg);
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     transition: var(--transition-fast);
+    margin-bottom: var(--space-lg);
+}
+
+.contact-column-left .contact-info-item:last-child,
+.contact-column-right .contact-info-item:last-child {
+    margin-bottom: 0;
 }
 
 .contact-info-item:hover {
@@ -212,22 +203,18 @@
     .contact-container {
         grid-template-columns: 1fr;
     }
-    
+
     .contact-form-wrapper {
         padding: var(--space-md);
     }
-    
+
     .contact-direct a {
         padding: var(--space-xs) var(--space-sm);
     }
 }
 
 @media (max-width: var(--bp-sm)) {
-    .contact-info-wrapper {
-        padding: var(--space-sm) 0;
-    }
-    
     .contact-info-item {
-        margin-bottom: var(--space-lg);
+        padding: var(--space-md);
     }
 }

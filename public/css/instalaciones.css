@@ -50,8 +50,8 @@
 }
 
 .installations-grid {
-    grid-template-columns: repeat(auto-fill, minmax(clamp(250px, 35vw, 380px), 1fr));
-    gap: var(--space-md);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
 }
 
 .installation-item {
@@ -256,15 +256,15 @@
 /* Responsive */
 @media (max-width: var(--bp-md)) {
     .installations-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
     
     .installation-item {
-        aspect-ratio: 16/9;
+        aspect-ratio: 4/3;
     }
     
     .recognition-item {
-        aspect-ratio: 3/2;
+    aspect-ratio: 4/3;
     }
     
     .installations-tabs {
@@ -283,6 +283,11 @@
 }
 
 @media (max-width: var(--bp-sm)) {
+    .installations-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-xs);
+    }
+    
     .tab-btn {
         padding: var(--space-xs) var(--space-sm);
         font-size: var(--text-xs);

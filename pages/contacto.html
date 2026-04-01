@@ -46,50 +46,50 @@
 
       <div class="page-content">
         <div class="contact-container">
-          <!-- Contact Form -->
-          <div class="contact-form-wrapper">
-            <h3>ENVÍANOS UN MENSAJE</h3>
-            <p>Responderemos a tu consulta en menos de 24 horas</p>
+          <div class="contact-column-left">
+            <div class="contact-form-wrapper">
+              <h3>ENVÍANOS UN MENSAJE</h3>
+              <p>Responderemos a tu consulta en menos de 24 horas</p>
 
-            <form class="contact-form" id="contactForm">
-              <div class="form-group">
-                  <input type="text" name="nombre" placeholder="Tu nombre" required />
+              <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <input type="text" name="nombre" placeholder="Tu nombre" required />
+                  </div>
+                  <div class="form-group">
+                    <input type="tel" name="telefono" placeholder="Tu teléfono" />
+                  </div>
+                <div class="form-group">
+                  <input type="email" name="email" placeholder="Tu email" required />
                 </div>
                 <div class="form-group">
-                  <input type="tel" name="telefono" placeholder="Tu teléfono" />
+                  <textarea
+                    name="mensaje"
+                    placeholder="Tu mensaje - Consulta sobre disponibilidad, líneas de sangre, precios..."
+                  ></textarea>
                 </div>
-              <div class="form-group">
-                <input type="email" name="email" placeholder="Tu email" required />
-              </div>
-              <div class="form-group">
-                <select name="tema">
-                  <option value="">Selecciona un tema</option>
-                  <option value="venta">Venta de gallos</option>
-                  <option value="criadero">Criadero / Reproducción</option>
-                  <option value="asesoria">Asesoría</option>
-                  <option value="otro">Otro</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <textarea
-                  name="mensaje"
-                  placeholder="Tu mensaje - Consulta sobre disponibilidad, líneas de sangre, precios..."
-                ></textarea>
-              </div>
-              <button type="submit" class="btn-primary">ENVIAR MENSAJE</button>
-            </form>
+                <button type="submit" class="btn-primary">ENVIAR MENSAJE</button>
+              </form>
 
-            <div class="form-success" id="formSuccess">
-              <h4>¡MENSAJE ENVIADO!</h4>
+              <div class="form-success" id="formSuccess">
+                <h4>¡MENSAJE ENVIADO!</h4>
+                <p>
+                  Gracias por contactarnos. Nos pondremos en contacto contigo
+                  pronto.
+                </p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <h4>HORARIOS</h4>
               <p>
-                Gracias por contactarnos. Nos pondremos en contacto contigo
-                pronto.
+                Lunes a Viernes: 9:00 am - 04:00 pm<br />
+                Sábados: 10:00 am - 2:00 pm<br />
+                Domingos: Con cita previa
               </p>
             </div>
           </div>
 
-          <!-- Contact Info -->
-          <div class="contact-info-wrapper">
+          <div class="contact-column-right">
             <div class="contact-info-item">
               <h4>DIRECCIÓN</h4>
               <p>
@@ -114,15 +114,6 @@
                   <span>WhatsApp</span>
                 </a>
               </div>
-            </div>
-
-            <div class="contact-info-item">
-              <h4>HORARIOS</h4>
-              <p>
-                Lunes a Viernes: 9:00 am - 04:00 pm<br />
-                Sábados: 10:00 am - 2:00 pm<br />
-                Domingos: Con cita previa
-              </p>
             </div>
 
             <div class="contact-info-item">
