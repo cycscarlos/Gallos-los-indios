@@ -1,21 +1,13 @@
 import { API } from '../lib/api.js'
-
-let sharedJS
-
-async function loadSharedJS() {
-    if (sharedJS) return sharedJS
-    
-    const script = document.createElement('script')
-    script.src = '/js/shared.js'
-    document.head.appendChild(script)
-    
-    return new Promise((resolve) => {
-        script.onload = () => resolve(window.sharedJS || {})
-    })
-}
+import { ThreeScene } from '../lib/three-scene.js'
+import { createEmbers, initNavbarScroll } from '../lib/effects.js'
+import { setupSoundToggle } from '../lib/audio.js'
 
 async function init() {
-    sharedJS = await loadSharedJS()
+    ThreeScene.init()
+    createEmbers()
+    initNavbarScroll()
+    setupSoundToggle()
 
     const contactForm = document.getElementById('contactForm')
     const formSuccess = document.getElementById('formSuccess')

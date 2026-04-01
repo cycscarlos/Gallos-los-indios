@@ -1,17 +1,8 @@
 import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUserData, getCurrentUser } from '../lib/auth.js'
 import { API } from '../lib/api.js'
-
-/**
- * Carga scripts compartidos de forma asíncrona
- */
-async function loadSharedJS() {
-    const script = document.createElement('script')
-    script.src = '/js/shared.js'
-    document.head.appendChild(script)
-    return new Promise((resolve) => {
-        script.onload = () => resolve(window.sharedJS || {})
-    })
-}
+import { ThreeScene } from '../lib/three-scene.js'
+import { createEmbers } from '../lib/effects.js'
+import { setupSoundToggle } from '../lib/audio.js'
 
 /**
  * Formateo de fechas para tablas administrativas
@@ -127,7 +118,9 @@ async function init() {
     }
 
     // 2. Cargar lógica visual compartida (Efectos de brasas, etc.)
-    await loadSharedJS()
+    ThreeScene.init();
+    createEmbers();
+    setupSoundToggle();
 
     // 3. Gestión de Identidad Resiliente
     // Intentamos obtener datos de la tabla, si falla, usamos los metadatos del JWT

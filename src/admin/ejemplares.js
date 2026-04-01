@@ -1,16 +1,10 @@
 import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUserData } from '../lib/auth.js'
 import { API } from '../lib/api.js'
+import { ThreeScene } from '../lib/three-scene.js'
+import { createEmbers } from '../lib/effects.js'
+import { setupSoundToggle } from '../lib/audio.js'
 
 let ejemplares = []
-
-async function loadSharedJS() {
-    const script = document.createElement('script')
-    script.src = '/js/shared.js'
-    document.head.appendChild(script)
-    return new Promise((resolve) => {
-        script.onload = () => resolve(window.sharedJS || {})
-    })
-}
 
 function renderEjemplares(data) {
     const container = document.getElementById('ejemplaresList');
@@ -167,7 +161,9 @@ async function init() {
         return;
     }
 
-    await loadSharedJS();
+    ThreeScene.init();
+    createEmbers();
+    setupSoundToggle();
 
     const userData = getCurrentUserData();
     document.getElementById('userName').textContent = userData?.nombre || 'Usuario';

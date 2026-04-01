@@ -1,18 +1,7 @@
 import { initAuth, login, isAuthenticated } from '../lib/auth.js'
-
-let sharedJS
-
-async function loadSharedJS() {
-    if (sharedJS) return sharedJS
-    
-    const script = document.createElement('script')
-    script.src = '/js/shared.js'
-    document.head.appendChild(script)
-    
-    return new Promise((resolve) => {
-        script.onload = () => resolve(window.sharedJS || {})
-    })
-}
+import { ThreeScene } from '../lib/three-scene.js'
+import { createEmbers } from '../lib/effects.js'
+import { setupSoundToggle } from '../lib/audio.js'
 
 async function init() {
     if (isAuthenticated()) {
@@ -20,7 +9,9 @@ async function init() {
         return
     }
 
-    sharedJS = await loadSharedJS()
+    ThreeScene.init()
+    createEmbers()
+    setupSoundToggle()
 
     const loginForm = document.getElementById('loginForm')
     const formError = document.getElementById('formError')

@@ -1,23 +1,18 @@
-// ========================================
-// INSTALACIONES.JS - Facilities & Recognitions Page
-// ========================================
+import { ThreeScene } from '../lib/three-scene.js';
+import { createEmbers, initNavbarScroll } from '../lib/effects.js';
+import { setupSoundToggle, playClickSound, initAudio } from '../lib/audio.js';
 
-// Tab functionality
 function setupTabs() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const grids = document.querySelectorAll('.installations-grid');
 
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove active from all buttons
             tabBtns.forEach(b => b.classList.remove('active'));
-            // Add active to clicked button
             btn.classList.add('active');
 
-            // Hide all grids
             grids.forEach(grid => grid.classList.remove('active'));
 
-            // Show selected grid
             const tabId = btn.dataset.tab;
             const targetGrid = document.getElementById(tabId);
             if (targetGrid) {
@@ -30,14 +25,10 @@ function setupTabs() {
     });
 }
 
-// Initialize
 document.addEventListener('DOMContentLoaded', function() {
+    ThreeScene.init();
+    createEmbers();
+    initNavbarScroll();
+    setupSoundToggle();
     setupTabs();
-
-    window.toggleMenu = function() {
-        const navLinks = document.querySelector('.navbar-links');
-        if (navLinks) {
-            navLinks.classList.toggle('active');
-        }
-    };
 });

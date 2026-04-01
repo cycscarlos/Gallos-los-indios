@@ -1,4 +1,7 @@
 import { API } from '../lib/api.js';
+import { ThreeScene } from '../lib/three-scene.js';
+import { createEmbers, initNavbarScroll, toggleMenu } from '../lib/effects.js';
+import { playClickSound, setupSoundToggle } from '../lib/audio.js';
 
 // Gallery state
 const itemsPerPage = 9;
@@ -174,14 +177,14 @@ function updatePagination(totalItems, totalPages) {
  * Inicialización
  */
 async function init() {
+    ThreeScene.init();
+    createEmbers();
+    initNavbarScroll();
+    setupSoundToggle();
+
     allEjemplares = await fetchEjemplares();
     renderGallery('all', 1);
     setupFilters();
-
-    window.toggleMenu = function() {
-        const navLinks = document.querySelector('.navbar-links');
-        if (navLinks) navLinks.classList.toggle('active');
-    };
 }
 
 function setupFilters() {
@@ -191,7 +194,7 @@ function setupFilters() {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             renderGallery(btn.dataset.filter, 1);
-            if (window.playClickSound) window.playClickSound();
+            if (playClickSound) playClickSound();
         });
     });
 }

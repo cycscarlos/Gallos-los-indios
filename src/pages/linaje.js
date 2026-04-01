@@ -1,5 +1,6 @@
 import { API } from '../lib/api.js';
 import * as d3 from 'd3';
+import { setupSoundToggle } from '../lib/audio.js';
 
 /* ──────────────────────────────────────────────────
    CONFIGURACIÓN VISUAL DEL ÁRBOL
@@ -370,6 +371,7 @@ async function init() {
 ────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
     init();
+    setupSoundToggle();
 
     const overlay  = document.getElementById('detail-overlay');
     const closeBtn = document.getElementById('detail-close');

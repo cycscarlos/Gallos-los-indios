@@ -1,17 +1,11 @@
 import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUser, getCurrentUserData, register } from '../lib/auth.js'
 import { API } from '../lib/api.js'
+import { ThreeScene } from '../lib/three-scene.js'
+import { createEmbers } from '../lib/effects.js'
+import { setupSoundToggle } from '../lib/audio.js'
 
 let usuarios = []
 let currentUserId = null
-
-async function loadSharedJS() {
-    const script = document.createElement('script')
-    script.src = '/js/shared.js'
-    document.head.appendChild(script)
-    return new Promise((resolve) => {
-        script.onload = () => resolve(window.sharedJS || {})
-    })
-}
 
 function formatDate(dateString) {
     if (!dateString) return '-';
@@ -213,7 +207,9 @@ async function init() {
         return;
     }
 
-    await loadSharedJS();
+    ThreeScene.init();
+    createEmbers();
+    setupSoundToggle();
 
     const user = getCurrentUser();
     const userData = getCurrentUserData();

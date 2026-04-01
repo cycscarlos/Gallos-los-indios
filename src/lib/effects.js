@@ -1,13 +1,9 @@
-// ========================================
-// SHARED.JS - Shared functionality
-// Used by: galeria, servicios, contacto, fin, instalaciones
-// ========================================
+// effects.js - Embers, toggle menu, navbar scroll (ES Module)
 
-// Create embers
 function createEmbers() {
     const embersContainer = document.getElementById('embers');
     if (!embersContainer) return;
-    
+
     for (let i = 0; i < 30; i++) {
         const ember = document.createElement('div');
         ember.className = 'ember';
@@ -20,7 +16,6 @@ function createEmbers() {
     }
 }
 
-// Mobile menu toggle
 function toggleMenu() {
     const navLinks = document.querySelector('.navbar-links');
     if (navLinks) {
@@ -28,13 +23,10 @@ function toggleMenu() {
     }
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.ThreeScene) window.ThreeScene.init();
-    createEmbers();
-    
-    // Navbar scroll effect
+function initNavbarScroll() {
     const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -42,4 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.classList.remove('scrolled');
         }
     });
-});
+}
+
+export { createEmbers, toggleMenu, initNavbarScroll };
+
+// Compatibilidad global para onclick inline
+window.toggleMenu = toggleMenu;

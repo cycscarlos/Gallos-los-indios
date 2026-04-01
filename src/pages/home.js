@@ -1,7 +1,10 @@
-// ========================================
-// INDEX.JS - Home Page Specific
-// Extiende ThreeScene base con gallos, plumas y anillos
-// ========================================
+import { ThreeScene } from '../lib/three-scene.js';
+import * as THREE from 'three';
+import { createEmbers } from '../lib/effects.js';
+import { setupSoundToggle } from '../lib/audio.js';
+
+let roosters = [];
+let feathers = [];
 
 function scrollToFeatures() {
     const features = document.querySelector('.features-section');
@@ -9,15 +12,13 @@ function scrollToFeatures() {
         features.scrollIntoView({ behavior: 'smooth' });
     }
 }
-
-let roosters = [];
-let feathers = [];
+window.scrollToFeatures = scrollToFeatures;
 
 function init() {
-    const result = window.ThreeScene.init();
+    const result = ThreeScene.init();
     if (!result) return;
 
-    const scene = window.ThreeScene.getScene();
+    const scene = ThreeScene.getScene();
 
     // Light adicional para la landing
     const light3 = new THREE.PointLight(0x8b0000, 0.3, 30);
@@ -41,12 +42,11 @@ function init() {
         scene.add(ring);
     }
 
-    createRoosters();
-    createFeathers();
+    createRoosters(scene);
+    createFeathers(scene);
 }
 
-function createRoosters() {
-    const scene = window.ThreeScene.getScene();
+function createRoosters(scene) {
     const roosterColors = [0xd4af37, 0x8b0000, 0xf4d03f, 0xb8860b];
 
     for (let i = 0; i < 6; i++) {
@@ -80,8 +80,7 @@ function createRoosters() {
     }
 }
 
-function createFeathers() {
-    const scene = window.ThreeScene.getScene();
+function createFeathers(scene) {
     for (let i = 0; i < 30; i++) {
         const geometry = new THREE.PlaneGeometry(0.3, 0.8);
         const material = new THREE.MeshBasicMaterial({
@@ -111,32 +110,8 @@ function createFeathers() {
     }
 }
 
-function createEmbers() {
-    const embersContainer = document.getElementById('embers');
-    if (!embersContainer) return;
-
-    for (let i = 0; i < 30; i++) {
-        const ember = document.createElement('div');
-        ember.className = 'ember';
-        ember.style.left = Math.random() * 100 + '%';
-        ember.style.width = (Math.random() * 6 + 2) + 'px';
-        ember.style.height = ember.style.width;
-        ember.style.animationDuration = (Math.random() * 8 + 6) + 's';
-        ember.style.animationDelay = (Math.random() * 10) + 's';
-        embersContainer.appendChild(ember);
-    }
-}
-
-// Mobile menu toggle
-function toggleMenu() {
-    const navLinks = document.querySelector('.navbar-links');
-    if (navLinks) {
-        navLinks.classList.toggle('active');
-    }
-}
-
-// Initialize
 document.addEventListener('DOMContentLoaded', function() {
     init();
     createEmbers();
+    setupSoundToggle();
 });
