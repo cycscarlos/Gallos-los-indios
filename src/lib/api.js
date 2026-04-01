@@ -156,27 +156,9 @@ export const API = {
 
         async getStats() {
             const { data, error } = await withTimeout(
-                supabase
-                    .from('consultas')
-                    .select('leido, respondida')
+                supabase.rpc('get_consultas_stats')
             );
-
-            if (error) return { data: null, error };
-
-            const total = data.length;
-            const leidos = data.filter(c => c.leido).length;
-            const respondidas = data.filter(c => c.respondida).length;
-
-            return {
-                data: {
-                    total,
-                    leidos,
-                    noLeidos: total - leidos,
-                    respondidas,
-                    pendientes: total - respondidas
-                },
-                error: null
-            };
+            return { data, error };
         }
     },
 
