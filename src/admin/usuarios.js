@@ -1,6 +1,5 @@
 import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUser, getCurrentUserData, register } from '../lib/auth.js'
 import { API } from '../lib/api.js'
-import { ThreeScene } from '../lib/three-scene.js'
 import { createEmbers } from '../lib/effects.js'
 import { setupSoundToggle } from '../lib/audio.js'
 

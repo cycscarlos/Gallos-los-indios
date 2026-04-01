@@ -1,4 +1,3 @@
-import { ThreeScene } from '../lib/three-scene.js';
 import * as THREE from 'three';
 import { createEmbers, setupNavbarToggle } from '../lib/effects.js';
 import { setupSoundToggle } from '../lib/audio.js';
@@ -13,7 +12,8 @@ function scrollToFeatures() {
     }
 }
 
-function init() {
+async function init() {
+    const { ThreeScene } = await import('../lib/three-scene.js');
     const result = ThreeScene.init();
     if (!result) return;
 
@@ -109,8 +109,8 @@ function createFeathers(scene) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    init();
+document.addEventListener('DOMContentLoaded', async function() {
+    await init();
     createEmbers();
     setupNavbarToggle();
     setupSoundToggle();

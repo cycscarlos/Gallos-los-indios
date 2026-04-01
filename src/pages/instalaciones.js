@@ -1,4 +1,3 @@
-import { ThreeScene } from '../lib/three-scene.js';
 import { createEmbers, initNavbarScroll, setupNavbarToggle } from '../lib/effects.js';
 import { setupSoundToggle, playClickSound, initAudio } from '../lib/audio.js';
 
@@ -29,7 +28,8 @@ function setupTabs() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    const { ThreeScene } = await import('../lib/three-scene.js');
     ThreeScene.init();
     createEmbers();
     initNavbarScroll();

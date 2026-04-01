@@ -1,9 +1,9 @@
 import { API } from '../lib/api.js'
-import { ThreeScene } from '../lib/three-scene.js'
 import { createEmbers, initNavbarScroll, setupNavbarToggle } from '../lib/effects.js'
 import { setupSoundToggle } from '../lib/audio.js'
 
 async function init() {
+    const { ThreeScene } = await import('../lib/three-scene.js')
     ThreeScene.init()
     createEmbers()
     initNavbarScroll()
