@@ -5,10 +5,12 @@ import { setupSoundToggle } from '../lib/audio.js';
 /* ──────────────────────────────────────────────────
    CONFIGURACIÓN VISUAL DEL ÁRBOL
 ────────────────────────────────────────────────── */
-const NODE_W   = 160;   // ancho del nodo
-const NODE_H   = 72;    // alto del nodo
-const H_GAP    = 60;    // gap horizontal entre nodos del mismo nivel
-const V_GAP    = 110;   // gap vertical entre generaciones
+function getTreeDimensions() {
+    const vw = window.innerWidth;
+    if (vw <= 480)  return { w: 100, h: 48, hg: 40, vg: 90, fs: { root: 11, child: 10 } };
+    if (vw <= 768)  return { w: 120, h: 54, hg: 50, vg: 100, fs: { root: 13, child: 11 } };
+    return              { w: 160, h: 72, hg: 60, vg: 110, fs: { root: 15, child: 13 } };
+}
 
 const COLORS = {
     main:        { fill: '#1a1200', stroke: '#d4af37', strokeW: 2.5 },
@@ -137,6 +139,7 @@ function buildTreeData(e) {
 }
 
 function renderD3Tree(ejemplar) {
+    const { w: NODE_W, h: NODE_H, hg: H_GAP, vg: V_GAP, fs: FONT } = getTreeDimensions();
     const treeData = buildTreeData(ejemplar);
 
     // ── Jerarquía D3 ──
@@ -161,7 +164,7 @@ function renderD3Tree(ejemplar) {
         if (d.y > y1) y1 = d.y;
     });
 
-    const padding   = 80;
+    const padding   = Math.round(NODE_H * 1.1);
     const viewW     = (x1 - x0) + NODE_W + padding * 2;
     const viewH     = (y1 - y0) + NODE_H + padding * 2;
     const offsetX   = -x0 + NODE_W / 2 + padding;
@@ -226,11 +229,12 @@ function renderD3Tree(ejemplar) {
     nodes.transition().duration(600).delay((_, i) => i * 100).attr('opacity', 1);
 
     // Fondo del nodo (rect redondeado)
+    const r = Math.round(NODE_H * 0.2);
     const rects = nodes.append('rect')
         .attr('class', 'tree-node-rect')
         .attr('width',  NODE_W)
         .attr('height', NODE_H)
-        .attr('rx', 14).attr('ry', 14)
+        .attr('rx', r).attr('ry', r)
         .attr('fill',         d => d.data.color?.fill   || '#0f0f0f')
         .attr('stroke',       d => d.data.color?.stroke || 'rgba(212,175,55,0.2)')
         .attr('stroke-width', d => d.data.color?.strokeW || 1)
@@ -241,7 +245,7 @@ function renderD3Tree(ejemplar) {
         .append('rect')
         .attr('width',  NODE_W)
         .attr('height', NODE_H)
-        .attr('rx', 14).attr('ry', 14)
+        .attr('rx', r).attr('ry', r)
         .attr('fill', 'none')
         .attr('stroke', 'rgba(212,175,55,0.2)')
         .attr('stroke-width', 8)
@@ -318,15 +322,15 @@ function renderD3Tree(ejemplar) {
     nodes.append('text')
         .attr('class', 'tree-node-placa')
         .attr('x', NODE_W / 2)
-        .attr('y', NODE_H / 2 - 10)
-        .attr('font-size', d => d.depth === 0 ? '15px' : '13px')
+        .attr('y', NODE_H / 2 - 8)
+        .attr('font-size', d => d.depth === 0 ? FONT.root + 'px' : FONT.child + 'px')
         .text(d => d.data.placa);
 
     // ROL (texto pequeño abajo)
     nodes.append('text')
         .attr('class', 'tree-node-role')
         .attr('x', NODE_W / 2)
-        .attr('y', NODE_H / 2 + 14)
+        .attr('y', NODE_H / 2 + 12)
         .text(d => d.data.role);
 
 
@@ -357,6 +361,7 @@ async function init() {
         // Actualizar título pestaña
         document.title = `Linaje: ${data.placa_id} · Gallos Los Indios`;
 
+        currentEjemplar = data;
         renderD3Tree(data);
         showTree();
 
@@ -369,9 +374,19 @@ async function init() {
 /* ──────────────────────────────────────────────────
    EVENTOS
 ────────────────────────────────────────────────── */
+let currentEjemplar = null;
+let resizeTimer = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     init();
     setupSoundToggle();
+
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (currentEjemplar) renderD3Tree(currentEjemplar);
+        }, 300);
+    });
 
     const overlay  = document.getElementById('detail-overlay');
     const closeBtn = document.getElementById('detail-close');
