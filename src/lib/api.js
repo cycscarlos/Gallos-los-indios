@@ -1,4 +1,4 @@
-import { supabase } from './supabase.js';
+import { supabase, withTimeout } from './supabase.js';
 
 export const API = {
 
@@ -20,68 +20,66 @@ export const API = {
                 query = query.eq('linea', filters.linea);
             }
 
-            const { data, error } = await query;
-            return { data, error };
+            return withTimeout(query);
         },
 
         async getById(id) {
-            const { data, error } = await supabase
-                .from('ejemplares')
-                .select('*')
-                .eq('id', id)
-                .single();
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('ejemplares')
+                    .select('*')
+                    .eq('id', id)
+                    .single()
+            );
         },
 
         async create(ejemplar) {
-            console.log("Intentando crear ejemplar:", ejemplar);
-            try {
-                const req = supabase.from('ejemplares').insert([ejemplar]).select();
-                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("Supabase tardó más de 5 segundos (Posible bloqueo de red/Adblock)")), 5000));
-                
-                const { data, error } = await Promise.race([req, timeout]);
-                if (error) console.error("API Insert Error:", error);
-                
-                return { data, error };
-            } catch (err) {
-                console.error("Excepción en inserción:", err);
-                return { data: null, error: err };
-            }
+            return withTimeout(
+                supabase
+                    .from('ejemplares')
+                    .insert([ejemplar])
+                    .select()
+            );
         },
 
         async update(id, updates) {
-            const { data, error } = await supabase
-                .from('ejemplares')
-                .update(updates)
-                .eq('id', id)
-                .select()
-                .single();
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('ejemplares')
+                    .update(updates)
+                    .eq('id', id)
+                    .select()
+                    .single()
+            );
         },
 
         async delete(id) {
-            const { error } = await supabase
-                .from('ejemplares')
-                .delete()
-                .eq('id', id);
-            return { error };
+            return withTimeout(
+                supabase
+                    .from('ejemplares')
+                    .delete()
+                    .eq('id', id)
+            );
         },
 
         async uploadImage(file, ejemplarId) {
             const fileExt = file.name.split('.').pop();
             const fileName = `${ejemplarId}_${Date.now()}.${fileExt}`;
+            const path = `imagenes/${fileName}`;
 
-            const { data, error } = await supabase.storage
-                .from('ejemplares')
-                .upload(`imagenes/${fileName}`, file);
+            const uploadResult = await withTimeout(
+                supabase.storage
+                    .from('ejemplares')
+                    .upload(path, file)
+            );
 
-            if (error) {
-                return { error };
+            if (uploadResult.error) {
+                return { error: uploadResult.error };
             }
 
             const { data: { publicUrl } } = supabase.storage
                 .from('ejemplares')
-                .getPublicUrl(`imagenes/${fileName}`);
+                .getPublicUrl(path);
 
             return { publicUrl, error: null };
         }
@@ -102,60 +100,66 @@ export const API = {
                 query = query.eq('respondida', filters.respondida);
             }
 
-            const { data, error } = await query;
-            return { data, error };
+            return withTimeout(query);
         },
 
         async getById(id) {
-            const { data, error } = await supabase
-                .from('consultas')
-                .select('*')
-                .eq('id', id)
-                .single();
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('consultas')
+                    .select('*')
+                    .eq('id', id)
+                    .single()
+            );
         },
 
         async create(consulta) {
-            const { data, error } = await supabase
-                .from('consultas')
-                .insert(consulta)
-                .select()
-                .single();
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('consultas')
+                    .insert(consulta)
+                    .select()
+                    .single()
+            );
         },
 
         async markAsRead(id) {
-            const { data, error } = await supabase
-                .from('consultas')
-                .update({ leido: true })
-                .eq('id', id)
-                .select()
-                .single();
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('consultas')
+                    .update({ leido: true })
+                    .eq('id', id)
+                    .select()
+                    .single()
+            );
         },
 
         async markAsResponded(id) {
-            const { data, error } = await supabase
-                .from('consultas')
-                .update({ respondida: true })
-                .eq('id', id)
-                .select()
-                .single();
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('consultas')
+                    .update({ respondida: true })
+                    .eq('id', id)
+                    .select()
+                    .single()
+            );
         },
 
         async delete(id) {
-            const { error } = await supabase
-                .from('consultas')
-                .delete()
-                .eq('id', id);
-            return { error };
+            return withTimeout(
+                supabase
+                    .from('consultas')
+                    .delete()
+                    .eq('id', id)
+            );
         },
 
         async getStats() {
-            const { data, error } = await supabase
-                .from('consultas')
-                .select('leido, respondida');
+            const { data, error } = await withTimeout(
+                supabase
+                    .from('consultas')
+                    .select('leido, respondida')
+            );
 
             if (error) return { data: null, error };
 
@@ -179,30 +183,33 @@ export const API = {
     usuarios: {
 
         async getAll() {
-            const { data, error } = await supabase
-                .from('usuarios')
-                .select('*')
-                .order('created_at', { ascending: false });
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('usuarios')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+            );
         },
 
         async getById(id) {
-            const { data, error } = await supabase
-                .from('usuarios')
-                .select('*')
-                .eq('id', id)
-                .single();
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('usuarios')
+                    .select('*')
+                    .eq('id', id)
+                    .single()
+            );
         },
 
         async update(id, updates) {
-            const { data, error } = await supabase
-                .from('usuarios')
-                .update(updates)
-                .eq('id', id)
-                .select()
-                .single();
-            return { data, error };
+            return withTimeout(
+                supabase
+                    .from('usuarios')
+                    .update(updates)
+                    .eq('id', id)
+                    .select()
+                    .single()
+            );
         },
 
         async updateRole(id, rol) {
@@ -214,26 +221,29 @@ export const API = {
         },
 
         async delete(id) {
-            const { error } = await supabase
-                .from('usuarios')
-                .delete()
-                .eq('id', id);
-            return { error };
+            return withTimeout(
+                supabase
+                    .from('usuarios')
+                    .delete()
+                    .eq('id', id)
+            );
         }
     },
 
     storage: {
 
         async uploadImage(bucket, path, file) {
-            const { data, error } = await supabase.storage
-                .from(bucket)
-                .upload(path, file, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
+            const uploadResult = await withTimeout(
+                supabase.storage
+                    .from(bucket)
+                    .upload(path, file, {
+                        cacheControl: '3600',
+                        upsert: false
+                    })
+            );
 
-            if (error) {
-                return { error };
+            if (uploadResult.error) {
+                return { error: uploadResult.error };
             }
 
             const { data: { publicUrl } } = supabase.storage
@@ -244,10 +254,11 @@ export const API = {
         },
 
         async deleteImage(bucket, path) {
-            const { error } = await supabase.storage
-                .from(bucket)
-                .remove([path]);
-            return { error };
+            return withTimeout(
+                supabase.storage
+                    .from(bucket)
+                    .remove([path])
+            );
         }
     }
 };
