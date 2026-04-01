@@ -116,8 +116,7 @@ async function init() {
         return
     }
 
-    // 2. Cargar lógica visual compartida (Efectos de brasas, etc.)
-    ThreeScene.init();
+    // 2. Cargar lógica visual compartida
     createEmbers();
     setupSoundToggle();
 
