@@ -328,3 +328,72 @@ checkpoint/fase-16 → feat: PWA básica con vite-plugin-pwa
 ---
 
 *Informe actualizado el 1 de abril de 2026 a las 15:45.*
+
+---
+
+## 11. CAMBIOS POST-PLAN — Sesión 2 (1 de abril 2026, 15:45 - 18:30)
+
+### Dashboard - Fix ThreeScene no definido
+- Eliminada llamada residual `ThreeScene.init()` de dashboard.js, ejemplares.js, consultas.js, usuarios.js
+- Fase 15 eliminó el import pero dejó las llamadas
+
+### RPC get_consultas_stats - Creada en Supabase
+- Migración `20260401_get_consultas_stats.sql` desplegada a Supabase
+- Error 404 resuelto
+
+### Eliminar registros - Fix RLS y .select()
+- api.js: agregado `.select()` a las 3 funciones `delete()` (ejemplares, consultas, usuarios)
+- Sin `.select()`, Supabase DELETE retornaba `data: null` siempre
+- Verificación de `data.length > 0` antes de actualizar UI
+- Alert de RLS si no se eliminó ninguna fila
+
+### Políticas RLS DELETE
+- Migración `20260401000001_rls_delete_policies.sql` desplegada
+- DELETE permitido para admins en consultas, usuarios (no a sí mismo), ejemplares
+
+### Políticas RLS UPDATE
+- Migración `20260401000002_rls_update_policies.sql` desplegada
+- UPDATE permitido para admins en consultas, usuarios, ejemplares
+
+### RLS - Fix recursión infinita
+- Políticas que consultan `SELECT FROM usuarios` dentro de `USING` causaban recursión
+- Reemplazadas por políticas que usan `auth.jwt() -> 'user_metadata' ->> 'rol'`
+- Timeout de 8s resuelto (DELETE y UPDATE de consultas)
+
+### Consultas - Eliminar columna Tema
+- Columna "Tema" eliminada de la tabla de consultas
+- Campo "Tema" eliminado del formulario de detalle
+- Función `getTemaLabel()` eliminada
+
+### Consultas - Fix markAsRead async
+- `markAsRead` ejecutado en segundo plano (fire-and-forget) sin `await`
+- Modal se muestra inmediatamente (antes tardaba 12-15s por timeout)
+
+### Contacto - Margen entre campos
+- `margin-bottom` explícito entre todos los elementos del layout de contacto
+
+### Crear usuario - Fix modal pegado (PARCIAL)
+- Eliminado `confirm()` innecesario al crear usuario
+- auth.js: `setSession()` para restaurar sesión del admin tras `signUp`
+- `saveUsuario()`: `update()` del rol en segundo plano + `window.location.reload()`
+- **PENDIENTE**: El modal sigue quedándose en "guardando..." — requiere solución alternativa (admin.createUser via edge function o GOTRUE_SECURITY_AUTO_CONFIRM)
+
+---
+
+## 12. ISSUES PENDIENTES PARA PRÓXIMA SESIÓN
+
+### 12.1 ALTO: Crear usuario — modal se queda en "guardando"
+- `supabase.auth.signUp` reemplaza la sesión del admin
+- Intentos de restauración con `setSession()` no resuelven el problema
+- Solución pendiente: usar `supabase.auth.admin.createUser()` desde edge function, o habilitar `GOTRUE_SECURITY_AUTO_CONFIRM` en Supabase Auth
+- El usuario SÍ se crea correctamente en la BDD
+
+### 12.2 BAJO: Font Awesome desde CDN
+- Podría optimizarse con tree-shaking de iconos específicos
+
+### 12.3 BAJO: Imagen fundador1.png
+- 4.76MB sin optimizar — podría comprimirse o servirse en WebP/AVIF
+
+---
+
+*Informe actualizado el 1 de abril de 2026 a las 18:30. Sesión terminada.*
