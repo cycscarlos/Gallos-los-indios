@@ -72,6 +72,9 @@ export async function logout() {
 }
 
 export async function register(email, password, nombre) {
+    // Guardar sesión actual del admin antes de signUp
+    const { data: { session: currentSession } } = await supabase.auth.getSession();
+
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -81,6 +84,14 @@ export async function register(email, password, nombre) {
             }
         }
     });
+
+    // Restaurar sesión del admin si signUp la cambió
+    if (currentSession) {
+        await supabase.auth.setSession({
+            access_token: currentSession.access_token,
+            refresh_token: currentSession.refresh_token
+        });
+    }
 
     if (error) {
         return { success: false, error: error.message };

@@ -143,11 +143,8 @@ async function saveUsuario(e) {
         const nombre = document.getElementById('nombre').value;
         const rol = document.getElementById('rol').value;
 
-        // Nota: Crear un usuario desde la sesión de un cliente web suele reemplazar la sesión del Admin con el nuevo
-        // a menos que esté habilitada la confirmación por correo, por ende, lo avisamos y hacemos una reconexión forzada.
-        const confirmacion = confirm("Al crear un usuario manualmente, el navegador podría cambiar tu sesión temporalmente. Te pediremos que vuelvas a hacer Login. ¿Continuar?");
-        
-        if (!confirmacion) {
+        if (!email || !password || !nombre) {
+            alert('Por favor completa todos los campos requeridos.');
             btnGuardar.disabled = false;
             btnGuardar.textContent = 'Guardar';
             return;
@@ -161,16 +158,16 @@ async function saveUsuario(e) {
             return;
         }
 
-        // Ya fue creado en Auth. Supabase trigger suele insertarlo automáticamente en "usuarios".
-        // Le actualizamos el ROL si hace falta, aunque el trigger quizás se demore un poquito.
-        setTimeout(async () => {
-            if (result.user?.id) {
-                await API.usuarios.update(result.user.id, { rol: rol });
-            }
-            alert("Usuario creado exitosamente. Por seguridad, por favor vuelve a identificarte.");
-            await logout();
-            window.location.href = '/pages/login.html';
-        }, 1500);
+        // Actualizar rol del nuevo usuario
+        if (result.user?.id) {
+            await API.usuarios.update(result.user.id, { rol: rol });
+        }
+
+        alert('Usuario creado exitosamente.');
+        closeModal();
+        await loadUsuarios();
+        btnGuardar.disabled = false;
+        btnGuardar.textContent = 'Guardar';
 
     } else {
         // MODO EDICIÓN
