@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <a href="#main-content" class="skip-to-content">Saltar al contenido</a>
     <div id="canvas-container"></div>
     
     <div class="light-rays"></div>
@@ -34,7 +35,7 @@
         </div>
     </nav>
     
-    <div class="page-wrapper">
+    <div class="page-wrapper" id="main-content">
         <header class="page-header">
             <h1 class="page-title">INSTALACIONES</h1>
             <p class="page-subtitle">Donde la excelencia encuentra su hogar</p>
@@ -42,13 +43,13 @@
         
         <div class="page-content">
             <!-- Tabs -->
-            <div class="installations-tabs">
-                <button class="tab-btn active" data-tab="facilities">Nuestras Instalaciones</button>
-                <button class="tab-btn" data-tab="recognitions">Reconocimientos</button>
+            <div class="installations-tabs" role="tablist">
+                <button class="tab-btn active" data-tab="facilities" role="tab" aria-selected="true" aria-controls="facilities">Nuestras Instalaciones</button>
+                <button class="tab-btn" data-tab="recognitions" role="tab" aria-selected="false" aria-controls="recognitions">Reconocimientos</button>
             </div>
             
             <!-- Facilities Grid -->
-            <div class="installations-grid active" id="facilities">
+            <div class="installations-grid active" id="facilities" role="tabpanel" aria-labelledby="facilities">
                 <div class="installation-item">
                     <img src="/images/instalaciones1.jpg" alt="Instalación 1" class="installation-image">
                     <div class="installation-info">
@@ -94,7 +95,7 @@
             </div>
             
             <!-- Recognitions Grid -->
-            <div class="installations-grid" id="recognitions">
+            <div class="installations-grid" id="recognitions" role="tabpanel" aria-labelledby="recognitions">
                 <div class="recognition-item">
                     <img src="/images/reconocimiento1.jpg" alt="Reconocimiento 1" class="recognition-image">
                     <div class="recognition-badge">🏆</div>

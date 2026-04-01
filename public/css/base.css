@@ -3,6 +3,26 @@
    Redesigned by KiloCode
    ======================================== */
 
+/* Skip to content - accesibilidad */
+.skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    z-index: 9999;
+    padding: 8px 16px;
+    background: var(--gold-primary);
+    color: var(--black-deep);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: top 0.2s;
+}
+
+.skip-to-content:focus {
+    top: 8px;
+}
+
 * {
     margin: 0;
     padding: 0;

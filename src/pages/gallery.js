@@ -78,7 +78,7 @@ function renderGallery(filter = 'all', page = 1) {
         grid.innerHTML = '<div class="empty-state">No hay ejemplares en esta categoría.</div>';
     } else {
         grid.innerHTML = pageData.map(item => `
-            <div class="gallery-item">
+            <div class="gallery-item" tabindex="0" role="button" aria-label="Ver ficha de ${item.placa_id} - ${item.marca}">
                 <div class="flip-card-inner">
 
                     <!-- CARA FRONTAL -->
@@ -140,6 +140,14 @@ function setupFlipCards() {
             if (e.target.closest('.btn-linaje')) return;
             const inner = item.querySelector('.flip-card-inner');
             if (inner) inner.classList.toggle('flipped');
+        });
+
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const inner = item.querySelector('.flip-card-inner');
+                if (inner) inner.classList.toggle('flipped');
+            }
         });
     });
 }
