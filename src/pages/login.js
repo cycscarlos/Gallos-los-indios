@@ -1,5 +1,4 @@
 import { initAuth, login, isAuthenticated } from '../lib/auth.js'
-import { ThreeScene } from '../lib/three-scene.js'
 import { createEmbers } from '../lib/effects.js'
 import { setupSoundToggle } from '../lib/audio.js'
 
@@ -9,7 +8,6 @@ async function init() {
         return
     }
 
-    ThreeScene.init()
     createEmbers()
     setupSoundToggle()
 
