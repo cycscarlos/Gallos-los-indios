@@ -107,6 +107,18 @@ body {
     pointer-events: none;
 }
 
+/* Fallback estático cuando Three.js no está disponible */
+#canvas-container.static-fallback {
+    background: radial-gradient(ellipse at 50% 30%, rgba(212, 175, 55, 0.06) 0%, var(--black-deep) 70%);
+}
+
+#canvas-container.static-fallback::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(212, 175, 55, 0.04) 0%, transparent 40%, rgba(212, 175, 55, 0.03) 100%);
+}
+
 /* Light Effects */
 .light-rays {
     position: fixed;

@@ -2,9 +2,34 @@ import * as THREE from 'three';
 
 let scene, camera, renderer, particles;
 
+/**
+ * Verifica si el dispositivo puede ejecutar Three.js.
+ * Retorna false si: sin WebGL, prefers-reduced-motion, o hardware limitado.
+ */
+function canRunThreeJS() {
+    try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (!gl) return false;
+    } catch {
+        return false;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+
+    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) return false;
+
+    return true;
+}
+
 function init() {
     const canvasContainer = document.getElementById('canvas-container');
     if (!canvasContainer) return null;
+
+    if (!canRunThreeJS()) {
+        canvasContainer.classList.add('static-fallback');
+        return null;
+    }
 
     scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x0a0a0a, 0.015);
