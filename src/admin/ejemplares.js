@@ -160,7 +160,6 @@ async function init() {
         return;
     }
 
-    ThreeScene.init();
     createEmbers();
     setupSoundToggle();
 
