@@ -59,6 +59,7 @@ export const API = {
                     .from('ejemplares')
                     .delete()
                     .eq('id', id)
+                    .select()
             );
         },
 
@@ -151,6 +152,7 @@ export const API = {
                     .from('consultas')
                     .delete()
                     .eq('id', id)
+                    .select()
             );
         },
 
@@ -208,6 +210,7 @@ export const API = {
                     .from('usuarios')
                     .delete()
                     .eq('id', id)
+                    .select()
             );
         }
     },

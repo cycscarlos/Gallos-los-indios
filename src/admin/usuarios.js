@@ -101,12 +101,14 @@ function editUsuario(id) {
 async function deleteUsuario(id) {
     if (!confirm('¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.')) return;
 
-    const result = await API.usuarios.delete(id);
-    if (!result.error) {
+    const { data, error } = await API.usuarios.delete(id);
+    if (!error && data && data.length > 0) {
         usuarios = usuarios.filter(u => u.id !== id);
         renderUsuarios(usuarios);
+    } else if (error) {
+        alert('Error al eliminar: ' + (error.message || 'Error desconocido'));
     } else {
-        alert('Error al eliminar: ' + result.error.message);
+        alert('No se pudo eliminar. Posible falta de permisos en la base de datos (RLS).');
     }
 };
 

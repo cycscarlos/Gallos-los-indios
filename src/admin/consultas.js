@@ -144,25 +144,29 @@ async function markAsResponded(id) {
 async function deleteConsulta(id) {
     if (!confirm('¿Estás seguro de eliminar esta consulta?')) return;
 
-    const result = await API.consultas.delete(id);
-    if (!result.error) {
+    const { data, error } = await API.consultas.delete(id);
+    if (!error && data && data.length > 0) {
         consultas = consultas.filter(c => c.id !== id);
         renderConsultas(getFilteredConsultas());
+    } else if (error) {
+        alert('Error al eliminar: ' + (error.message || 'Error desconocido'));
     } else {
-        alert('Error al eliminar: ' + result.error.message);
+        alert('No se pudo eliminar. Posible falta de permisos en la base de datos (RLS).');
     }
 };
 
 async function deleteConsultaAndClose(id) {
     if (!confirm('¿Estás seguro de eliminar esta consulta?')) return;
 
-    const result = await API.consultas.delete(id);
-    if (!result.error) {
+    const { data, error } = await API.consultas.delete(id);
+    if (!error && data && data.length > 0) {
         consultas = consultas.filter(c => c.id !== id);
         renderConsultas(getFilteredConsultas());
         document.getElementById('modalConsulta').classList.remove('show');
+    } else if (error) {
+        alert('Error al eliminar: ' + (error.message || 'Error desconocido'));
     } else {
-        alert('Error al eliminar: ' + result.error.message);
+        alert('No se pudo eliminar. Posible falta de permisos en la base de datos (RLS).');
     }
 };
 

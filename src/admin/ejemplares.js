@@ -76,11 +76,13 @@ function editEjemplar(id) {
 async function deleteEjemplar(id) {
     if (!confirm('¿Estás seguro de eliminar este ejemplar?')) return;
 
-    const result = await API.ejemplares.delete(id);
-    if (!result.error) {
+    const { data, error } = await API.ejemplares.delete(id);
+    if (!error && data && data.length > 0) {
         await loadEjemplares();
+    } else if (error) {
+        alert('Error al eliminar: ' + (error.message || 'Error desconocido'));
     } else {
-        alert('Error al eliminar: ' + result.error.message);
+        alert('No se pudo eliminar. Posible falta de permisos en la base de datos (RLS).');
     }
 };
 
