@@ -136,6 +136,7 @@ async function saveUsuario(e) {
     btnGuardar.disabled = true;
     btnGuardar.textContent = 'Guardando...';
 
+    try {
     if (!id) {
         // MODO CREACIÓN
         const email = document.getElementById('email').value;
@@ -145,29 +146,27 @@ async function saveUsuario(e) {
 
         if (!email || !password || !nombre) {
             alert('Por favor completa todos los campos requeridos.');
-            btnGuardar.disabled = false;
-            btnGuardar.textContent = 'Guardar';
             return;
         }
 
         const result = await register(email, password, nombre);
         if (!result.success) {
             alert('Error al crear usuario: ' + result.error);
-            btnGuardar.disabled = false;
-            btnGuardar.textContent = 'Guardar';
             return;
         }
 
-        // Actualizar rol del nuevo usuario
+        // Actualizar rol del nuevo usuario (puede fallar si el trigger aún no insertó en tabla usuarios)
         if (result.user?.id) {
-            await API.usuarios.update(result.user.id, { rol: rol });
+            try {
+                await API.usuarios.update(result.user.id, { rol: rol });
+            } catch (err) {
+                console.warn('No se pudo actualizar el rol:', err.message);
+            }
         }
 
         alert('Usuario creado exitosamente.');
         closeModal();
         await loadUsuarios();
-        btnGuardar.disabled = false;
-        btnGuardar.textContent = 'Guardar';
 
     } else {
         // MODO EDICIÓN
@@ -179,9 +178,6 @@ async function saveUsuario(e) {
 
         const result = await API.usuarios.update(id, data);
 
-        btnGuardar.disabled = false;
-        btnGuardar.textContent = 'Guardar';
-
         if (result.error) {
             alert('Error al guardar: ' + result.error.message);
             return;
@@ -189,6 +185,13 @@ async function saveUsuario(e) {
 
         closeModal();
         await loadUsuarios();
+    }
+    } catch (err) {
+        console.error('Error en saveUsuario:', err);
+        alert('Error inesperado: ' + (err.message || 'Intenta de nuevo'));
+    } finally {
+        btnGuardar.disabled = false;
+        btnGuardar.textContent = 'Guardar';
     }
 }
 
