@@ -155,18 +155,12 @@ async function saveUsuario(e) {
             return;
         }
 
-        // Actualizar rol del nuevo usuario (puede fallar si el trigger aún no insertó en tabla usuarios)
+        // Actualizar rol en segundo plano y recargar
         if (result.user?.id) {
-            try {
-                await API.usuarios.update(result.user.id, { rol: rol });
-            } catch (err) {
-                console.warn('No se pudo actualizar el rol:', err.message);
-            }
+            API.usuarios.update(result.user.id, { rol: rol }).catch(() => {});
         }
 
-        alert('Usuario creado exitosamente.');
-        closeModal();
-        await loadUsuarios();
+        window.location.reload();
 
     } else {
         // MODO EDICIÓN
