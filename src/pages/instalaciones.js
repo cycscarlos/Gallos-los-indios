@@ -1,5 +1,5 @@
 import { ThreeScene } from '../lib/three-scene.js';
-import { createEmbers, initNavbarScroll } from '../lib/effects.js';
+import { createEmbers, initNavbarScroll, setupNavbarToggle } from '../lib/effects.js';
 import { setupSoundToggle, playClickSound, initAudio } from '../lib/audio.js';
 
 function setupTabs() {
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ThreeScene.init();
     createEmbers();
     initNavbarScroll();
+    setupNavbarToggle();
     setupSoundToggle();
     setupTabs();
 });

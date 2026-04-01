@@ -1,6 +1,6 @@
 import { API } from '../lib/api.js';
 import { ThreeScene } from '../lib/three-scene.js';
-import { createEmbers, initNavbarScroll, toggleMenu } from '../lib/effects.js';
+import { createEmbers, initNavbarScroll, setupNavbarToggle } from '../lib/effects.js';
 import { playClickSound, setupSoundToggle } from '../lib/audio.js';
 
 // Gallery state
@@ -150,7 +150,7 @@ function updatePagination(totalItems, totalPages) {
 
     let html = '';
 
-    html += `<button class="pagination-btn" onclick="window.changeGalleryPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+    html += `<button class="pagination-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M15 18l-6-6 6-6"/>
         </svg>
@@ -158,13 +158,13 @@ function updatePagination(totalItems, totalPages) {
 
     for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-            html += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="window.changeGalleryPage(${i})">${i}</button>`;
+            html += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
         } else if (i === currentPage - 2 || i === currentPage + 2) {
             html += `<span class="pagination-dots">...</span>`;
         }
     }
 
-    html += `<button class="pagination-btn" onclick="window.changeGalleryPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+    html += `<button class="pagination-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 18l6-6-6-6"/>
         </svg>
@@ -180,11 +180,26 @@ async function init() {
     ThreeScene.init();
     createEmbers();
     initNavbarScroll();
+    setupNavbarToggle();
     setupSoundToggle();
 
     allEjemplares = await fetchEjemplares();
     renderGallery('all', 1);
     setupFilters();
+
+    const modalClose = document.getElementById('modalClose');
+    if (modalClose) {
+        modalClose.addEventListener('click', () => {
+            document.getElementById('modalOverlay')?.classList.remove('active');
+        });
+    }
+
+    document.getElementById('galleryPagination').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-page]');
+        if (btn && !btn.disabled) {
+            changeGalleryPage(parseInt(btn.dataset.page));
+        }
+    });
 }
 
 function setupFilters() {
@@ -199,8 +214,7 @@ function setupFilters() {
     });
 }
 
-// Global exports
-window.changeGalleryPage = (page) => {
+function changeGalleryPage(page) {
     let filteredData = currentFilter === 'all' 
         ? allEjemplares 
         : allEjemplares.filter(item => item.race && item.race.toLowerCase() === currentFilter.toLowerCase());
@@ -209,6 +223,6 @@ window.changeGalleryPage = (page) => {
         renderGallery(currentFilter, page);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-};
+}
 
 document.addEventListener('DOMContentLoaded', init);

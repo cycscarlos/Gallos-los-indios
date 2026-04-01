@@ -23,6 +23,13 @@ function toggleMenu() {
     }
 }
 
+function setupNavbarToggle() {
+    const toggle = document.getElementById('navbarToggle');
+    if (toggle) {
+        toggle.addEventListener('click', toggleMenu);
+    }
+}
+
 function initNavbarScroll() {
     const navbar = document.querySelector('.navbar');
     if (!navbar) return;
@@ -36,7 +43,4 @@ function initNavbarScroll() {
     });
 }
 
-export { createEmbers, toggleMenu, initNavbarScroll };
-
-// Compatibilidad global para onclick inline
-window.toggleMenu = toggleMenu;
+export { createEmbers, toggleMenu, initNavbarScroll, setupNavbarToggle };

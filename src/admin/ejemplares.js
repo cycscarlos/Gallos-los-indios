@@ -39,8 +39,8 @@ function renderEjemplares(data) {
                             <span class="status-badge ${e.estado}">${e.estado}</span>
                         </td>
                         <td class="actions-cell">
-                            <button class="btn-secondary" onclick="editEjemplar('${e.id}')">Editar</button>
-                            ${isAdmin() ? `<button class="btn-danger" onclick="deleteEjemplar('${e.id}')">Eliminar</button>` : ''}
+                            <button class="btn-secondary" data-action="edit" data-id="${e.id}">Editar</button>
+                            ${isAdmin() ? `<button class="btn-danger" data-action="delete" data-id="${e.id}">Eliminar</button>` : ''}
                         </td>
                     </tr>
                 `).join('')}
@@ -49,7 +49,7 @@ function renderEjemplares(data) {
     `;
 }
 
-window.editEjemplar = function(id) {
+function editEjemplar(id) {
     const ejemplar = ejemplares.find(e => e.id === id);
     if (!ejemplar) return;
 
@@ -74,7 +74,7 @@ window.editEjemplar = function(id) {
     document.getElementById('modalEjemplar').classList.add('show');
 };
 
-window.deleteEjemplar = async function(id) {
+async function deleteEjemplar(id) {
     if (!confirm('¿Estás seguro de eliminar este ejemplar?')) return;
 
     const result = await API.ejemplares.delete(id);
@@ -189,6 +189,14 @@ async function init() {
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('btnCancelar').addEventListener('click', closeModal);
     document.getElementById('formEjemplar').addEventListener('submit', saveEjemplar);
+
+    document.getElementById('ejemplaresList').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const id = btn.dataset.id;
+        if (btn.dataset.action === 'edit') editEjemplar(id);
+        if (btn.dataset.action === 'delete') deleteEjemplar(id);
+    });
 
     document.getElementById('modalEjemplar').addEventListener('click', (e) => {
         if (e.target.id === 'modalEjemplar') {

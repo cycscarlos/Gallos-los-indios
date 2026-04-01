@@ -1,6 +1,6 @@
 import { ThreeScene } from '../lib/three-scene.js';
 import * as THREE from 'three';
-import { createEmbers } from '../lib/effects.js';
+import { createEmbers, setupNavbarToggle } from '../lib/effects.js';
 import { setupSoundToggle } from '../lib/audio.js';
 
 let roosters = [];
@@ -12,7 +12,6 @@ function scrollToFeatures() {
         features.scrollIntoView({ behavior: 'smooth' });
     }
 }
-window.scrollToFeatures = scrollToFeatures;
 
 function init() {
     const result = ThreeScene.init();
@@ -113,5 +112,11 @@ function createFeathers(scene) {
 document.addEventListener('DOMContentLoaded', function() {
     init();
     createEmbers();
+    setupNavbarToggle();
     setupSoundToggle();
+
+    const scrollIndicator = document.getElementById('scrollIndicator');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', scrollToFeatures);
+    }
 });

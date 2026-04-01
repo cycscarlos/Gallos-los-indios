@@ -53,8 +53,8 @@ function renderUsuarios(data) {
                         </td>
                         <td>${formatDate(u.created_at)}</td>
                         <td class="actions-cell">
-                            <button class="btn-secondary" onclick="editUsuario('${u.id}')">Editar</button>
-                            ${u.id !== currentUserId ? `<button class="btn-danger" onclick="deleteUsuario('${u.id}')">Eliminar</button>` : ''}
+                            <button class="btn-secondary" data-action="edit" data-id="${u.id}">Editar</button>
+                            ${u.id !== currentUserId ? `<button class="btn-danger" data-action="delete" data-id="${u.id}">Eliminar</button>` : ''}
                         </td>
                     </tr>
                 `).join('')}
@@ -63,7 +63,7 @@ function renderUsuarios(data) {
     `;
 }
 
-window.openNuevoUsuarioModal = function() {
+function openNuevoUsuarioModal() {
     document.getElementById('modalUsuarioTitle').textContent = 'Nuevo Usuario';
     document.getElementById('formUsuario').reset();
     document.getElementById('usuarioId').value = '';
@@ -78,7 +78,7 @@ window.openNuevoUsuarioModal = function() {
     document.getElementById('modalUsuario').classList.add('show');
 };
 
-window.editUsuario = function(id) {
+function editUsuario(id) {
     const usuario = usuarios.find(u => u.id === id);
     if (!usuario) return;
 
@@ -99,7 +99,7 @@ window.editUsuario = function(id) {
     document.getElementById('modalUsuario').classList.add('show');
 };
 
-window.deleteUsuario = async function(id) {
+async function deleteUsuario(id) {
     if (!confirm('¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.')) return;
 
     const result = await API.usuarios.delete(id);
@@ -232,8 +232,15 @@ async function init() {
     document.getElementById('btnCancelar').addEventListener('click', closeModal);
     document.getElementById('formUsuario').addEventListener('submit', saveUsuario);
 
-    // Exportación explícita para compatibilidad de clics en la cabecera
-    window.openNuevoUsuarioModal = window.openNuevoUsuarioModal;
+    document.getElementById('btnNuevoUsuario').addEventListener('click', openNuevoUsuarioModal);
+
+    document.getElementById('usuariosList').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const id = btn.dataset.id;
+        if (btn.dataset.action === 'edit') editUsuario(id);
+        if (btn.dataset.action === 'delete') deleteUsuario(id);
+    });
 
     document.getElementById('modalUsuario').addEventListener('click', (e) => {
         if (e.target.id === 'modalUsuario') {

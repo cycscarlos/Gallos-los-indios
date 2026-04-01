@@ -75,8 +75,8 @@ function renderConsultas(data) {
                             ${c.respondida ? '<span class="status-badge leido">Respondida</span>' : ''}
                         </td>
                         <td class="actions-cell">
-                            <button class="btn-secondary" onclick="viewConsulta('${c.id}')">Ver</button>
-                            ${isAdmin() ? `<button class="btn-danger" onclick="deleteConsulta('${c.id}')">Eliminar</button>` : ''}
+                            <button class="btn-secondary" data-action="view" data-id="${c.id}">Ver</button>
+                            ${isAdmin() ? `<button class="btn-danger" data-action="delete" data-id="${c.id}">Eliminar</button>` : ''}
                         </td>
                     </tr>
                 `).join('')}
@@ -85,7 +85,7 @@ function renderConsultas(data) {
     `;
 }
 
-window.viewConsulta = async function(id) {
+async function viewConsulta(id) {
     const consulta = consultas.find(c => c.id === id);
     if (!consulta) return;
 
@@ -122,17 +122,17 @@ window.viewConsulta = async function(id) {
             </div>
         </div>
         <div class="form-actions">
-            <button class="btn-secondary" id="btnMarcarRespondida" onclick="markAsResponded('${consulta.id}')">
+            <button class="btn-secondary" id="btnMarcarRespondida" data-action="respond" data-id="${consulta.id}">
                 ${consulta.respondida ? '✓ Marcada como respondida' : 'Marcar como respondida'}
             </button>
-            ${isAdmin() ? `<button class="btn-danger" onclick="deleteConsultaAndClose('${consulta.id}')">Eliminar Consulta</button>` : ''}
+            ${isAdmin() ? `<button class="btn-danger" data-action="delete-close" data-id="${consulta.id}">Eliminar Consulta</button>` : ''}
         </div>
     `;
 
     document.getElementById('modalConsulta').classList.add('show');
 };
 
-window.markAsResponded = async function(id) {
+async function markAsResponded(id) {
     const result = await API.consultas.markAsResponded(id);
     if (!result.error) {
         const consulta = consultas.find(c => c.id === id);
@@ -142,7 +142,7 @@ window.markAsResponded = async function(id) {
     }
 };
 
-window.deleteConsulta = async function(id) {
+async function deleteConsulta(id) {
     if (!confirm('¿Estás seguro de eliminar esta consulta?')) return;
 
     const result = await API.consultas.delete(id);
@@ -154,7 +154,7 @@ window.deleteConsulta = async function(id) {
     }
 };
 
-window.deleteConsultaAndClose = async function(id) {
+async function deleteConsultaAndClose(id) {
     if (!confirm('¿Estás seguro de eliminar esta consulta?')) return;
 
     const result = await API.consultas.delete(id);
@@ -213,6 +213,22 @@ async function init() {
     });
 
     document.getElementById('modalClose').addEventListener('click', closeModal);
+
+    document.getElementById('consultasList').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const id = btn.dataset.id;
+        if (btn.dataset.action === 'view') viewConsulta(id);
+        if (btn.dataset.action === 'delete') deleteConsulta(id);
+    });
+
+    document.getElementById('consultaDetalle').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const id = btn.dataset.id;
+        if (btn.dataset.action === 'respond') markAsResponded(id);
+        if (btn.dataset.action === 'delete-close') deleteConsultaAndClose(id);
+    });
 
     document.getElementById('modalConsulta').addEventListener('click', (e) => {
         if (e.target.id === 'modalConsulta') {

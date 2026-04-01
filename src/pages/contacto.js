@@ -1,12 +1,13 @@
 import { API } from '../lib/api.js'
 import { ThreeScene } from '../lib/three-scene.js'
-import { createEmbers, initNavbarScroll } from '../lib/effects.js'
+import { createEmbers, initNavbarScroll, setupNavbarToggle } from '../lib/effects.js'
 import { setupSoundToggle } from '../lib/audio.js'
 
 async function init() {
     ThreeScene.init()
     createEmbers()
     initNavbarScroll()
+    setupNavbarToggle()
     setupSoundToggle()
 
     const contactForm = document.getElementById('contactForm')
