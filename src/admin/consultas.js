@@ -17,17 +17,6 @@ function formatDate(dateString) {
     });
 }
 
-function getTemaLabel(tema) {
-    const temas = {
-        'venta': 'Venta de gallos',
-        'criadero': 'Criadero / Reproducción',
-        'asesoria': 'Asesoría',
-        'compra': 'Compra',
-        'otro': 'Otro'
-    };
-    return temas[tema] || tema || 'Sin especificar';
-}
-
 function getFilteredConsultas() {
     switch (currentFilter) {
         case 'no-leido':
@@ -55,7 +44,6 @@ function renderConsultas(data) {
                     <th>Nombre</th>
                     <th>Email</th>
                     <th>Teléfono</th>
-                    <th>Tema</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
@@ -67,7 +55,6 @@ function renderConsultas(data) {
                         <td>${c.nombre}</td>
                         <td>${c.email}</td>
                         <td>${c.telefono || '-'}</td>
-                        <td>${getTemaLabel(c.tema)}</td>
                         <td>
                             ${!c.leido ? '<span class="status-badge no-leido">Sin Leer</span>' : ''}
                             ${c.leido && !c.respondida ? '<span class="status-badge nuevo">Pendiente</span>' : ''}
@@ -88,9 +75,15 @@ async function viewConsulta(id) {
     const consulta = consultas.find(c => c.id === id);
     if (!consulta) return;
 
-    await API.consultas.markAsRead(id);
-    consulta.leido = true;
-    renderConsultas(getFilteredConsultas());
+    // Marcar como leído en segundo plano (no bloquea la carga del modal)
+    if (!consulta.leido) {
+        API.consultas.markAsRead(id).then(({ error }) => {
+            if (!error) {
+                consulta.leido = true;
+                renderConsultas(getFilteredConsultas());
+            }
+        });
+    }
 
     const detalle = document.getElementById('consultaDetalle');
     detalle.innerHTML = `
@@ -112,16 +105,12 @@ async function viewConsulta(id) {
                 <p>${formatDate(consulta.created_at)}</p>
             </div>
             <div class="form-field full-width">
-                <label>Tema</label>
-                <p>${getTemaLabel(consulta.tema)}</p>
-            </div>
-            <div class="form-field full-width">
                 <label>Mensaje</label>
                 <p style="white-space: pre-wrap;">${consulta.mensaje}</p>
             </div>
         </div>
         <div class="form-actions">
-            <button class="btn-secondary" id="btnMarcarRespondida" data-action="respond" data-id="${consulta.id}">
+            <button class="btn-secondary" data-action="respond" data-id="${consulta.id}">
                 ${consulta.respondida ? '✓ Marcada como respondida' : 'Marcar como respondida'}
             </button>
             ${isAdmin() ? `<button class="btn-danger" data-action="delete-close" data-id="${consulta.id}">Eliminar Consulta</button>` : ''}
