@@ -1,4 +1,5 @@
 import { API } from '../lib/api.js';
+import * as d3 from 'd3';
 
 /* ──────────────────────────────────────────────────
    CONFIGURACIÓN VISUAL DEL ÁRBOL
