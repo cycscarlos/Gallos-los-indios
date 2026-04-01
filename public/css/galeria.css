@@ -214,13 +214,20 @@
     border-radius: 8px;
 }
 
-.gallery-item:hover .flip-card-inner {
+@media (hover: hover) {
+    .gallery-item:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+}
+
+.flip-card-inner.flipped {
     transform: rotateY(180deg);
 }
 
-/* Evitar que la cara frontal bloquee clics en el reverso cuando está girada */
-.gallery-item:hover .flip-card-front {
-    pointer-events: none;
+@media (hover: hover) {
+    .gallery-item:hover .flip-card-front {
+        pointer-events: none;
+    }
 }
 
 /* Cara Frontal */

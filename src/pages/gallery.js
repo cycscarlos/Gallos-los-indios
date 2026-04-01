@@ -128,6 +128,17 @@ function renderGallery(filter = 'all', page = 1) {
     }
 
     updatePagination(filteredData.length, totalPages);
+    setupFlipCards();
+}
+
+function setupFlipCards() {
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-linaje')) return;
+            const inner = item.querySelector('.flip-card-inner');
+            if (inner) inner.classList.toggle('flipped');
+        });
+    });
 }
 
 function updatePagination(totalItems, totalPages) {
