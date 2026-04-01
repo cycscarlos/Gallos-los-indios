@@ -190,48 +190,6 @@ async function init() {
 
     document.getElementById('btnNuevo').addEventListener('click', openNewModal);
     
-    // Función de AUTO-SEED Temporal
-    document.getElementById('btnSeed').addEventListener('click', async () => {
-        const btn = document.getElementById('btnSeed');
-        const confirmacion = confirm("¿Iniciar la carga de 14 ejemplares de prueba automáticamente?");
-        if (!confirmacion) return;
-        
-        btn.disabled = true;
-        btn.textContent = '⏳ Cargando...';
-        
-        let errores = 0;
-        try {
-            for(let i=1; i<=14; i++) {
-                const data = {
-                    placa_id: `MOCK-${Math.floor(Math.random()*1000)}-${i}`,
-                    marca: `Gallo Test #${i}`,
-                    genero: i % 2 === 0 ? 'Macho' : 'Hembra',
-                    linea: 'Hatch Experimental',
-                    precio: '100',
-                    estado: 'disponible',
-                    observaciones: 'Auto generado para pruebas visuales.',
-                    imagen_url: `/images/galeria${i}.jpg`
-                };
-                const { error } = await API.ejemplares.create(data);
-                if (error) {
-                    console.error("Error DB al crear gallo:", error);
-                    errores++;
-                }
-            }
-            if (errores > 0) {
-                alert(`Carga finalizada pero hubo ${errores} errores. Presiona F12 y mira la consola.`);
-            } else {
-                alert("¡Los 14 ejemplares fueron cargados con éxito!");
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Excepción de código (mira F12 Console): " + err.message);
-        }
-
-        btn.textContent = '✔️ Operación Terminada';
-        setTimeout(() => btn.style.display = 'none', 3000);
-        await loadEjemplares();
-    });
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('btnCancelar').addEventListener('click', closeModal);
     document.getElementById('formEjemplar').addEventListener('submit', saveEjemplar);
