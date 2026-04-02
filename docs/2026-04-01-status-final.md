@@ -464,6 +464,23 @@ checkpoint/fase-16 → feat: PWA básica con vite-plugin-pwa
 
 **No hay issues pendientes.**
 
+
 ---
 
-*Informe actualizado el 2 de abril de 2026. Todos los issues resueltos.*
+## 17. CAMBIOS POST-PLAN — Sesión 5 (2 de abril 2026)
+
+### Corrección de Diseño Responsive (Sintaxis Media Queries)
+- **Error Crítico**: Uso de variables CSS (`var(--bp-md)`) dentro de `@media`, lo cual es inválido y rompía el responsive en todos los navegadores.
+- **Solución**: Reemplazo por valores literales en 7 archivos CSS (`base.css`, `galeria.css`, `instalaciones.css`, `servicios.css`, `contacto.css`, `index.css`, `admin.css`).
+- **Navegación**: Breakpoint de navbar subido a `1024px` (menú hamburguesa activo en tablets).
+- **Grillas**: Forzado a 1 columna en móviles (`600px`) para Galería e Instalaciones.
+- **Footer**: Ajustado para evitar desbordamiento horizontal y centrado en móviles.
+
+**Archivos modificados:**
+- Listados en el `changelog.md` de la Sesión 5.
+
+**Estado**: Verificado con browser subagent en múltiples viewports (1024px, 768px, 600px, 375px).
+
+---
+
+*Informe actualizado el 2 de abril de 2026 a las 17:55. Responsive verificado.*
