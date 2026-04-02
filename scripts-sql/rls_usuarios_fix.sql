@@ -1,5 +1,6 @@
 -- Políticas RLS actualizadas para DELETE de usuarios
 -- Usar auth.jwt() -> 'user_metadata' ->> 'rol' para evitar recursión infinita
+-- Ejecutar en Supabase: Dashboard > SQL Editor
 
 -- Eliminar políticas existentes de DELETE en usuarios (si existen)
 DROP POLICY IF EXISTS "Admins pueden eliminar usuarios" ON usuarios;
