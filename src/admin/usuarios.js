@@ -155,6 +155,10 @@ async function saveUsuario(e) {
             return;
         }
 
+        // Cerrar modal y recargar después de crear usuario
+        closeModal();
+        await loadUsuarios();
+
     } else {
         // MODO EDICIÓN
         const data = {

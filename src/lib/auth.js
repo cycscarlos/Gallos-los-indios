@@ -72,23 +72,44 @@ export async function logout() {
 }
 
 export async function register(email, password, nombre, rol = 'usuario') {
-    try {
-        const { data, error } = await supabase.functions.invoke('create-user', {
-            body: { email, password, nombre, rol }
+    // Guardar sesión actual del admin antes de signUp
+    const { data: { session: currentSession } } = await supabase.auth.getSession();
+    const currentAccessToken = currentSession?.access_token;
+    const currentRefreshToken = currentSession?.refresh_token;
+
+    const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+            data: {
+                nombre: nombre
+            }
+        }
+    });
+
+    // Restaurar sesión del admin inmediatamente
+    if (currentAccessToken && currentRefreshToken) {
+        await supabase.auth.setSession({
+            access_token: currentAccessToken,
+            refresh_token: currentRefreshToken
         });
-
-        if (error) {
-            return { success: false, error: error.message };
-        }
-
-        if (data?.error) {
-            return { success: false, error: data.error };
-        }
-
-        return { success: true, user: data?.user };
-    } catch (err) {
-        return { success: false, error: err.message || 'Error al crear usuario' };
     }
+
+    if (error) {
+        return { success: false, error: error.message };
+    }
+
+    // Actualizar rol en segundo plano si se creó el usuario
+    if (data?.user?.id) {
+        supabase
+            .from('usuarios')
+            .update({ rol: rol })
+            .eq('id', data.user.id)
+            .then(() => {})
+            .catch(() => {});
+    }
+
+    return { success: true, user: data?.user };
 }
 
 export function getCurrentUser() {
