@@ -427,3 +427,43 @@ checkpoint/fase-16 → feat: PWA básica con vite-plugin-pwa
 ---
 
 *Informe actualizado el 2 de abril de 2026. Issues #12.2 y #12.3 resueltos.*
+
+---
+
+## 15. CAMBIOS POST-PLAN — Sesión 4 (2 de abril 2026)
+
+### Crear Usuario vía Edge Function (Issue #12.1 - RESUELTO)
+- Creada edge function `create-user` que usa `supabase.auth.admin.createUser()`
+- La función no afecta la sesión del admin (problema resuelto)
+- El rol se pasa directamente al crear el usuario (sin update posterior)
+- El modal se cierra correctamente después de crear el usuario
+
+**Archivos nuevos:**
+- `supabase/functions/create-user/index.ts` - Edge function para crear usuarios
+- `supabase/functions/create-user/deno.json` - Configuración Deno
+
+**Archivos modificados:**
+- `src/lib/auth.js` - Función `register()` actualizada para usar edge function
+- `src/admin/usuarios.js` - Llamada a `register()` actualizada con parámetro `rol`
+- `src/lib/api.js` - Agregado objeto `functions` para invocar edge functions
+- `supabase/config.toml` - Configuración de edge function `create-user`
+
+**Commits:**
+- `feat: resolver issue #12.1 - crear usuario vía edge function (sin perder sesión admin)`
+- `feat: agregar deno.json y configuración para edge function create-user`
+
+---
+
+## 16. ESTADO ACTUAL - TODOS LOS ISSUES RESUELTOS
+
+| Issue | Prioridad | Estado | Descripción |
+|-------|-----------|--------|-------------|
+| #12.1 | ALTO | ✅ RESUELTO | Crear usuario vía edge function |
+| #12.2 | BAJO | ✅ RESUELTO | Font Awesome CDN optimizado |
+| #12.3 | BAJO | ✅ RESUELTO | Imagen fundador original |
+
+**No hay issues pendientes.**
+
+---
+
+*Informe actualizado el 2 de abril de 2026. Todos los issues resueltos.*
