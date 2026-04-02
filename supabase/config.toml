@@ -401,5 +401,5 @@ entrypoint = "./functions/send-contact-email/index.ts"
 [functions.create-user]
 enabled = true
 verify_jwt = true
-# import_map = "./functions/create-user/deno.json"
-# entrypoint = "./functions/create-user/index.ts"
+import_map = "./functions/create-user/deno.json"
+entrypoint = "./functions/create-user/index.ts"
