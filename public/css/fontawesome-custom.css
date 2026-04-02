@@ -1,0 +1,41 @@
+/*!
+ * Font Awesome Free 6.4.0 - Custom Subset
+ * Only icons used in Gallos Los Indios project
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url(../fonts/fa-solid-900.woff2) format("woff2"),
+       url(../fonts/fa-solid-900.ttf) format("truetype");
+}
+
+.fa-solid,
+.fas {
+  font-weight: 900;
+}
+
+.fa,
+.fas,
+.fa-solid {
+  font-family: "Font Awesome 6 Free";
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+}
+
+/* Icon definitions - only used icons */
+.fa-th-large::before { content: "\f009"; }
+.fa-home::before { content: "\f015"; }
+.fa-arrow-left::before { content: "\f060"; }
+.fa-plus::before { content: "\f067"; }
+.fa-exclamation-triangle::before { content: "\f071"; }
+.fa-sign-out-alt::before { content: "\f2f5"; }
+.fa-comment-dots::before { content: "\f4ad"; }
+.fa-user-shield::before { content: "\f505"; }
+.fa-feather-pointed::before { content: "\f5db"; }
