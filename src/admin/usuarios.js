@@ -108,7 +108,7 @@ async function deleteUsuario(id) {
     } else if (error) {
         alert('Error al eliminar: ' + (error.message || 'Error desconocido'));
     } else {
-        alert('No se pudo eliminar. Posible falta de permisos en la base de datos (RLS).');
+        alert('No se pudo eliminar. Verifica que tienes permisos de administrador y que no estás intentando eliminarte a ti mismo.');
     }
 };
 
