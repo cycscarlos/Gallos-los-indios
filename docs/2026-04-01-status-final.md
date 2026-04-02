@@ -397,3 +397,33 @@ checkpoint/fase-16 → feat: PWA básica con vite-plugin-pwa
 ---
 
 *Informe actualizado el 1 de abril de 2026 a las 18:30. Sesión terminada.*
+
+---
+
+## 13. CAMBIOS POST-PLAN — Sesión 3 (2 de abril 2026)
+
+### Font Awesome CDN → CSS Local (Issue #12.2 - RESUELTO)
+- Instalado `@fortawesome/fontawesome-free@6.4.0` como dependencia npm
+- Creado CSS personalizado `/css/fontawesome-custom.css` con solo 9 iconos usados
+- Fuentes copiadas a `/public/fonts/` (WOFF2 + TTF)
+- Reemplazado CDN en 5 HTMLs (4 admin + linaje)
+- Reducción: ~200KB (CDN all.min.css) → ~5KB (CSS local) + fuentes locales
+
+### Imagen Fundador (Issue #12.3 - RESUELTO)
+- Cambiada referencia en `index.html` de `fundador1.png` a `fundador2.png` (original sin comprimir)
+
+### Changelog
+- Creado `docs/changelog.md` con registro histórico de cambios
+
+---
+
+## 14. ISSUES PENDIENTES (ACTUALIZADO)
+
+### 14.1 ALTO: Crear usuario — modal se queda en "guardando"
+- `supabase.auth.signUp` reemplaza la sesión del admin
+- Solución pendiente: usar `supabase.auth.admin.createUser()` desde edge function, o habilitar `GOTRUE_SECURITY_AUTO_CONFIRM` en Supabase Auth
+- El usuario SÍ se crea correctamente en la BDD
+
+---
+
+*Informe actualizado el 2 de abril de 2026. Issues #12.2 y #12.3 resueltos.*
