@@ -254,7 +254,7 @@
 }
 
 /* Responsive */
-@media (max-width: var(--bp-md)) {
+@media (max-width: 768px) {
     .installations-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -264,7 +264,7 @@
     }
     
     .recognition-item {
-    aspect-ratio: 4/3;
+        aspect-ratio: 4/3;
     }
     
     .installations-tabs {
@@ -282,10 +282,10 @@
     }
 }
 
-@media (max-width: var(--bp-sm)) {
+@media (max-width: 600px) {
     .installations-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-xs);
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
     }
     
     .tab-btn {

@@ -505,25 +505,20 @@ body {
 }
 
 /* ========================================
-   RESPONSIVE - Tablet
+   RESPONSIVE - Tablet & Small Desktop
    ======================================== */
-@media (max-width: var(--bp-lg)) {
-    .navbar-links {
-        gap: var(--space-md);
-    }
-}
-
-/* ========================================
-   RESPONSIVE - Mobile
-   ======================================== */
-@media (max-width: var(--bp-md)) {
+@media (max-width: 1024px) {
     .navbar {
         padding: var(--space-sm) var(--space-md);
     }
 
     .navbar-logo {
-        font-size: var(--text-base);
+        font-size: var(--text-lg);
         letter-spacing: 2px;
+    }
+
+    .navbar-toggle {
+        display: flex;
     }
 
     .navbar-links {
@@ -552,10 +547,6 @@ body {
         opacity: 0.8;
     }
 
-    .navbar-links a:hover {
-        background: rgba(212, 175, 55, 0.05);
-    }
-
     .navbar-links a::after {
         display: none;
     }
@@ -565,16 +556,8 @@ body {
         text-align: center;
     }
 
-    .navbar-toggle {
-        display: flex;
-    }
-
     .page-title {
         font-size: var(--text-3xl);
-    }
-
-    .page-content {
-        padding: 0 var(--space-md);
     }
 
     .footer {
@@ -582,6 +565,15 @@ body {
         gap: var(--space-xs);
         text-align: center;
         padding: var(--space-md);
+    }
+}
+
+/* ========================================
+   RESPONSIVE - Mobile
+   ======================================== */
+@media (max-width: 768px) {
+    .page-content {
+        padding: 0 var(--space-md);
     }
 
     .btn-primary {
@@ -598,7 +590,7 @@ body {
 /* ========================================
    RESPONSIVE - Small Mobile
    ======================================== */
-@media (max-width: var(--bp-sm)) {
+@media (max-width: 480px) {
     .page-header {
         padding: var(--space-lg) var(--space-sm) var(--space-md);
     }
@@ -615,3 +607,4 @@ body {
         font-size: var(--text-sm);
     }
 }
+

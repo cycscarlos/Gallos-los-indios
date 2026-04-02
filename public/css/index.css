@@ -393,7 +393,7 @@
 }
 
 /* Responsive already handled in base.css, but adding specific overrides */
-@media (max-width: var(--bp-md)) {
+@media (max-width: 768px) {
     .hero-title {
         font-size: var(--text-3xl);
     }
@@ -439,7 +439,7 @@
     }
 }
 
-@media (max-width: var(--bp-sm)) {
+@media (max-width: 480px) {
     .hero {
         padding: var(--space-md);
     }
