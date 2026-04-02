@@ -152,12 +152,23 @@ async function saveUsuario(e) {
         const result = await register(email, password, nombre, rol);
         if (!result.success) {
             alert('Error al crear usuario: ' + result.error);
+            btnGuardar.disabled = false;
+            btnGuardar.textContent = 'Guardar';
             return;
         }
 
         // Cerrar modal y recargar después de crear usuario
-        closeModal();
-        await loadUsuarios();
+        try {
+            closeModal();
+        } catch (closeErr) {
+            console.error('Error al cerrar modal:', closeErr);
+        }
+        
+        try {
+            await loadUsuarios();
+        } catch (loadErr) {
+            console.error('Error al recargar usuarios:', loadErr);
+        }
 
     } else {
         // MODO EDICIÓN
@@ -175,7 +186,11 @@ async function saveUsuario(e) {
         }
 
         closeModal();
-        await loadUsuarios();
+        try {
+            await loadUsuarios();
+        } catch (loadErr) {
+            console.error('Error al recargar usuarios:', loadErr);
+        }
     }
     } catch (err) {
         console.error('Error en saveUsuario:', err);

@@ -72,44 +72,52 @@ export async function logout() {
 }
 
 export async function register(email, password, nombre, rol = 'usuario') {
-    // Guardar sesión actual del admin antes de signUp
-    const { data: { session: currentSession } } = await supabase.auth.getSession();
-    const currentAccessToken = currentSession?.access_token;
-    const currentRefreshToken = currentSession?.refresh_token;
+    try {
+        // Guardar sesión actual del admin antes de signUp
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        const currentAccessToken = currentSession?.access_token;
+        const currentRefreshToken = currentSession?.refresh_token;
 
-    const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-            data: {
-                nombre: nombre
+        // Promise con timeout para signUp
+        const signUpPromise = supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    nombre: nombre
+                }
             }
-        }
-    });
-
-    // Restaurar sesión del admin inmediatamente
-    if (currentAccessToken && currentRefreshToken) {
-        await supabase.auth.setSession({
-            access_token: currentAccessToken,
-            refresh_token: currentRefreshToken
         });
-    }
 
-    if (error) {
-        return { success: false, error: error.message };
-    }
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout al crear usuario')), 10000)
+        );
 
-    // Actualizar rol en segundo plano si se creó el usuario
-    if (data?.user?.id) {
-        supabase
-            .from('usuarios')
-            .update({ rol: rol })
-            .eq('id', data.user.id)
-            .then(() => {})
-            .catch(() => {});
-    }
+        const { data, error } = await Promise.race([signUpPromise, timeoutPromise]);
 
-    return { success: true, user: data?.user };
+        // Restaurar sesión del admin inmediatamente
+        if (currentAccessToken && currentRefreshToken) {
+            const setSessionPromise = supabase.auth.setSession({
+                access_token: currentAccessToken,
+                refresh_token: currentRefreshToken
+            });
+            
+            const setSessionTimeout = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Timeout al restaurar sesión')), 5000)
+            );
+
+            await Promise.race([setSessionPromise, setSessionTimeout]);
+        }
+
+        if (error) {
+            return { success: false, error: error.message };
+        }
+
+        return { success: true, user: data?.user };
+    } catch (err) {
+        console.error('Error en register:', err);
+        return { success: false, error: err.message || 'Error al crear usuario' };
+    }
 }
 
 export function getCurrentUser() {
