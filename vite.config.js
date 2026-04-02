@@ -30,17 +30,17 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: '/images/favicon.png',
+            src: 'public/images/favicon.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/images/favicon.png',
+            src: 'public/images/favicon.png',
             sizes: '512x512',
             type: 'image/png'
           },
           {
-            src: '/images/favicon.png',
+            src: 'public/images/favicon.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
