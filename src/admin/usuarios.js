@@ -149,18 +149,11 @@ async function saveUsuario(e) {
             return;
         }
 
-        const result = await register(email, password, nombre);
+        const result = await register(email, password, nombre, rol);
         if (!result.success) {
             alert('Error al crear usuario: ' + result.error);
             return;
         }
-
-        // Actualizar rol en segundo plano y recargar
-        if (result.user?.id) {
-            API.usuarios.update(result.user.id, { rol: rol }).catch(() => {});
-        }
-
-        window.location.reload();
 
     } else {
         // MODO EDICIÓN

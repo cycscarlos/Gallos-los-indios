@@ -71,33 +71,24 @@ export async function logout() {
     return { success: true };
 }
 
-export async function register(email, password, nombre) {
-    // Guardar sesión actual del admin antes de signUp
-    const { data: { session: currentSession } } = await supabase.auth.getSession();
-
-    const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-            data: {
-                nombre: nombre
-            }
-        }
-    });
-
-    // Restaurar sesión del admin si signUp la cambió
-    if (currentSession) {
-        await supabase.auth.setSession({
-            access_token: currentSession.access_token,
-            refresh_token: currentSession.refresh_token
+export async function register(email, password, nombre, rol = 'usuario') {
+    try {
+        const { data, error } = await supabase.functions.invoke('create-user', {
+            body: { email, password, nombre, rol }
         });
-    }
 
-    if (error) {
-        return { success: false, error: error.message };
-    }
+        if (error) {
+            return { success: false, error: error.message };
+        }
 
-    return { success: true, user: data.user };
+        if (data?.error) {
+            return { success: false, error: data.error };
+        }
+
+        return { success: true, user: data?.user };
+    } catch (err) {
+        return { success: false, error: err.message || 'Error al crear usuario' };
+    }
 }
 
 export function getCurrentUser() {

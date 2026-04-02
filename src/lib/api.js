@@ -245,6 +245,15 @@ export const API = {
                     .remove([path])
             );
         }
+    },
+
+    functions: {
+        async invoke(functionName, body = {}) {
+            const { data, error } = await withTimeout(
+                supabase.functions.invoke(functionName, { body })
+            );
+            return { data, error };
+        }
     }
 };
 
