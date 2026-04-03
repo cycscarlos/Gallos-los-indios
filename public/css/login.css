@@ -81,6 +81,36 @@
     opacity: 0.6;
 }
 
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper input {
+    flex: 1;
+    padding-right: 40px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: var(--gold-primary);
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 18px;
+    opacity: 0.9;
+    transition: all 0.2s;
+    text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+}
+
+.password-toggle:hover {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+}
+
 .form-error {
     background: rgba(139, 0, 0, 0.3);
     border: 1px solid var(--red-accent);

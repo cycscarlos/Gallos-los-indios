@@ -59,4 +59,18 @@ async function init() {
     })
 }
 
-document.addEventListener('DOMContentLoaded', init)
+document.addEventListener('DOMContentLoaded', init);
+
+window.toggleLoginPassword = function() {
+    const passwordInput = document.getElementById('password');
+    const passwordEye = document.getElementById('passwordEye');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordEye.classList.remove('fa-eye');
+        passwordEye.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        passwordEye.classList.remove('fa-eye-slash');
+        passwordEye.classList.add('fa-eye');
+    }
+};

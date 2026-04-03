@@ -39,3 +39,5 @@
 .fa-comment-dots::before { content: "\f4ad"; }
 .fa-user-shield::before { content: "\f505"; }
 .fa-feather-pointed::before { content: "\f5db"; }
+.fa-eye::before { content: "\f06e"; }
+.fa-eye-slash::before { content: "\f070"; }

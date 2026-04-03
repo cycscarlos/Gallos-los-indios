@@ -1,4 +1,4 @@
-import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUser, getCurrentUserData, register } from '../lib/auth.js'
+import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUser, getCurrentUserData } from '../lib/auth.js'
 import { API } from '../lib/api.js'
 import { createEmbers } from '../lib/effects.js'
 import { setupSoundToggle } from '../lib/audio.js'
@@ -101,14 +101,13 @@ function editUsuario(id) {
 async function deleteUsuario(id) {
     if (!confirm('¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.')) return;
 
-    const { data, error } = await API.usuarios.delete(id);
-    if (!error && data && data.length > 0) {
+    const result = await API.functions.invoke('delete-user', { id });
+
+    if (result.error) {
+        alert('Error al eliminar: ' + (result.error.message || result.error));
+    } else {
         usuarios = usuarios.filter(u => u.id !== id);
         renderUsuarios(usuarios);
-    } else if (error) {
-        alert('Error al eliminar: ' + (error.message || 'Error desconocido'));
-    } else {
-        alert('No se pudo eliminar. Verifica que tienes permisos de administrador y que no estás intentando eliminarte a ti mismo.');
     }
 };
 
@@ -138,7 +137,7 @@ async function saveUsuario(e) {
 
     try {
     if (!id) {
-        // MODO CREACIÓN
+        // MODO CREACIÓN - usar edge function para no afectar sesión del admin
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const nombre = document.getElementById('nombre').value;
@@ -146,29 +145,28 @@ async function saveUsuario(e) {
 
         if (!email || !password || !nombre) {
             alert('Por favor completa todos los campos requeridos.');
-            return;
-        }
-
-        const result = await register(email, password, nombre, rol);
-        if (!result.success) {
-            alert('Error al crear usuario: ' + result.error);
             btnGuardar.disabled = false;
             btnGuardar.textContent = 'Guardar';
             return;
         }
 
-        // Cerrar modal y recargar después de crear usuario
-        try {
-            closeModal();
-        } catch (closeErr) {
-            console.error('Error al cerrar modal:', closeErr);
+        const result = await API.functions.invoke('create-user', {
+            email,
+            password,
+            nombre,
+            rol
+        });
+
+        if (result.error) {
+            alert('Error al crear usuario: ' + result.error.message || result.error);
+            btnGuardar.disabled = false;
+            btnGuardar.textContent = 'Guardar';
+            return;
         }
-        
-        try {
-            await loadUsuarios();
-        } catch (loadErr) {
-            console.error('Error al recargar usuarios:', loadErr);
-        }
+
+        // Cerrar modal sin recargar página
+        document.getElementById('modalUsuario').classList.remove('show');
+        await loadUsuarios();
 
     } else {
         // MODO EDICIÓN
@@ -186,11 +184,8 @@ async function saveUsuario(e) {
         }
 
         closeModal();
-        try {
-            await loadUsuarios();
-        } catch (loadErr) {
-            console.error('Error al recargar usuarios:', loadErr);
-        }
+        await loadUsuarios();
+        window.location.reload();
     }
     } catch (err) {
         console.error('Error en saveUsuario:', err);
@@ -258,3 +253,17 @@ async function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+window.togglePassword = function() {
+    const passwordInput = document.getElementById('password');
+    const passwordEye = document.getElementById('passwordEye');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordEye.classList.remove('fa-eye');
+        passwordEye.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        passwordEye.classList.remove('fa-eye-slash');
+        passwordEye.classList.add('fa-eye');
+    }
+}

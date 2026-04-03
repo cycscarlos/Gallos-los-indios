@@ -13,7 +13,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
  * Envuelve una promesa con timeout y manejo centralizado de errores.
  * Detecta 401/JWT expirado y redirige a login automáticamente.
  */
-export async function withTimeout(promise, ms = 8000) {
+export async function withTimeout(promise, ms = 15000) {
     const timeout = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('timeout')), ms)
     )

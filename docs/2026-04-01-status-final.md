@@ -484,3 +484,131 @@ checkpoint/fase-16 → feat: PWA básica con vite-plugin-pwa
 ---
 
 *Informe actualizado el 2 de abril de 2026 a las 17:55. Responsive verificado.*
+
+---
+
+## 18. CAMBIOS POST-PLAN — Sesión 6 (2-3 de abril 2026)
+
+### Errors Fixed: Crear y Eliminar Usuarios
+
+#### 18.1 Edge Functions con CORS
+**Problema:** Error "Failed to send a request to the Edge Function" por CORS bloqueado.
+
+**Solución:**
+- Agregados headers CORS a `create-user` y `delete-user`:
+  - `Access-Control-Allow-Origin: *`
+  - `Access-Control-Allow-Headers: authorization, x-client-info, apikey, content-type`
+  - Soporte para método OPTIONS (preflight)
+
+**Archivos modificados:**
+- `supabase/functions/create-user/index.ts`
+- `supabase/functions/delete-user/index.ts`
+
+---
+
+#### 18.2 Timeout Aumentado
+**Problema:** Timeout de 8s se agotaba en llamadas consecutivas.
+
+**Solución:**
+- Aumentado timeout de 8000ms a 15000ms en `withTimeout()`
+
+**Archivos modificados:**
+- `src/lib/supabase.js`
+
+---
+
+#### 18.3 Edge Function create-user Mejorada
+**Problema:** Error 409 duplicate key al crear usuarios (ID ya existente en tabla).
+
+**Solución:**
+- Verificación de usuario existente por email antes de crear
+- Verificación de ID antes de insertar en tabla usuarios
+- Si existe, retorna el usuario existente en lugar de crear duplicado
+
+**Archivos modificados:**
+- `supabase/functions/create-user/index.ts`
+
+---
+
+#### 18.4 Edge Function delete-user Creada
+**Problema:** No se podían eliminar usuarios por políticas RLS con recursión infinita.
+
+**Solución:**
+- Creada edge function que usa service role key (evita RLS)
+- Verifica que el usuario no se elimine a sí mismo
+- Elimina tanto de la tabla `usuarios` como de Supabase Auth
+
+**Archivos nuevos:**
+- `supabase/functions/delete-user/index.ts`
+- `supabase/functions/delete-user/deno.json`
+
+**Archivos modificados:**
+- `supabase/config.toml` - Registrada función `delete-user`
+- `src/admin/usuarios.js` - Usa edge function para eliminar
+- `supabase/migrations/20260402_rls_usuarios_fix.sql` - Políticas RLS corregidas
+
+---
+
+#### 18.5 Modal Crear Usuario - Fix Congelamiento
+**Problema:** Modal se quedaba congelado después de crear usuario.
+
+**Solución:**
+- Eliminado `window.location.reload()` que causaba problemas con la sesión
+- Ahora solo cierra el modal y carga usuarios
+- Botón cerrar sesión se mantiene activo
+
+**Archivos modificados:**
+- `src/admin/usuarios.js`
+
+---
+
+### UI: Toggle Ojo en Contraseñas
+
+#### 18.6 Login - Ojo Toggle
+**Problema:** Campo de contraseña sin opción para ver/ocultar.
+
+**Solución:**
+- Agregado botón toggle con icono ojo
+- Estilo dorado para consistencia con el theme
+
+**Archivos nuevos:**
+- `pages/login.html` - HTML con toggle
+- `src/pages/login.js` - Función `toggleLoginPassword()` expuesta a window
+
+**Archivos modificados:**
+- `public/css/login.css` - Estilos para `.password-input-wrapper` y `.password-toggle`
+- `public/css/fontawesome-custom.css` - Agregados iconos `fa-eye` y `fa-eye-slash`
+
+---
+
+#### 18.7 Modal Usuarios - Ojo Toggle
+**Problema:** Campo "Contraseña temporal" sin opción para ver/ocultar.
+
+**Solución:**
+- Agregado botón toggle con icono ojo en el modal
+- Función expuesta a window para onclick
+
+**Archivos modificados:**
+- `pages/admin/usuarios.html` - HTML con toggle
+- `src/admin/usuarios.js` - Función `togglePassword()` expuesta a window
+- `public/css/admin.css` - Estilos para password toggle
+
+---
+
+## 19. ESTADO ACTUAL (3 de abril 2026)
+
+| Funcionalidad | Estado | Notas |
+|---------------|--------|-------|
+| Crear usuario | ✅ FUNCIONAL | Edge function + verificación duplicados |
+| Eliminar usuario | ✅ FUNCIONAL | Edge function + RLS corregido |
+| Timeout API | ✅ FUNCIONAL | 15 segundos |
+| CORS edge functions | ✅ CONFIGURADO | verify_jwt = false |
+| Ojo toggle login | ✅ FUNCIONAL | Icono dorado |
+| Ojo toggle modal | ✅ FUNCIONAL | Icono dorado |
+| Cerrar sesión post-crear | ✅ FUNCIONAL | Sin reload |
+
+**No hay issues pendientes.**
+
+---
+
+*Informe actualizado el 3 de abril de 2026.*

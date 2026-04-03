@@ -122,7 +122,12 @@
                     </div>
                     <div class="form-field full-width" id="passwordContainer" style="display: none;">
                         <label for="password">Contraseña temporal</label>
-                        <input type="password" id="password">
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password">
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="passwordEye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="form-field full-width">
                         <label for="nombre">Nombre</label>
