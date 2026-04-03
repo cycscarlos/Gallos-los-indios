@@ -85,8 +85,6 @@ function renderGallery(filter = 'all', page = 1) {
                         <img src="${item.image}" alt="${item.placa_id} - ${item.marca}" class="gallery-image">
                         <div class="gallery-info">
                             <div class="gallery-name">${item.placa_id} · ${item.marca}</div>
-                            <div class="gallery-pedigree">${item.linea}</div>
-                            <div class="gallery-price">${item.precio}</div>
                         </div>
                     </div>
 
