@@ -882,6 +882,31 @@
 }
 
 .form-field input:focus,
+
+.form-field input[type="file"] {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px dashed rgba(212, 175, 55, 0.3);
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.form-field input[type="file"]:hover {
+    border-color: var(--gold);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+.image-preview {
+    margin-top: var(--space-sm);
+    text-align: center;
+}
+
+.preview-img {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+    border: 2px solid var(--gold);
+    object-fit: cover;
+}
 .form-field select:focus,
 .form-field textarea:focus {
     outline: none;

@@ -175,8 +175,11 @@
                         </select>
                     </div>
                     <div class="form-field full-width">
-                        <label for="imagen_url">URL de Imagen</label>
-                        <input type="url" id="imagen_url" placeholder="https://...">
+                        <label for="imagen_file">Imagen del Ejemplar</label>
+                        <input type="file" id="imagen_file" accept="image/*">
+                        <small style="color: var(--gray); display: block; margin-top: 4px;">Selecciona una imagen desde tu PC o celular (JPG, PNG, WEBP)</small>
+                        <input type="hidden" id="imagen_url">
+                        <div id="imagePreview" class="image-preview"></div>
                     </div>
                     <div class="form-field full-width">
                         <label for="observaciones">Observaciones</label>

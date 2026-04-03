@@ -69,6 +69,14 @@ function editEjemplar(id) {
     document.getElementById('estado').value = ejemplar.estado || 'disponible';
     document.getElementById('observaciones').value = ejemplar.observaciones || '';
     document.getElementById('imagen_url').value = ejemplar.imagen_url || '';
+    document.getElementById('imagen_file').value = '';
+
+    const preview = document.getElementById('imagePreview');
+    if (ejemplar.imagen_url) {
+        preview.innerHTML = `<img src="${ejemplar.imagen_url}" alt="Preview" class="preview-img">`;
+    } else {
+        preview.innerHTML = '';
+    }
 
     document.getElementById('modalEjemplar').classList.add('show');
 };
@@ -91,6 +99,9 @@ function openNewModal() {
     document.getElementById('formEjemplar').reset();
     document.getElementById('ejemplarId').value = '';
     document.getElementById('estado').value = 'disponible';
+    document.getElementById('imagen_url').value = '';
+    document.getElementById('imagen_file').value = '';
+    document.getElementById('imagePreview').innerHTML = '';
     document.getElementById('modalEjemplar').classList.add('show');
 }
 
@@ -128,12 +139,34 @@ async function saveEjemplar(e) {
         abuela_materna_id: document.getElementById('abuela_materna_id').value || null,
         estado: document.getElementById('estado').value,
         observaciones: document.getElementById('observaciones').value || null,
-        imagen_url: document.getElementById('imagen_url').value || null
     };
+
+    const imagenFile = document.getElementById('imagen_file').files[0];
+    let imagenUrl = document.getElementById('imagen_url').value;
 
     const btnGuardar = document.getElementById('btnGuardar');
     btnGuardar.disabled = true;
-    btnGuardar.textContent = 'Guardando...';
+    btnGuardar.textContent = imagenFile ? 'Subiendo imagen...' : 'Guardando...';
+
+    if (imagenFile) {
+        const tempId = id || `new_${Date.now()}`;
+        const fileExt = imagenFile.name.split('.').pop();
+        const fileName = `${tempId}_${Date.now()}.${fileExt}`;
+        const path = `imagenes/${fileName}`;
+
+        const uploadResult = await API.storage.uploadImage('ejemplares', path, imagenFile);
+        
+        if (uploadResult.error) {
+            alert('Error al subir imagen: ' + uploadResult.error.message);
+            btnGuardar.disabled = false;
+            btnGuardar.textContent = 'Guardar';
+            return;
+        }
+
+        imagenUrl = uploadResult.publicUrl;
+    }
+
+    data.imagen_url = imagenUrl || null;
 
     let result;
     if (id) {
@@ -201,6 +234,21 @@ async function init() {
     document.getElementById('modalEjemplar').addEventListener('click', (e) => {
         if (e.target.id === 'modalEjemplar') {
             closeModal();
+        }
+    });
+
+    document.getElementById('imagen_file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('imagePreview');
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Preview" class="preview-img">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '';
         }
     });
 
