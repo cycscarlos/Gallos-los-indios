@@ -311,6 +311,11 @@
     transform: translateY(-1px);
 }
 
+.btn-linaje:focus {
+    outline: 2px solid var(--gold-primary);
+    outline-offset: 2px;
+}
+
 /* Ajuste del grid para las flip cards */
 .gallery-grid {
     display: grid;
