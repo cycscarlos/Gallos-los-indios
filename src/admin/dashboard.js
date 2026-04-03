@@ -143,7 +143,7 @@ async function init() {
         console.log('Cerrando sesión...');
         const { success } = await logout()
         if (success) {
-            window.location.href = '/pages/login.html'
+            window.location.href = '/pages/login.html?stay=true'
         }
     })
 

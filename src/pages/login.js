@@ -3,7 +3,11 @@ import { createEmbers } from '../lib/effects.js'
 import { setupSoundToggle } from '../lib/audio.js'
 
 async function init() {
-    if (isAuthenticated()) {
+    // Allow staying on login page if ?stay=true param is present
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldStay = urlParams.get('stay') === 'true';
+
+    if (isAuthenticated() && !shouldStay) {
         window.location.href = '/pages/admin/dashboard.html'
         return
     }
@@ -26,7 +30,8 @@ async function init() {
 
     await initAuth()
 
-    if (isAuthenticated()) {
+    // Don't redirect after initAuth if user explicitly visited login page
+    if (isAuthenticated() && !shouldStay) {
         window.location.href = '/pages/admin/dashboard.html'
         return
     }
