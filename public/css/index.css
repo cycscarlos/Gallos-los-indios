@@ -394,6 +394,11 @@
 
 /* Responsive already handled in base.css, but adding specific overrides */
 @media (max-width: 768px) {
+    .hero {
+        min-height: 60vh;
+        padding: var(--space-lg) var(--space-md);
+    }
+    
     .hero-title {
         font-size: var(--text-3xl);
     }
@@ -407,20 +412,58 @@
         max-width: 150px;
     }
     
+    .hero-subtitle {
+        margin-bottom: var(--space-lg);
+    }
+    
+    .hero-cta {
+        margin-top: var(--space-lg);
+    }
+    
+    .legacy-section {
+        padding: var(--space-xl) var(--space-md);
+    }
+    
     .legacy-title {
         font-size: var(--text-2xl);
     }
     
     .legacy-intro {
         font-size: var(--text-base);
+        margin-bottom: var(--space-xl);
+    }
+    
+    .legacy-main {
+        gap: var(--space-xl);
+        margin-bottom: var(--space-xl);
     }
     
     .legacy-stats {
-        gap: var(--space-lg);
+        gap: var(--space-md);
+        padding: var(--space-lg) 0;
+        margin-bottom: var(--space-lg);
     }
     
     .stat-number {
         font-size: var(--text-2xl);
+    }
+    
+    .features-section {
+        padding: var(--space-xl) var(--space-md);
+    }
+    
+    .section-title {
+        font-size: var(--text-2xl);
+        margin-bottom: var(--space-sm);
+    }
+    
+    .section-subtitle {
+        margin-bottom: var(--space-lg);
+    }
+    
+    .quick-links {
+        margin-top: var(--space-lg);
+        gap: var(--space-sm);
     }
     
     .features-grid {
