@@ -66,7 +66,7 @@ function renderGallery(filter = 'all', page = 1) {
 
     let filteredData = filter === 'all' 
         ? allEjemplares 
-        : allEjemplares.filter(item => item.race && item.race.toLowerCase() === filter.toLowerCase());
+        : allEjemplares.filter(item => item.genero && item.genero.toLowerCase() === filter.toLowerCase());
 
     const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
     const startIndex = (page - 1) * itemsPerPage;
@@ -225,7 +225,7 @@ function setupFilters() {
 function changeGalleryPage(page) {
     let filteredData = currentFilter === 'all' 
         ? allEjemplares 
-        : allEjemplares.filter(item => item.race && item.race.toLowerCase() === currentFilter.toLowerCase());
+        : allEjemplares.filter(item => item.genero && item.genero.toLowerCase() === currentFilter.toLowerCase());
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
     if (page >= 1 && page <= totalPages) {
         renderGallery(currentFilter, page);
