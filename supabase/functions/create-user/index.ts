@@ -16,12 +16,11 @@ serve(async (req) => {
   }
 
   try {
-    const { email, password, nombre, rol } = await req.json()
-
-    if (!email || !password || !nombre) {
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader) {
       return new Response(
-        JSON.stringify({ error: 'Email, password y nombre son requeridos' }),
-        { headers: corsHeaders, status: 400 }
+        JSON.stringify({ error: 'Authorization header required' }),
+        { headers: corsHeaders, status: 401 }
       )
     }
 
@@ -31,6 +30,44 @@ serve(async (req) => {
         persistSession: false
       }
     })
+
+    // Verificar el JWT del usuario que hace la petición
+    const token = authHeader.replace('Bearer ', '')
+    const { data: { user: currentUser }, error: authError } = await supabaseAdmin.auth.getUser(token)
+
+    if (authError || !currentUser) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid or expired token' }),
+        { headers: corsHeaders, status: 401 }
+      )
+    }
+
+    // Obtener el rol del usuario actual desde la tabla usuarios
+    const { data: currentUserData } = await supabaseAdmin
+      .from('usuarios')
+      .select('rol')
+      .eq('id', currentUser.id)
+      .single()
+
+    const currentUserRol = currentUserData?.rol || 'usuario'
+
+    const { email, password, nombre, rol: requestedRol } = await req.json()
+
+    if (!email || !password || !nombre) {
+      return new Response(
+        JSON.stringify({ error: 'Email, password y nombre son requeridos' }),
+        { headers: corsHeaders, status: 400 }
+      )
+    }
+
+    // Si el usuario actual no es admin, no puede crear usuarios con rol admin
+    const finalRol = requestedRol || 'usuario'
+    if (finalRol === 'admin' && currentUserRol !== 'admin') {
+      return new Response(
+        JSON.stringify({ error: 'No tienes permisos para crear usuarios con rol admin' }),
+        { headers: corsHeaders, status: 403 }
+      )
+    }
 
     // Primero verificar si el email ya existe en la tabla usuarios
     const { data: existingUser } = await supabaseAdmin
@@ -72,7 +109,6 @@ serve(async (req) => {
       .single()
 
     if (userById) {
-      // El usuario ya existe en la tabla, retornarlo
       return new Response(
         JSON.stringify({ success: true, user: userById, existing: true }),
         { headers: corsHeaders, status: 200 }
@@ -86,7 +122,7 @@ serve(async (req) => {
         id: userId,
         email,
         nombre,
-        rol: rol || 'usuario',
+        rol: finalRol,
         activo: true
       })
 
