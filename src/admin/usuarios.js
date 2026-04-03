@@ -169,23 +169,26 @@ async function saveUsuario(e) {
         await loadUsuarios();
 
     } else {
-        // MODO EDICIÓN
-        const data = {
-            nombre: document.getElementById('nombre').value,
-            rol: document.getElementById('rol').value,
-            activo: document.getElementById('activo').value === 'true'
-        };
+        // MODO EDICIÓN - usar edge function para evitar timeout por RLS
+        const id = document.getElementById('usuarioId').value;
+        const nombre = document.getElementById('nombre').value;
+        const rol = document.getElementById('rol').value;
+        const activo = document.getElementById('activo').value === 'true';
 
-        const result = await API.usuarios.update(id, data);
+        const result = await API.functions.invoke('update-user', {
+            id,
+            nombre,
+            rol,
+            activo
+        });
 
         if (result.error) {
-            alert('Error al guardar: ' + result.error.message);
+            alert('Error al guardar: ' + (result.error.message || result.error));
             return;
         }
 
         closeModal();
         await loadUsuarios();
-        window.location.reload();
     }
     } catch (err) {
         console.error('Error en saveUsuario:', err);
