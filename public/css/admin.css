@@ -1151,8 +1151,32 @@
     .admin-topbar {
         flex-direction: column;
         gap: var(--space-sm);
-        align-items: flex-start;
+        align-items: center;
         padding: var(--space-md);
+        text-align: center;
+    }
+
+    .admin-topbar-left {
+        align-items: center;
+        width: 100%;
+    }
+
+    .admin-breadcrumbs {
+        justify-content: center;
+    }
+
+    .admin-page-title {
+        text-align: center;
+        width: 100%;
+    }
+
+    .admin-user {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-user-info {
+        justify-content: center;
     }
 
     .stats-grid {
