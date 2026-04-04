@@ -36,6 +36,15 @@ async function loadUserData() {
     
     if (!error && data) {
         currentUserData = data;
+    } else {
+        console.warn('[Auth] No se encontró usuario en tabla, usando metadata del JWT:', error?.message);
+        currentUserData = {
+            id: currentUser.id,
+            email: currentUser.email,
+            nombre: currentUser.user_metadata?.nombre || currentUser.email,
+            rol: currentUser.user_metadata?.rol || 'usuario',
+            activo: true
+        };
     }
 }
 
@@ -146,6 +155,10 @@ export function canManageEjemplares() {
 
 export function canManageUsuarios() {
     return isAdmin();
+}
+
+export function canViewUsuarios() {
+    return isSoporte();
 }
 
 export function canManageConsultas() {

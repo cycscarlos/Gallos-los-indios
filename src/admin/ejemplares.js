@@ -1,4 +1,4 @@
-import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUserData } from '../lib/auth.js'
+import { initAuth, logout, isAuthenticated, isAdmin, isSoporte, canManageEjemplares, canManageConsultas, getCurrentUserData } from '../lib/auth.js'
 import { API } from '../lib/api.js'
 import { createEmbers } from '../lib/effects.js'
 import { setupSoundToggle } from '../lib/audio.js'

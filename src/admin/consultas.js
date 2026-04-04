@@ -189,8 +189,9 @@ async function init() {
     document.getElementById('userName').textContent = userData?.nombre || 'Usuario';
     document.getElementById('userRole').textContent = userData?.rol?.toUpperCase() || '';
 
-    if (!isAdmin()) {
-        document.getElementById('navUsuarios').style.display = 'none';
+    if (!isSoporte()) {
+        const navUsuarios = document.getElementById('navUsuarios');
+        if (navUsuarios) navUsuarios.style.display = 'none';
     }
 
     document.getElementById('adminContent').style.display = 'flex';

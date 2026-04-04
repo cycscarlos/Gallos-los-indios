@@ -63,10 +63,11 @@ function renderConsultas(consultas) {
 async function loadDashboardData() {
     // Usamos catch individual en cada promesa para que si una falla, las demás sigan funcionando
     try {
-        const [ejemplaresResult, consultasResult, consultasStats] = await Promise.all([
+        const [ejemplaresResult, consultasResult, consultasStats, usuariosResult] = await Promise.all([
             API.ejemplares.getAll().catch(err => { console.error("Error en Ejemplares:", err); return { data: null }; }),
             API.consultas.getAll({ leido: false }).catch(err => { console.error("Error en Consultas:", err); return { data: null }; }),
-            API.consultas.getStats().catch(err => { console.error("Error en Stats:", err); return { data: null }; })
+            API.consultas.getStats().catch(err => { console.error("Error en Stats:", err); return { data: null }; }),
+            API.usuarios.getAll().catch(err => { console.error("Error en Usuarios:", err); return { data: null }; })
         ]);
 
         // 1. Actualizar contadores de Ejemplares
@@ -76,11 +77,8 @@ async function loadDashboardData() {
         if (ejemplaresResult?.data) {
             const total = ejemplaresResult.data.length
             const disponibles = ejemplaresResult.data.filter(e => e.estado === 'disponible').length
-            statEjemplares.textContent = total
-            statDisponibles.textContent = disponibles
-        } else {
-            statEjemplares.textContent = "0";
-            statDisponibles.textContent = "0";
+            if (statEjemplares) statEjemplares.textContent = total
+            if (statDisponibles) statDisponibles.textContent = disponibles
         }
 
         // 2. Actualizar contadores de Consultas
@@ -88,14 +86,19 @@ async function loadDashboardData() {
         const statNoLeidas = document.getElementById('statNoLeidas')
 
         if (consultasStats?.data) {
-            statConsultasPendientes.textContent = consultasStats.data.pendientes || 0
-            statNoLeidas.textContent = consultasStats.data.noLeidos || 0
-        } else {
-            statConsultasPendientes.textContent = "0";
-            statNoLeidas.textContent = "0";
+            if (statConsultasPendientes) statConsultasPendientes.textContent = consultasStats.data.pendientes || 0
+            if (statNoLeidas) statNoLeidas.textContent = consultasStats.data.noLeidos || 0
         }
 
-        // 3. Renderizar tabla de consultas recientes
+        // 3. Actualizar contador de Usuarios
+        const statUsuarios = document.getElementById('statUsuarios')
+        if (statUsuarios && usuariosResult?.data) {
+            statUsuarios.textContent = usuariosResult.data.length
+        } else if (statUsuarios) {
+            statUsuarios.textContent = "0"
+        }
+
+        // 4. Renderizar tabla de consultas recientes
         renderConsultas(consultasResult?.data || []);
 
     } catch (criticalError) {
@@ -121,19 +124,29 @@ async function init() {
     setupSoundToggle();
 
     // 3. Gestión de Identidad Resiliente
-    // Intentamos obtener datos de la tabla, si falla, usamos los metadatos del JWT
     const userData = getCurrentUserData()
     const nombreUsuario = userData?.nombre || user.user_metadata?.nombre || 'Administrador'
-    const rolUsuario = userData?.rol || user.user_metadata?.rol || 'admin'
+    const rolRaw = userData?.rol || user.user_metadata?.rol || 'admin'
+    const rolUsuario = rolRaw.toLowerCase().trim()
 
-    document.getElementById('userName').textContent = nombreUsuario
-    document.getElementById('userRole').textContent = rolUsuario.toUpperCase()
+    console.log(`[Dashboard] Usuario: ${nombreUsuario}, Rol detectado: ${rolUsuario}`);
+
+    const userNameEl = document.getElementById('userName');
+    const userRoleEl = document.getElementById('userRole');
+    if (userNameEl) userNameEl.textContent = nombreUsuario
+    if (userRoleEl) userRoleEl.textContent = rolUsuario.toUpperCase()
 
     // 4. Control de acceso visual
-    if (rolUsuario !== 'admin') {
-        const navUsuarios = document.getElementById('navUsuarios');
-        if (navUsuarios) navUsuarios.style.display = 'none';
-    }
+    // Mostrar link de usuarios si es admin o soporte (consistencia)
+    const navUsuarios = document.getElementById('navUsuarios');
+    const cardUsuarios = document.getElementById('cardUsuarios');
+    
+    const hasAccess = (rolUsuario === 'admin' || rolUsuario === 'soporte');
+    
+    if (navUsuarios) navUsuarios.style.display = hasAccess ? 'flex' : 'none';
+    if (cardUsuarios) cardUsuarios.style.display = hasAccess ? 'flex' : 'none';
+    
+    console.log(`[Dashboard] Acceso a Usuarios: ${hasAccess ? 'PERMITIDO' : 'DENEGADO'}`);
 
     // Mostrar el contenedor principal
     document.getElementById('adminContent').style.display = 'flex'

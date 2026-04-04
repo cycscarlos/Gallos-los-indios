@@ -58,7 +58,7 @@ function renderUsuarios(data) {
                                 <button class="btn-secondary" data-action="edit" data-id="${u.id}">Editar</button>
                                 ${u.id !== currentUserId ? `<button class="btn-danger" data-action="delete" data-id="${u.id}">Eliminar</button>` : ''}
                             ` : `
-                                <button class="btn-secondary" data-action="reset" data-id="${u.id}" data-email="${u.email}" title="Enviar email para restablecer contraseña">🔑 Reset</button>
+                                <span class="text-muted">Solo lectura</span>
                             `}
                         </td>
                     </tr>
@@ -241,7 +241,7 @@ async function init() {
         return;
     }
 
-    if (!canManageUsuarios()) {
+    if (!canViewUsuarios()) {
         document.getElementById('notAuthorized').style.display = 'flex';
         return;
     }
