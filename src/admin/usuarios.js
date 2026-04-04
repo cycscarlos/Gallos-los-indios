@@ -1,5 +1,6 @@
-import { initAuth, logout, isAuthenticated, isAdmin, getCurrentUser, getCurrentUserData } from '../lib/auth.js'
+import { initAuth, logout, isAuthenticated, isAdmin, isSoporte, canManageUsuarios, getCurrentUser, getCurrentUserData } from '../lib/auth.js'
 import { API } from '../lib/api.js'
+import { supabase } from '../lib/supabase.js'
 import { createEmbers } from '../lib/effects.js'
 import { setupSoundToggle } from '../lib/audio.js'
 
@@ -18,6 +19,7 @@ function formatDate(dateString) {
 
 function renderUsuarios(data) {
     const container = document.getElementById('usuariosList');
+    const isUserAdmin = isAdmin();
     
     if (!data || data.length === 0) {
         container.innerHTML = '<div class="empty-state"><p>No hay usuarios registrados</p></div>';
@@ -52,8 +54,12 @@ function renderUsuarios(data) {
                         </td>
                         <td>${formatDate(u.created_at)}</td>
                         <td class="actions-cell">
-                            <button class="btn-secondary" data-action="edit" data-id="${u.id}">Editar</button>
-                            ${u.id !== currentUserId ? `<button class="btn-danger" data-action="delete" data-id="${u.id}">Eliminar</button>` : ''}
+                            ${isUserAdmin ? `
+                                <button class="btn-secondary" data-action="edit" data-id="${u.id}">Editar</button>
+                                ${u.id !== currentUserId ? `<button class="btn-danger" data-action="delete" data-id="${u.id}">Eliminar</button>` : ''}
+                            ` : `
+                                <button class="btn-secondary" data-action="reset" data-id="${u.id}" data-email="${u.email}" title="Enviar email para restablecer contraseña">🔑 Reset</button>
+                            `}
                         </td>
                     </tr>
                 `).join('')}
@@ -63,6 +69,8 @@ function renderUsuarios(data) {
 }
 
 function openNuevoUsuarioModal() {
+    const isUserAdmin = isAdmin();
+    
     document.getElementById('modalUsuarioTitle').textContent = 'Nuevo Usuario';
     document.getElementById('formUsuario').reset();
     document.getElementById('usuarioId').value = '';
@@ -72,7 +80,18 @@ function openNuevoUsuarioModal() {
     document.getElementById('password').required = true;
     
     document.getElementById('activo').value = 'true';
-    document.getElementById('rol').value = 'soporte';
+    
+    const rolSelect = document.getElementById('rol');
+    rolSelect.innerHTML = '';
+    
+    if (isUserAdmin) {
+        rolSelect.innerHTML = `
+            <option value="soporte">Soporte</option>
+            <option value="admin">Admin</option>
+        `;
+    } else {
+        rolSelect.innerHTML = `<option value="soporte">Soporte</option>`;
+    }
 
     document.getElementById('modalUsuario').classList.add('show');
 };
@@ -118,7 +137,14 @@ function closeModal() {
 async function loadUsuarios() {
     const result = await API.usuarios.getAll();
     if (result.data) {
-        usuarios = result.data;
+        const isUserAdmin = isAdmin();
+        let filteredUsuarios = result.data;
+        
+        if (!isUserAdmin) {
+            filteredUsuarios = result.data.filter(u => u.rol === 'soporte' || u.rol === 'admin');
+        }
+        
+        usuarios = filteredUsuarios;
         renderUsuarios(usuarios);
     } else {
         document.getElementById('usuariosList').innerHTML = 
@@ -141,7 +167,15 @@ async function saveUsuario(e) {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const nombre = document.getElementById('nombre').value;
-        const rol = document.getElementById('rol').value;
+        let rol = document.getElementById('rol').value;
+
+        // Soporte no puede crear admins
+        if (!isAdmin() && rol === 'admin') {
+            alert('No tienes permisos para crear usuarios admin.');
+            btnGuardar.disabled = false;
+            btnGuardar.textContent = 'Guardar';
+            return;
+        }
 
         if (!email || !password || !nombre) {
             alert('Por favor completa todos los campos requeridos.');
@@ -207,7 +241,7 @@ async function init() {
         return;
     }
 
-    if (!isAdmin()) {
+    if (!canManageUsuarios()) {
         document.getElementById('notAuthorized').style.display = 'flex';
         return;
     }
@@ -222,7 +256,12 @@ async function init() {
     document.getElementById('userName').textContent = userData?.nombre || 'Usuario';
     document.getElementById('userRole').textContent = userData?.rol?.toUpperCase() || '';
 
+    const isUserAdmin = isAdmin();
     document.getElementById('adminContent').style.display = 'flex';
+
+    if (!isUserAdmin) {
+        document.getElementById('btnNuevoUsuario').style.display = 'none';
+    }
 
     document.getElementById('btnLogout').addEventListener('click', async () => {
         console.log('Cerrando sesión...');
@@ -238,12 +277,26 @@ async function init() {
 
     document.getElementById('btnNuevoUsuario').addEventListener('click', openNuevoUsuarioModal);
 
-    document.getElementById('usuariosList').addEventListener('click', (e) => {
+    document.getElementById('usuariosList').addEventListener('click', async (e) => {
         const btn = e.target.closest('[data-action]');
         if (!btn) return;
         const id = btn.dataset.id;
+        
         if (btn.dataset.action === 'edit') editUsuario(id);
         if (btn.dataset.action === 'delete') deleteUsuario(id);
+        if (btn.dataset.action === 'reset') {
+            const email = btn.dataset.email;
+            if (confirm(`¿Enviar email de recuperación de contraseña a ${email}?`)) {
+                const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/pages/login.html'
+                });
+                if (error) {
+                    alert('Error al enviar email: ' + error.message);
+                } else {
+                    alert('Email de recuperación enviado a ' + email);
+                }
+            }
+        }
     });
 
     document.getElementById('modalUsuario').addEventListener('click', (e) => {

@@ -202,8 +202,11 @@ async function init() {
     document.getElementById('userName').textContent = userData?.nombre || 'Usuario';
     document.getElementById('userRole').textContent = userData?.rol?.toUpperCase() || '';
 
-    if (!isAdmin()) {
+    if (!isSoporte()) {
         document.getElementById('navUsuarios').style.display = 'none';
+    }
+
+    if (!canManageEjemplares()) {
         document.getElementById('btnNuevo').style.display = 'none';
     }
 
